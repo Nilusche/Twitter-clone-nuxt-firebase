@@ -1,0 +1,68 @@
+<template>
+    <div class="hidden lg:flex md:flex sm:flex lg:justify-end justify-start lg:w-auto col-span-1 h-96" style="z-index: 100;">
+            <div class="grid grid-cols-1 fixed w-64">
+                <button class="text-left py-2 px-4 mb-2 w-24"><img class="rounded-full btn-hover w-10" src="https://img.icons8.com/color/48/000000/twitter--v1.png"/></button>
+                <NuxtLink to="/" class="ml-2 btn font-bold lg:w-36  btn-small btn-hover transition ease-in-out"> 
+                    <svg class="inline-block w-7 mb-1 mr-2" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    <span class="lg:visible invisible">Home</span>
+                </NuxtLink>
+                <button class="ml-2 btn lg:w-40  btn-small btn-hover transition ease-in-out">
+                    <svg class="inline-block w-7 mb-1 mr-2 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                    </svg>
+                    <span class="lg:visible invisible">Explore</span>
+                </button>
+                <button class="ml-2 btn lg:w-52 btn-small btn-hover transition ease-in-out">
+                    <svg class="inline-block w-7 mb-1 mr-2 h-6 " xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    <span class="lg:visible invisible">Notifications</span> 
+                </button>
+                <button class="ml-2 btn lg:w-44 btn-small btn-hover transition ease-in-out">
+                    <svg class="inline-block w-7 mb-1 mr-2"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span class="lg:visible invisible">Messages</span>
+                </button>
+                <button class="ml-2 btn lg:w-44 btn-small btn-hover transition ease-in-out">
+                    <svg class="inline-block w-7 mb-1 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                    </svg>
+                    <span class="lg:visible invisible">Bookmarks</span> 
+                </button>
+                <button class="ml-2 btn lg:w-32 btn-small btn-hover transition ease-in-out">
+                    <svg class="inline-block w-7 mb-1 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                    <span class="lg:visible invisible">Lists</span>
+                </button>
+                <button class="ml-2 btn lg:w-32 btn-small btn-hover transition ease-in-out">
+                    <svg class="inline-block w-5 ml-1 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M272 304h-96C78.8 304 0 382.8 0 480c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32C448 382.8 369.2 304 272 304zM48.99 464C56.89 400.9 110.8 352 176 352h96c65.16 0 119.1 48.95 127 112H48.99zM224 256c70.69 0 128-57.31 128-128c0-70.69-57.31-128-128-128S96 57.31 96 128C96 198.7 153.3 256 224 256zM224 48c44.11 0 80 35.89 80 80c0 44.11-35.89 80-80 80S144 172.1 144 128C144 83.89 179.9 48 224 48z"/></svg>
+                    <span class="lg:visible invisible">Profile</span>
+                </button>
+                <button class="ml-2 btn lg:w-32  btn-small btn-hover transition ease-in-out">
+                    <svg  class="inline-block w-7 mb-1 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M120 256C120 286.9 94.93 312 64 312C33.07 312 8 286.9 8 256C8 225.1 33.07 200 64 200C94.93 200 120 225.1 120 256zM280 256C280 286.9 254.9 312 224 312C193.1 312 168 286.9 168 256C168 225.1 193.1 200 224 200C254.9 200 280 225.1 280 256zM328 256C328 225.1 353.1 200 384 200C414.9 200 440 225.1 440 256C440 286.9 414.9 312 384 312C353.1 312 328 286.9 328 256z"/></svg>
+                    <span class="lg:visible invisible">More</span>
+                </button>
+                <button class="ml-2 btn-tweet bg-twblue hover:bg-twdarkblue transition ease-in-out">
+                    <span class="lg:visible invisible">Tweet</span>
+                </button>
+                <div class="ml-2 profile mt-32 grid grid-cols-1 py-20 lg:w-60 w-24 pb-0 fixed bottom-0">
+                    <button class="btn lg:w-56  w-20 btn-hover transition ease-in-out">
+                        <div class="flex">
+                            <img class="object-cover flex justify-center w-12 rounded-full mr-2" src="https://picsum.photos/40/40" alt="">
+                            <div class="lg:w-25">
+                                  <span class="text-sm font-bold lg:block hidden">Nil</span>
+                                <span class="lg:inline-block  hidden text-twgrey-400 text-sm -mt-3">@Nil_i0</span>
+                            </div>
+                            <div class="pl-14 pt-1 font-bold text-xl lg:block hidden">
+                                ...
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+</template>

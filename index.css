@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+.btn{
+    @apply text-left  py-3 px-4 rounded-full text-lg mb-2;
+}
+.btn-tweet{
+    @apply lg:w-56  w-14 font-bold mt-3 text-white  text-center  py-3 px-4 rounded-full text-lg mb-2;
+}
+.btn-hover{
+    @apply hover:bg-twgrey-200
+}
+
+.btn-small{
+    @apply lg:h-auto  w-12 h-12;
+}
+.logo{
+    transform:scale(2);
+}
+.tweets{
+    overflow-y: auto;
+}
+.head{
+    position:sticky;
+    bachground-color:white;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter: blur(20px);
+    transition:0.3s ease-in-out;
+}
+.icon{
+    color:#E1E8ED;
+}
+.like:not(:active), .retweet:not(:active), .comment:not(:active), .share:not(:active){
+    filter: invert(44%) sepia(13%) saturate(565%) hue-rotate(165deg) brightness(99%) contrast(90%);
+}
+.like:hover{
+    filter: invert(13%) sepia(94%) saturate(5825%) hue-rotate(328deg) brightness(92%) contrast(96%);
+}
+
+.retweet:hover{
+    filter: invert(99%) sepia(49%) saturate(2392%) hue-rotate(77deg) brightness(95%) contrast(84%);
+}
+
+
+.comment:hover{
+    filter: invert(44%) sepia(91%) saturate(562%) hue-rotate(163deg) brightness(102%) contrast(94%);
+}
+
+.share:hover{
+    filter: invert(44%) sepia(91%) saturate(562%) hue-rotate(163deg) brightness(102%) contrast(94%);
+}
+.trends{
+    background: #eef3f6;
+}
+
+.message-box-content {
+  font-size:1.2rem;
+  width:33rem;
+}
+.message-box-content::before {
+  content: "What's happening?";
+  color: #9197a3;
+}
+.message-box-content:not(:empty)::before {
+  content: "";
+}
