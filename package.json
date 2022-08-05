@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-     "tail":"tailwindcss -i ./index.css -o ./assets/main.css --watch" 
+    "tail": "tailwindcss -i ./index.css -o ./assets/main.css --watch"
   },
   "dependencies": {
     "core-js": "^3.19.3",
@@ -16,6 +16,7 @@
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
+    "vuex-persistedstate": "^4.1.0",
     "webpack": "^4.46.0"
   },
   "devDependencies": {

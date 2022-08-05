@@ -34,7 +34,7 @@ module.exports = {
         'montserrat':['Roboto', 'sans-serif']
       }
       
-    }
+    },
   },
   plugins: [],
 }
