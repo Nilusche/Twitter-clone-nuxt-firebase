@@ -2,7 +2,7 @@
     <div class="hidden lg:flex md:flex sm:flex lg:justify-end justify-start lg:w-auto col-span-1 h-96" style="z-index: 100;">
             <div class="grid grid-cols-1 fixed w-64">
                 <button class="text-left py-2 px-4 mb-2 w-24"><img class="rounded-full btn-hover w-10" src="https://img.icons8.com/color/48/000000/twitter--v1.png"/></button>
-                <NuxtLink to="/" :class="{'font-bold': routename=='/'}" class="ml-2 btn lg:w-36  btn-small btn-hover transition ease-in-out"> 
+                <NuxtLink to="/home" :class="{'font-bold': routename=='/home'}" class="ml-2 btn lg:w-36  btn-small btn-hover transition ease-in-out"> 
                     <svg class="inline-block w-7 mb-1 mr-2" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 20 20" fill="currentColor">
                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                     </svg>
@@ -49,20 +49,8 @@
                 <button class="ml-2 btn-tweet bg-twblue hover:bg-twdarkblue transition ease-in-out">
                     <span class="lg:visible invisible">Tweet</span>
                 </button>
-                <div class="ml-2 profile mt-32 grid grid-cols-1 py-20 lg:w-60 w-24 pb-0 fixed bottom-0">
-                    <button class="btn lg:w-56  w-20 btn-hover transition ease-in-out">
-                        <div class="flex">
-                            <img class="object-cover flex justify-center w-12 rounded-full mr-2" src="https://picsum.photos/40/40" alt="">
-                            <div class="lg:w-25">
-                                  <span class="text-sm font-bold lg:block hidden">Nil</span>
-                                <span class="lg:inline-block  hidden text-twgrey-400 text-sm -mt-3">@Nil_i0</span>
-                            </div>
-                            <div class="pl-14 pt-1 font-bold text-xl lg:block hidden">
-                                ...
-                            </div>
-                        </div>
-                    </button>
-                </div>
+                <!--Profile Section-->
+                <Profile/>
             </div>
         </div>
 </template>

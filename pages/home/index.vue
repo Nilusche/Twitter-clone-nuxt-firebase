@@ -9,7 +9,7 @@
                 <Post/>
         </div>
         <!--Search Section-->
-         <div class=" hidden lg:inline-block lg:col-span-1" >
+         <div class=" hidden lg:inline-block lg:col-span-1" @click="logout">
           <Search/>
           <Trends/>
           <who-to-follow/>
@@ -62,7 +62,14 @@ export default {
       if(this.$store.state.user.id == null){
         this.$router.push('/');
       }
-    }
+    },
+    methods:{
+      logout(){
+        this.$store.dispatch('logout').then(()=>{
+          this.$router.push('/');
+        });
+      }
+    },
 }
 
 </script>
