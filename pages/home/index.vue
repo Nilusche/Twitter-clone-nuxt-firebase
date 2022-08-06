@@ -72,13 +72,25 @@ export default {
       }
 
       //fetch user tweets from firebase
+      /*
       const tweets = await projectFirestore.collection('tweets').where('uid', '==', this.$store.state.user.id).orderBy('createdAt', 'desc').get();
       this.tweets = tweets.docs.map(doc => 
         ({
           id: doc.id,
           ...doc.data()
         })
+      );*/
+      //get tweets as snapshot
+     await projectFirestore.collection('tweets').where('uid', '==', this.$store.state.user.id).orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+        this.tweets = snapshot.docs.map(doc => 
+          ({
+            id: doc.id,
+            ...doc.data()
+          })
+        );
+      }
       );
+
 
     },
     methods:{
