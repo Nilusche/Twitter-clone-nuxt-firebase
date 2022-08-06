@@ -1,24 +1,24 @@
 <template>
     <div>
         <div class="head h-14 flex">
-                    <div class="w-11/12 flex ">
-                        <span class="justify-start font-bold ml-4 mt-4 text-xl mb-4 ">Home</span>
-                    </div>
-                    <div class="mt-1">
-                        <span >
-                             <button class="btn mt-2 w-10 btn-hover transition ease-in-out items-end">
-                                <svg  viewBox="0 0 24 24" aria-hidden="true" class="logo r-18jsvk2 r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"><g><path d="M22.772 10.506l-5.618-2.192-2.16-6.5c-.102-.307-.39-.514-.712-.514s-.61.207-.712.513l-2.16 6.5-5.62 2.192c-.287.112-.477.39-.477.7s.19.585.478.698l5.62 2.192 2.16 6.5c.102.306.39.513.712.513s.61-.207.712-.513l2.16-6.5 5.62-2.192c.287-.112.477-.39.477-.7s-.19-.585-.478-.697zm-6.49 2.32c-.208.08-.37.25-.44.46l-1.56 4.695-1.56-4.693c-.07-.21-.23-.38-.438-.462l-4.155-1.62 4.154-1.622c.208-.08.37-.25.44-.462l1.56-4.693 1.56 4.694c.07.212.23.382.438.463l4.155 1.62-4.155 1.622zM6.663 3.812h-1.88V2.05c0-.414-.337-.75-.75-.75s-.75.336-.75.75v1.762H1.5c-.414 0-.75.336-.75.75s.336.75.75.75h1.782v1.762c0 .414.336.75.75.75s.75-.336.75-.75V5.312h1.88c.415 0 .75-.336.75-.75s-.335-.75-.75-.75zm2.535 15.622h-1.1v-1.016c0-.414-.335-.75-.75-.75s-.75.336-.75.75v1.016H5.57c-.414 0-.75.336-.75.75s.336.75.75.75H6.6v1.016c0 .414.335.75.75.75s.75-.336.75-.75v-1.016h1.098c.414 0 .75-.336.75-.75s-.336-.75-.75-.75z"></path></g></svg>
-                            </button>
-                        </span>
-                    </div>
-                </div>
+            <div class="w-11/12 flex ">
+                <span class="justify-start font-bold ml-4 mt-4 text-xl mb-4 ">Home</span>
+            </div>
+            <div class="mt-1">
+                <span >
+                        <button class="btn mt-2 w-10 btn-hover transition ease-in-out items-end">
+                        <svg  viewBox="0 0 24 24" aria-hidden="true" class="logo r-18jsvk2 r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"><g><path d="M22.772 10.506l-5.618-2.192-2.16-6.5c-.102-.307-.39-.514-.712-.514s-.61.207-.712.513l-2.16 6.5-5.62 2.192c-.287.112-.477.39-.477.7s.19.585.478.698l5.62 2.192 2.16 6.5c.102.306.39.513.712.513s.61-.207.712-.513l2.16-6.5 5.62-2.192c.287-.112.477-.39.477-.7s-.19-.585-.478-.697zm-6.49 2.32c-.208.08-.37.25-.44.46l-1.56 4.695-1.56-4.693c-.07-.21-.23-.38-.438-.462l-4.155-1.62 4.154-1.622c.208-.08.37-.25.44-.462l1.56-4.693 1.56 4.694c.07.212.23.382.438.463l4.155 1.62-4.155 1.622zM6.663 3.812h-1.88V2.05c0-.414-.337-.75-.75-.75s-.75.336-.75.75v1.762H1.5c-.414 0-.75.336-.75.75s.336.75.75.75h1.782v1.762c0 .414.336.75.75.75s.75-.336.75-.75V5.312h1.88c.415 0 .75-.336.75-.75s-.335-.75-.75-.75zm2.535 15.622h-1.1v-1.016c0-.414-.335-.75-.75-.75s-.75.336-.75.75v1.016H5.57c-.414 0-.75.336-.75.75s.336.75.75.75H6.6v1.016c0 .414.335.75.75.75s.75-.336.75-.75v-1.016h1.098c.414 0 .75-.336.75-.75s-.336-.75-.75-.75z"></path></g></svg>
+                    </button>
+                </span>
+            </div>
+        </div>
 
-        <div class="flex border-b border-twgrey-200 z-0 p-4">             
+        <div class="flex border-b border-twgrey-200 z-0 p-4 mr-0">             
             <div class="flex">
                 <span class="flex">
                     <img class="rounded-full w-12 h-12 mr-2" src="https://picsum.photos/40/40" alt="">
                     <div class="block">
-                        <div id="div" class="message-box-content p-2 focus:outline-none focus:before:text-twgrey-300 pb-3 border-b border-twgrey" contenteditable="true" placeholder="What's happening?"></div>
+                        <div ref="content_div" class="message-box-content p-2 focus:outline-none focus:before:text-twgrey-300 pb-3 border-b border-twgrey" contenteditable="true" placeholder="What's happening?"></div>
                         <div class="pt-3 lg:flex md:flex block">
                             <div class="justify-start">
                                 <button class="h-9 w-9">
@@ -53,8 +53,8 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="justify-end">
-                                <button class="px-4 py-2 rounded-full text-md font-bold text-white bg-twblue hover:bg-twdarkblue transition ease-in-out">Tweet</button>
+                            <div class="justify-end" >
+                                <button @click="handleCreateTweet" class="px-4 py-2 rounded-full text-md font-bold text-white bg-twblue hover:bg-twdarkblue transition ease-in-out">Tweet</button>
                             </div>
                         </div>
                     </div>                        
@@ -63,3 +63,30 @@
         </div>
     </div>
 </template>
+
+<script>
+import {timestamp} from '@/firebase/config.js'
+export default {
+    methods:{
+        handleCreateTweet(){
+            const content = this.$refs.content_div.innerText
+            
+            if(content.length > 0){
+                //keep newlines in the content for firebase
+                const contentWithNewlines = content.replace(/\n/g, '<br>')
+                const tweet = {
+                    content: contentWithNewlines,
+                    uid: this.$store.state.user.id,
+                    createdAt:timestamp(),
+                    likes:0,
+                    comments:0,
+                    retweets:0,
+                }
+                this.$store.dispatch('createTweet',{tweet})   
+                this.$refs.content_div.innerText = ''
+                this.$emit('addTweet', tweet)
+            }
+        }
+    }
+}
+</script>

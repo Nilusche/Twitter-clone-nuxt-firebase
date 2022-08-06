@@ -58,7 +58,7 @@
 
 .message-box-content {
   font-size:1.2rem;
-  width:33rem;
+  
 }
 .message-box-content::before {
   content: "What's happening?";

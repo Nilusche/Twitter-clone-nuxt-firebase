@@ -1,12 +1,15 @@
 <template>
 <div>
-<div class="grid lg:grid-cols-3 md:grid-cols-9 sm:grid-cols-9 grid-cols-8 grid-rows-1 border-r  gap-4">
+<div class="grid lg:grid-cols-3 md:grid-cols-9 sm:grid-cols-9 grid-cols-1 grid-rows-1 border-r  gap-4">
         <Navbar/>
          <div class="bg-white border-r border-l lg:block lg:col-span-1 col-span-8 tweets overflow-y-auto">
-                <Create/>
+                <Create @addTweet="handleTweetAdd"/>
 
                 <!--Post-->
-                <Post/>
+                <div v-for="tweet in tweets" :key="tweet.content">
+                    <Post :tweet="tweet"/>
+                </div>
+                
         </div>
         <!--Search Section-->
          <div class=" hidden lg:inline-block lg:col-span-1" @click="logout">
@@ -55,19 +58,37 @@
 
 <script>
 import {mapState} from 'vuex'
+import { projectFirestore } from '@/firebase/config';
 export default {
     name: "IndexPage",
-    mounted(){
-      console.log(this.$store.state.user);
+    data(){
+      return {
+        tweets : [],
+      }
+    },
+    async mounted(){
       if(this.$store.state.user.id == null){
         this.$router.push('/');
       }
+
+      //fetch user tweets from firebase
+      const tweets = await projectFirestore.collection('tweets').where('uid', '==', this.$store.state.user.id).orderBy('createdAt', 'desc').get();
+      this.tweets = tweets.docs.map(doc => 
+        ({
+          id: doc.id,
+          ...doc.data()
+        })
+      );
+
     },
     methods:{
       logout(){
         this.$store.dispatch('logout').then(()=>{
           this.$router.push('/');
         });
+      },
+      handleTweetAdd(tweet){
+        this.tweets.unshift(tweet);
       }
     },
 }

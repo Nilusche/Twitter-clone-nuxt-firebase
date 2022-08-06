@@ -95,7 +95,11 @@ export const actions = {
   async logout({ commit }) {
     commit('logoutUser');
     await useLogout();
-  }
+  },
+  async createTweet({ commit }, { tweet }) {
+    await projectFirestore.collection('tweets').add(tweet);
+    return tweet
+  },
 }
 
 export const mutations = {
