@@ -6,7 +6,7 @@
                 <Create @addTweet="handleTweetAdd"/>
 
                 <!--Post-->
-                <div v-for="tweet in tweets" :key="tweet.content">
+                <div v-for="tweet in tweets" :key="tweet.content + tweet.createdAt">
                     <Post :tweet="tweet"/>
                 </div>
                 

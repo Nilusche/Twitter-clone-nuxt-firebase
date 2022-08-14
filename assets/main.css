@@ -551,6 +551,10 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.visible {
+  visibility: visible;
+}
+
 .invisible {
   visibility: hidden;
 }
@@ -652,8 +656,8 @@ video {
   margin-right: 0.75rem;
 }
 
-.mt-24 {
-  margin-top: 6rem;
+.mt-28 {
+  margin-top: 7rem;
 }
 
 .-mt-3 {
@@ -702,10 +706,6 @@ video {
 
 .ml-10 {
   margin-left: 2.5rem;
-}
-
-.mt-28 {
-  margin-top: 7rem;
 }
 
 .block {

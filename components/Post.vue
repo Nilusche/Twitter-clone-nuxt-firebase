@@ -8,6 +8,7 @@
                     <span class="text-gray-400">@Nil_i0</span>
                     <span class="text-gray-400">⋅23h</span>
                     <div ref="content">
+                        {{tweet.content}}
                     </div>
                     <div class="mt-5 text-twgrey-400">
                         <span class="mr-2 lg:mr-4 cursor-pointer hover:text-twblue">
@@ -24,7 +25,54 @@
                         </span>
                         <span class="mr-2 lg:mr-4  cursor-pointer hover:text-twred">
                             <span class="rounded-full p-2 mr-1 hover:bg-twgrey-200">
-                                <svg class="like w-4 ml-1 mb-1 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84zM255.1 163.9L210.1 117.1C188.4 96.28 157.6 86.4 127.3 91.44C81.55 99.07 48 138.7 48 185.1V190.9C48 219.1 59.71 246.1 80.34 265.3L256 429.3L431.7 265.3C452.3 246.1 464 219.1 464 190.9V185.1C464 138.7 430.4 99.07 384.7 91.44C354.4 86.4 323.6 96.28 301.9 117.1L255.1 163.9z"/></svg>
+                                <input type="checkbox" :id="`checkbox-${this.tweet.id}`" :checked="check" :class="{checkbox:check}" />
+                                <label for="checkbox" class="inline-block"  @click="handleLike" :class="{checked:check}">
+                                    <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+                                        <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
+                                        <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
+
+                                        <g id="grp7" opacity="0" transform="translate(7 6)">
+                                            <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
+                                            <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+                                        </g>
+
+                                        <g id="grp6" opacity="0" transform="translate(0 28)">
+                                            <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
+                                            <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+                                        </g>
+
+                                        <g id="grp3" opacity="0" transform="translate(52 28)">
+                                            <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
+                                            <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+                                        </g>
+
+                                        <g id="grp2" opacity="0" transform="translate(44 6)">
+                                            <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
+                                            <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+                                        </g>
+
+                                        <g id="grp5" opacity="0" transform="translate(14 50)">
+                                            <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
+                                            <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+                                        </g>
+
+                                        <g id="grp4" opacity="0" transform="translate(35 50)">
+                                            <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
+                                            <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+                                        </g>
+
+                                        <g id="grp1" opacity="0" transform="translate(24)">
+                                            <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
+                                            <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+                                        </g>
+                                        </g>
+                                    </svg>
+                                </label>
+                            <!--
+                                <svg class="like w-4 ml-1 mb-1 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84zM255.1 163.9L210.1 117.1C188.4 96.28 157.6 86.4 127.3 91.44C81.55 99.07 48 138.7 48 185.1V190.9C48 219.1 59.71 246.1 80.34 265.3L256 429.3L431.7 265.3C452.3 246.1 464 219.1 464 190.9V185.1C464 138.7 430.4 99.07 384.7 91.44C354.4 86.4 323.6 96.28 301.9 117.1L255.1 163.9z"/></svg>
+                            -->
+                            
                             </span>
                             <span>{{tweet.likes}}</span>
                         </span>
@@ -49,14 +97,276 @@ export default{
     props: ['tweet'],
     data(){
         return{ 
-            tweetuser: null
+            tweetuser: null,
+            check: false
         }
     },
     async mounted(){
         this.tweetuser = await projectFirestore.collection('users').doc(this.tweet.uid).get()
         //set content in innerHtml
-        this.$refs.content.innerHTML = this.tweet.content
+        await projectFirestore.collection('likes').doc(this.tweet.id).get().then(doc => {
+            if(doc.exists){
+                this.check = true
+            }else{
+                this.check = false
+            }
+        })
         
-    }
+    },
+    methods: {
+        async handleLike(){
+            document.getElementById(`checkbox-${this.tweet.id}`).checked = !document.getElementById(`checkbox-${this.tweet.id}`).checked
+            document.getElementById(`checkbox-${this.tweet.id}`).classList.toggle('checkbox')
+            
+            //check if tweet has been liked by current user
+            await projectFirestore.collection('likes').doc(this.tweet.id).get().then(doc => {
+                if(doc.exists){
+                    //if liked, remove like
+                    projectFirestore.collection('likes').doc(this.tweet.id).delete()
+                    //decrement count tweet document
+                    this.tweet.likes -=1
+                    projectFirestore.collection('tweets').doc(this.tweet.id).update({
+                        likes: this.tweet.likes
+                    })
+                }else{
+                    //if not liked, add like
+                    projectFirestore.collection('likes').doc(this.tweet.id).set({
+                        uid: this.tweet.uid,
+                        tweetid: this.tweet.id
+                    })
+                    this.tweet.likes++
+                    projectFirestore.collection('tweets').doc(this.tweet.id).update({
+                        likes: this.tweet.likes
+                    })
+                }
+            })
+        },
+            
+    },
+        
+
 }
 </script>
+<style scoped>
+
+#heart-svg {
+  cursor: pointer;
+  overflow: visible;
+  width: 25px;
+  z-index: 100;
+  margin-bottom: -6px;
+
+}
+#heart-svg #heart {
+  transform-origin: center;
+  animation: animateHeartOut 0.3s linear forwards;
+}
+#heart-svg #main-circ {
+  transform-origin: 29.5px 29.5px;
+}
+
+.checked{
+    fill: #E2264D;
+}
+input[type=checkbox] {
+  display: none;
+}
+
+.checkbox:checked + label svg #heart {
+  transform: scale(0.2);
+  fill: #E2264D;
+  animation: animateHeart 0.3s linear forwards 0.25s;
+}
+.checkbox:checked + label svg #main-circ {
+  transition: all 2s;
+  animation: animateCircle 0.3s linear forwards;
+  opacity: 1;
+}
+.checkbox:checked + label svg #grp1 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+.checkbox:checked + label svg #grp1 #oval1 {
+  transform: scale(0) translate(0, -30px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp1 #oval2 {
+  transform: scale(0) translate(10px, -50px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp2 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+.checkbox:checked + label svg #grp2 #oval1 {
+  transform: scale(0) translate(30px, -15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp2 #oval2 {
+  transform: scale(0) translate(60px, -15px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp3 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+.checkbox:checked + label svg #grp3 #oval1 {
+  transform: scale(0) translate(30px, 0px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp3 #oval2 {
+  transform: scale(0) translate(60px, 10px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp4 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+.checkbox:checked + label svg #grp4 #oval1 {
+  transform: scale(0) translate(30px, 15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp4 #oval2 {
+  transform: scale(0) translate(40px, 50px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp5 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+.checkbox:checked + label svg #grp5 #oval1 {
+  transform: scale(0) translate(-10px, 20px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp5 #oval2 {
+  transform: scale(0) translate(-60px, 30px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp6 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+.checkbox:checked + label svg #grp6 #oval1 {
+  transform: scale(0) translate(-30px, 0px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp6 #oval2 {
+  transform: scale(0) translate(-60px, -5px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp7 {
+  opacity: 1;
+  transition: 0.1s all 0.3s;
+}
+.checkbox:checked + label svg #grp7 #oval1 {
+  transform: scale(0) translate(-30px, -15px);
+  transform-origin: 0 0 0;
+  transition: 0.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp7 #oval2 {
+  transform: scale(0) translate(-55px, -30px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform 0.3s;
+}
+.checkbox:checked + label svg #grp2 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+.checkbox:checked + label svg #grp3 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+.checkbox:checked + label svg #grp4 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+.checkbox:checked + label svg #grp5 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+.checkbox:checked + label svg #grp6 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+.checkbox:checked + label svg #grp7 {
+  opacity: 1;
+  transition: 0.1s opacity 0.3s;
+}
+
+@keyframes animateCircle {
+  40% {
+    transform: scale(10);
+    opacity: 1;
+    fill: #DD4688;
+  }
+  55% {
+    transform: scale(11);
+    opacity: 1;
+    fill: #D46ABF;
+  }
+  65% {
+    transform: scale(12);
+    opacity: 1;
+    fill: #CC8EF5;
+  }
+  75% {
+    transform: scale(13);
+    opacity: 1;
+    fill: transparent;
+    stroke: #CC8EF5;
+    stroke-width: 0.5;
+  }
+  85% {
+    transform: scale(17);
+    opacity: 1;
+    fill: transparent;
+    stroke: #CC8EF5;
+    stroke-width: 0.2;
+  }
+  95% {
+    transform: scale(18);
+    opacity: 1;
+    fill: transparent;
+    stroke: #CC8EF5;
+    stroke-width: 0.1;
+  }
+  100% {
+    transform: scale(19);
+    opacity: 1;
+    fill: transparent;
+    stroke: #CC8EF5;
+    stroke-width: 0;
+  }
+}
+@keyframes animateHeart {
+  0% {
+    transform: scale(0.2);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes animateHeartOut {
+  0% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>
