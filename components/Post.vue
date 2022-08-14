@@ -136,6 +136,7 @@ export default{
                 this.retweeted = false
             }
         })
+        this.$emit('loaded')
     },
     methods: {
         async handleLike(){
