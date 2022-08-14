@@ -1,5 +1,5 @@
 <template>
-    <div class="flex border-b border-twgrey-200 z-0 p-4 pr-12">             
+    <div class="flex border-b border-twgrey-200 z-0 p-4 pr-12 hover:bg-twgrey-50 transition ease-in-out cursor-pointer">             
         <div>
             <span class="flex">
                 <img class="rounded-full w-12 h-12 mr-2" src="https://picsum.photos/40/40" alt="">

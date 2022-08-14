@@ -6,6 +6,10 @@
                 <Create @addTweet="handleTweetAdd"/>
 
                 <!--Post-->
+                
+                <div v-for="tweet in tweets" :key="tweet.content + tweet.createdAt">
+                    <Post :tweet="tweet" @loaded="handleLoaded"/>
+                </div>
                 <div v-if="loading" class="flex justify-center">
                  <svg class="h-6" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                           viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
@@ -20,9 +24,6 @@
                                   repeatCount="indefinite" />
                           </path>
                   </svg>
-                </div>
-                <div v-for="tweet in tweets" :key="tweet.content + tweet.createdAt">
-                    <Post :tweet="tweet" @loaded="handleLoaded"/>
                 </div>
                 
         </div>

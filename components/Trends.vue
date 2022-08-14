@@ -11,7 +11,7 @@
             
         </div>
         <!--Trend-->
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out">
+        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
             <div class="relative">
                 <span class="text-twgrey-400 text-xs">Trending in Germany</span>
                 <span class="font-bold block text-sm">HBOMax</span>
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out">
+        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
             <div class="relative">
                 <span class="text-twgrey-400 text-xs">Arts & culture Trending</span>
                 <span class="font-bold block text-sm">#WEBTOON</span>
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out">
+        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
             <div class="relative">
                 <span class="text-twgrey-400 text-xs">Gaming Trending</span>
                 <span class="font-bold block text-sm">#GTAV</span>
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out">
+        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
             <div class="relative">
                 <span class="text-twgrey-400 text-xs">Entertainment Trending</span>
                 <span class="font-bold block text-sm">FNAF</span>
@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out">
+        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
             <div class="relative">
                 <span class="text-twgrey-400 text-xs">Trending in Germany</span>
                 <span class="font-bold block text-sm">Benzin</span>
@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out">
+        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
             <div class="relative">
                 <span class="text-twgrey-400 text-xs">Gaming Trending</span>
                 <span class="font-bold block text-sm">#Assassins Creed</span>

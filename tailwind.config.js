@@ -15,9 +15,10 @@ module.exports = {
       },
       twdarkblue:"#0c81ca",
       twgrey:{
+        50: "#F7F7F7",
         100: "#F5F8FA",
-        150: "#eef3f6",
-        200: "#E1E8ED",
+        150: "#F7F9F9",
+        200: "#EFF1F1",
         300: "#AAB8C2",
         400: "#657786"
       },
@@ -28,6 +29,7 @@ module.exports = {
         100: "#282e34",
         200: "#14171A"
       }
+    
       
     },
       fontFamily:{
