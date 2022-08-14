@@ -121,7 +121,10 @@ export default{
     async mounted(){
         this.tweetuser = await projectFirestore.collection('users').doc(this.tweet.uid).get()
         //set content in innerHtml
-        await projectFirestore.collection('likes').doc(this.tweet.id).get().then(doc => {
+
+        let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
+
+        await projectFirestore.collection('likes').doc(uid_tweet_id).get().then(doc => {
             if(doc.exists){
                 this.check = true
             }else{
@@ -129,7 +132,7 @@ export default{
             }
         })
 
-        await projectFirestore.collection('retweets').doc(this.tweet.id).get().then(doc => {
+        await projectFirestore.collection('retweets').doc(uid_tweet_id).get().then(doc => {
             if(doc.exists){
                 this.retweeted = true
             }else{
@@ -143,11 +146,12 @@ export default{
             document.getElementById(`checkbox-${this.tweet.id}`).checked = !document.getElementById(`checkbox-${this.tweet.id}`).checked
             document.getElementById(`checkbox-${this.tweet.id}`).classList.toggle('checkbox')
             
+            let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
             //check if tweet has been liked by current user
-            await projectFirestore.collection('likes').doc(this.tweet.id).get().then(doc => {
+            await projectFirestore.collection('likes').doc(uid_tweet_id).get().then(doc => {
                 if(doc.exists){
                     //if liked, remove like
-                    projectFirestore.collection('likes').doc(this.tweet.id).delete()
+                    projectFirestore.collection('likes').doc(uid_tweet_id).delete()
                     //decrement count tweet document
                     this.tweet.likes -=1
                     projectFirestore.collection('tweets').doc(this.tweet.id).update({
@@ -155,8 +159,8 @@ export default{
                     })
                 }else{
                     //if not liked, add like
-                    projectFirestore.collection('likes').doc(this.tweet.id).set({
-                        uid: this.tweet.uid,
+                    projectFirestore.collection('likes').doc(uid_tweet_id).set({
+                        uid: this.$store.state.user.id,
                         tweetid: this.tweet.id
                     })
                     this.tweet.likes++
@@ -168,10 +172,11 @@ export default{
         },
         async handleRetweet(){
             this.retweeted = !this.retweeted
-            await projectFirestore.collection('retweets').doc(this.tweet.id).get().then(doc => {
+            let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
+            await projectFirestore.collection('retweets').doc(uid_tweet_id).get().then(doc => {
                 if(doc.exists){
                     //if retweeted, remove retweet
-                    projectFirestore.collection('retweets').doc(this.tweet.id).delete()
+                    projectFirestore.collection('retweets').doc(uid_tweet_id).delete()
                     //decrement count tweet document
                     this.tweet.retweets -=1
                     projectFirestore.collection('tweets').doc(this.tweet.id).update({
@@ -179,8 +184,8 @@ export default{
                     })
                 }else{
                     //if not retweeted, add retweet
-                    projectFirestore.collection('retweets').doc(this.tweet.id).set({
-                        uid: this.tweet.uid,
+                    projectFirestore.collection('retweets').doc(uid_tweet_id).set({
+                        uid: this.$store.state.user.id,
                         tweetid: this.tweet.id
                     })
                     this.tweet.retweets++

@@ -109,6 +109,9 @@ export default {
       }
       );
 
+      if(this.tweets.length ==0){ 
+        this.loading = false;
+      }
 
     },
     methods:{
