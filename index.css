@@ -44,7 +44,6 @@
     filter: invert(99%) sepia(49%) saturate(2392%) hue-rotate(77deg) brightness(95%) contrast(84%);
 }
 
-
 .comment:hover{
     filter: invert(44%) sepia(91%) saturate(562%) hue-rotate(163deg) brightness(102%) contrast(94%);
 }

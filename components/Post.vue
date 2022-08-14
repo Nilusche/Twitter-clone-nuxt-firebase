@@ -7,8 +7,8 @@
                     <span class="font-bold">Nil</span>
                     <span class="text-gray-400">@Nil_i0</span>
                     <span class="text-gray-400">⋅23h</span>
-                    <div ref="content">
-                        {{tweet.content}}
+                    <div v-html="tweet.content">
+                        
                     </div>
                     <div class="mt-5 text-twgrey-400">
                         <span class="mr-2 lg:mr-4 cursor-pointer hover:text-twblue">
@@ -18,8 +18,24 @@
                             <span>{{tweet.comments}}</span>
                         </span>
                         <span class="mr-2 lg:mr-4 cursor-pointer hover:text-twgreen ">
-                            <span class="rounded-full  mr-1 hover:bg-twgrey-200 p-2">
-                                <svg class=" retweet  w-4 ml-1 mb-1 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M614.2 334.8C610.5 325.8 601.7 319.1 592 319.1H544V176C544 131.9 508.1 96 464 96h-128c-17.67 0-32 14.31-32 32s14.33 32 32 32h128C472.8 160 480 167.2 480 176v143.1h-48c-9.703 0-18.45 5.844-22.17 14.82s-1.656 19.29 5.203 26.16l80 80.02C499.7 445.7 505.9 448 512 448s12.28-2.344 16.97-7.031l80-80.02C615.8 354.1 617.9 343.8 614.2 334.8zM304 352h-128C167.2 352 160 344.8 160 336V192h48c9.703 0 18.45-5.844 22.17-14.82s1.656-19.29-5.203-26.16l-80-80.02C140.3 66.34 134.1 64 128 64S115.7 66.34 111 71.03l-80 80.02C24.17 157.9 22.11 168.2 25.83 177.2S38.3 192 48 192H96V336C96 380.1 131.9 416 176 416h128c17.67 0 32-14.31 32-32S321.7 352 304 352z"/></svg>
+                            <span class="rounded-full  mr-1 hover:bg-twgrey-200 p-2 pr-3" @click="handleRetweet" >
+                                <span class="rt rt-retweet " :class="{active:retweeted}">
+                                <svg :class="{green:retweeted}" class="icon icon-retweet mb-1 ml-1  inline-block" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+                                    <g fill="none" fill-rule="evenodd" stroke="#53688c" stroke-linecap="round" stroke-width="2" transform="translate(2.25 5.5)">
+                                        <g transform="translate(0 1)">
+                                        <path d="m1.0651197 1.03553391-.02958579 5 5-.0295858" transform="matrix(-.70710678 .70710678 -.70710678 -.70710678 8.535534 3.535534)"/>
+                                        <path d="m3.5 1v11h6" stroke-linejoin="round"/>
+                                        </g>
+                                        <g transform="matrix(-1 0 0 -1 19.5 12)">
+                                        <path d="m1.0651197 1.03553391-.02958579 5 5-.0295858" transform="matrix(-.70710678 .70710678 -.70710678 -.70710678 8.535534 3.535534)"/>
+                                        <path d="m3.5 1v11h6" stroke-linejoin="round"/>
+                                        </g>
+                                    </g>
+                                    </svg>
+                                </span>
+                            <!--
+                                <svg class=" retweet  w-4 ml-1 mb-1 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">//fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc<path d="M614.2 334.8C610.5 325.8 601.7 319.1 592 319.1H544V176C544 131.9 508.1 96 464 96h-128c-17.67 0-32 14.31-32 32s14.33 32 32 32h128C472.8 160 480 167.2 480 176v143.1h-48c-9.703 0-18.45 5.844-22.17 14.82s-1.656 19.29 5.203 26.16l80 80.02C499.7 445.7 505.9 448 512 448s12.28-2.344 16.97-7.031l80-80.02C615.8 354.1 617.9 343.8 614.2 334.8zM304 352h-128C167.2 352 160 344.8 160 336V192h48c9.703 0 18.45-5.844 22.17-14.82s1.656-19.29-5.203-26.16l-80-80.02C140.3 66.34 134.1 64 128 64S115.7 66.34 111 71.03l-80 80.02C24.17 157.9 22.11 168.2 25.83 177.2S38.3 192 48 192H96V336C96 380.1 131.9 416 176 416h128c17.67 0 32-14.31 32-32S321.7 352 304 352z"/></svg>
+                            -->
                             </span>
                             <span>{{tweet.retweets}}</span>
                         </span>
@@ -77,7 +93,7 @@
                             <span>{{tweet.likes}}</span>
                         </span>
                         <span class="mr-2 lg:mr-2 cursor-pointer hover:text-twblue">
-                            <span class="rounded-full mr-1 p-2 hover:bg-twgrey-200">
+                            <span class="rounded-full mr-1 p-2 hover:bg-twgrey-200 pr-3">
                             <svg class="share w-4 ml-1 mb-1 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M384 352v64c0 17.67-14.33 32-32 32H96c-17.67 0-32-14.33-32-32v-64c0-17.67-14.33-32-32-32s-32 14.33-32 32v64c0 53.02 42.98 96 96 96h256c53.02 0 96-42.98 96-96v-64c0-17.67-14.33-32-32-32S384 334.3 384 352zM201.4 9.375l-128 128c-12.51 12.51-12.49 32.76 0 45.25c12.5 12.5 32.75 12.5 45.25 0L192 109.3V320c0 17.69 14.31 32 32 32s32-14.31 32-32V109.3l73.38 73.38c12.5 12.5 32.75 12.5 45.25 0s12.5-32.75 0-45.25l-128-128C234.1-3.125 213.9-3.125 201.4 9.375z"/></svg>
                             </span>
                             <span></span>
@@ -98,7 +114,8 @@ export default{
     data(){
         return{ 
             tweetuser: null,
-            check: false
+            check: false,
+            retweeted: false,
         }
     },
     async mounted(){
@@ -111,7 +128,14 @@ export default{
                 this.check = false
             }
         })
-        
+
+        await projectFirestore.collection('retweets').doc(this.tweet.id).get().then(doc => {
+            if(doc.exists){
+                this.retweeted = true
+            }else{
+                this.retweeted = false
+            }
+        })
     },
     methods: {
         async handleLike(){
@@ -141,6 +165,30 @@ export default{
                 }
             })
         },
+        async handleRetweet(){
+            this.retweeted = !this.retweeted
+            await projectFirestore.collection('retweets').doc(this.tweet.id).get().then(doc => {
+                if(doc.exists){
+                    //if retweeted, remove retweet
+                    projectFirestore.collection('retweets').doc(this.tweet.id).delete()
+                    //decrement count tweet document
+                    this.tweet.retweets -=1
+                    projectFirestore.collection('tweets').doc(this.tweet.id).update({
+                        retweets: this.tweet.retweets
+                    })
+                }else{
+                    //if not retweeted, add retweet
+                    projectFirestore.collection('retweets').doc(this.tweet.id).set({
+                        uid: this.tweet.uid,
+                        tweetid: this.tweet.id
+                    })
+                    this.tweet.retweets++
+                    projectFirestore.collection('tweets').doc(this.tweet.id).update({
+                        retweets: this.tweet.retweets
+                    })
+                }
+            })
+        }
             
     },
         
@@ -148,6 +196,78 @@ export default{
 }
 </script>
 <style scoped>
+
+
+
+.rt .icon path {
+  fill: transparent;
+  stroke-width: 2;
+}
+
+.rt:hover {
+  color: #42E6A4;
+}
+.green {
+  color: #42E6A4;
+}
+
+.rt:hover .icon path {
+  stroke: #42E6A4;
+}
+
+.rt.active {
+  color: rgb(8, 7, 7);
+}
+
+.rt-share.active {
+  background-color: rgba(0, 112, 210, 0.1);
+}
+
+.rt.active .icon path {
+  stroke: #42E6A4;
+  stroke-width: 3;
+}
+
+.rt.active .icon-retweet path {
+  stroke: #42E6A4;
+}
+
+.rt.active .icon-like path {
+  stroke: rgb(191, 2, 1);
+  fill: rgb(191, 2, 1);
+}
+
+.rt.active .icon-retweet {
+  animation: rotate 0.25s;
+}
+
+.rt.active .icon-like {
+  animation: bounce 0.25s;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  33% {
+    transform: scale(0.9);
+  }
+  66% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
 #heart-svg {
   cursor: pointer;
