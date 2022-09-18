@@ -1,8 +1,26 @@
 <template>
     <div class="flex border-b border-twgrey-200 z-0 p-4 pr-12 hover:bg-twgrey-50 transition ease-in-out cursor-pointer">             
         <div>
+          <span v-if="retweeted == true" class ="relative left-8 text-gray-400 bottom-1">
+            <svg class="icon icon-retweet   inline-block" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+              <g fill="none" fill-rule="evenodd" stroke="#53688c" stroke-linecap="round" stroke-width="2" transform="translate(2.25 5.5)">
+                  <g transform="translate(0 1)">
+                  <path d="m1.0651197 1.03553391-.02958579 5 5-.0295858" transform="matrix(-.70710678 .70710678 -.70710678 -.70710678 8.535534 3.535534)"/>
+                  <path d="m3.5 1v11h6" stroke-linejoin="round"/>
+                  </g>
+                  <g transform="matrix(-1 0 0 -1 19.5 12)">
+                  <path d="m1.0651197 1.03553391-.02958579 5 5-.0295858" transform="matrix(-.70710678 .70710678 -.70710678 -.70710678 8.535534 3.535534)"/>
+                  <path d="m3.5 1v11h6" stroke-linejoin="round"/>
+                  </g>
+              </g>
+              </svg>
+            
+            You retweeted this
+          
+          </span>
             <span class="flex">
                 <img class="rounded-full w-12 h-12 mr-2" src="https://picsum.photos/40/40" alt="">
+
                 <div class="block">
                     <span class="font-bold">Nil</span>
                     <span class="text-gray-400">@Nil_i0</span>
@@ -110,7 +128,7 @@
 <script>
 import { projectFirestore } from '../firebase/config'
 export default{
-    props: ['tweet'],
+    props: ['tweet', "retweeted"],
     data(){
         return{ 
             tweetuser: null,
@@ -171,6 +189,9 @@ export default{
             })
         },
         async handleRetweet(){
+          if(this.retweeted){
+              this.retweeted = false
+          }
             this.retweeted = !this.retweeted
             let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
             await projectFirestore.collection('retweets').doc(uid_tweet_id).get().then(doc => {

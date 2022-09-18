@@ -3,14 +3,14 @@
 <div class="grid lg:grid-cols-3 md:grid-cols-9 sm:grid-cols-9 grid-cols-8 grid-rows-1 border-r  gap-4">
         <Navbar/>
          <div class="bg-white border-r border-l lg:block lg:col-span-1 col-span-8 tweets overflow-y-auto">
-                
+                <ProfileSection/>
                  
         </div>
         <!--Search Section-->
         <div class=" hidden lg:inline-block lg:col-span-1" >
             <Search/>
-            <Trends/>
             <who-to-follow/>
+            <Trends/>
         </div>
 </div>
 <div class="mobile-nav lg:hidden md:hidden sm:hidden fixed bottom-0 left-0 w-screen bg-white p-4 border-t border-twgrey-200">
