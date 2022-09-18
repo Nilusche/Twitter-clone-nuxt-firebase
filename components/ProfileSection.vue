@@ -1,24 +1,24 @@
 <template>
     <div class="h-screen w-full -mr-12">
         <div class="head h-14 flex ml-2 border-b">
-            <div class="">
-                    <router-link to="/home">
-                        <button class="btn mt-2 btn-hover transition ease-in-out items-end">
-                        <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            >
-                            <path
-                                d="M20.3284 11.0001V13.0001L7.50011 13.0001L10.7426 16.2426L9.32842 17.6568L3.67157 12L9.32842 6.34314L10.7426 7.75735L7.49988 11.0001L20.3284 11.0001Z"
-                                fill="currentColor"
-                            />
-                            </svg>
-                        </button>
-                    </router-link>
-            </div>
+                <div class="">
+                        <span @click="$router.go(-1)">
+                            <button class="btn mt-2 btn-hover transition ease-in-out items-end">
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                >
+                                <path
+                                    d="M20.3284 11.0001V13.0001L7.50011 13.0001L10.7426 16.2426L9.32842 17.6568L3.67157 12L9.32842 6.34314L10.7426 7.75735L7.49988 11.0001L20.3284 11.0001Z"
+                                    fill="currentColor"
+                                />
+                                </svg>
+                            </button>
+                        </span>
+                </div>
                 <div class="flex mb-1">
                     <div class="flex flex-col p-2 ml-4">
                         <span class="justify-start font-bold text-xl">Home</span>
@@ -31,10 +31,10 @@
             <div class="bg-twgrey-200 h-60">
                 <div class="relative left-5 top-36 w-11/12">
                     <div class= "bottom-auto w-44">
-                        <div class="h-44 w-44 rounded-full bg-gray-300 ">
-                        <img src="https://picsum.photos/200/200" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4">    
-                        </div>
+                    <div class="h-44 w-44 rounded-full bg-gray-300 ">
+                    <img src="https://picsum.photos/200/200" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4">    
                     </div>
+                </div>
                 <div class="">
                     <div class="font-bold text-2xl w-44">Laravel Alt</div>
                     <div class="text-twgrey-400 w-44">@Alt Laravel</div>
@@ -125,7 +125,7 @@
                   </svg>
                 </div>
             <template v-if="selected == 1">
-                <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in tweets" :key="tweet.id">
+                <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in tweets" :key="tweet.id" @click="navigate(tweet)">
                     <!---Print Posts with retweeted equal true twice-->
                     <Post :retweeted="tweet.retweeted" :tweet="tweet" @loaded="handleLoaded" class="w-full"/>
                    
@@ -133,21 +133,21 @@
             </template>
                 
             <template v-if="selected == 2">
-                <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in tweets" :key="tweet.id">
+                <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in tweets_replies" :key="tweet.id" @click="navigate(tweet)">
                     <!---Print Posts with retweeted equal true twice-->
                     <Post :tweet="tweet" @loaded="handleLoaded" class="w-full"/>
                    
                 </div> 
             </template>
             <template v-if="selected == 3">
-                <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in tweets" :key="tweet.id">
+                <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in media" :key="tweet.id" @click="navigate(tweet)">
                     <!---Print Posts with retweeted equal true twice-->
                     <Post  :tweet="tweet" @loaded="handleLoaded" class="w-full"/>
                    
                 </div> 
             </template>
             <template v-if="selected == 4">
-                <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in likes" :key="tweet.id">
+                <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in likes" :key="tweet.id" @click="navigate(tweet)">
                     <!---Print Posts with retweeted equal true twice-->
                     <Post  :tweet="tweet" @loaded="handleLoaded" class="w-full"/>
                    
@@ -247,8 +247,11 @@ export default {
 
             this.loading = false;
         },
-            handleLoaded(){
+        handleLoaded(){
             this.loading = false;
+        },
+        navigate(tweet){
+            this.$router.push(`/${tweet.uid}/status/${tweet.id}`);
         }
     }
 }

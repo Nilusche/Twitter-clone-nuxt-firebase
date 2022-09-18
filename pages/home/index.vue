@@ -7,7 +7,7 @@
 
                 <!--Post-->
                 
-                <div v-for="tweet in tweets" :key="tweet.content + tweet.createdAt">
+                <div v-for="tweet in tweets" :key="tweet.content + tweet.createdAt" @click="navigate(tweet)">
                     <Post :tweet="tweet" @loaded="handleLoaded"/>
                 </div>
                 <div v-if="loading" class="flex justify-center">
@@ -125,6 +125,9 @@ export default {
       },
       handleLoaded(){
         this.loading = false;
+      },
+      navigate(tweet){
+        this.$router.push(`/${tweet.uid}/status/${tweet.id}`);
       }
     },
 }

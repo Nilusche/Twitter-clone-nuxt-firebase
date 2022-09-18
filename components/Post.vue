@@ -19,7 +19,16 @@
           
           </span>
             <span class="flex">
-                <img class="rounded-full w-12 h-12 mr-2" src="https://picsum.photos/40/40" alt="">
+                <img class="rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
+                @mouseover="hover = true"
+                @mouseleave="hover = false"
+                @click="navigateToProfile" 
+                 src="https://picsum.photos/40/40" alt="">
+
+                 <div v-if="hover" class="relative">
+
+
+                 </div>
 
                 <div class="block">
                     <span class="font-bold">Nil</span>
@@ -133,7 +142,7 @@ export default{
         return{ 
             tweetuser: null,
             check: false,
-            retweeted: false,
+            hover: false,
         }
     },
     async mounted(){
@@ -215,7 +224,10 @@ export default{
                     })
                 }
             })
-        }
+        },
+        navigateToProfile(){
+            this.$router.push(this.tweet.uid)
+        },
             
     },
         
