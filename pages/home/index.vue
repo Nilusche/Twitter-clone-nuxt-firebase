@@ -7,7 +7,7 @@
 
                 <!--Post-->
                 
-                <div v-for="tweet in tweets" :key="tweet.content + tweet.createdAt" @click="navigate(tweet)">
+                <div v-for="tweet in tweets" :key="tweet.content + tweet.createdAt" >
                     <Post :tweet="tweet" @loaded="handleLoaded"/>
                 </div>
                 <div v-if="loading" class="flex justify-center">

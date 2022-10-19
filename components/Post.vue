@@ -1,5 +1,5 @@
 <template>
-    <div class="flex border-b border-twgrey-200 z-0 p-4 pr-12 hover:bg-twgrey-50 transition ease-in-out cursor-pointer">             
+    <div class="flex border-b border-twgrey-200 z-0 p-4 pr-12 hover:bg-twgrey-50 transition ease-in-out cursor-pointer" @click="navigate">             
         <div>
           <span v-if="retweeted == true" class ="relative left-8 text-gray-400 bottom-1">
             <svg class="icon icon-retweet   inline-block" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +45,7 @@
                             <span>{{tweet.comments}}</span>
                         </span>
                         <span class="mr-2 lg:mr-4 cursor-pointer hover:text-twgreen ">
-                            <span class="rounded-full  mr-1 hover:bg-twgrey-200 p-2 pr-3" @click="handleRetweet" >
+                            <span class="rounded-full  mr-1 hover:bg-twgrey-200 p-2 pr-3" @click.stop="handleRetweet" >
                                 <span class="rt rt-retweet " :class="{active:retweeted}">
                                 <svg :class="{green:retweeted}" class="icon icon-retweet mb-1 ml-1  inline-block" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
                                     <g fill="none" fill-rule="evenodd" stroke="#53688c" stroke-linecap="round" stroke-width="2" transform="translate(2.25 5.5)">
@@ -69,7 +69,7 @@
                         <span class="mr-2 lg:mr-4  cursor-pointer hover:text-twred">
                             <span class="rounded-full p-2 mr-1 hover:bg-twgrey-200">
                                 <input type="checkbox" :id="`checkbox-${this.tweet.id}`" :checked="check" :class="{checkbox:check}" />
-                                <label for="checkbox" class="inline-block"  @click="handleLike" :class="{checked:check}">
+                                <label for="checkbox" class="inline-block"  @click.stop="handleLike" :class="{checked:check}">
                                     <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
                                         <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
                                         <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
@@ -228,7 +228,9 @@ export default{
         navigateToProfile(){
             this.$router.push(this.tweet.uid)
         },
-            
+        navigate(){
+        this.$router.push(`/${this.tweet.uid}/status/${this.tweet.id}`);
+      }   
     },
         
 
