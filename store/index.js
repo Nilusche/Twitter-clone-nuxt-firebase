@@ -100,6 +100,28 @@ export const actions = {
     await projectFirestore.collection('tweets').add(tweet);
     return tweet
   },
+
+  async updateUser({ commit }, {name, bio}) {
+
+    
+    const user = {name: name, bio: bio}
+
+    commit('updateUserdata', user)
+  },
+
+  async updatePic({ commit }, {pic}) {
+
+    // update url in user collection
+
+    if(!pic){
+      return;
+    }
+    await projectFirestore.collection('users').doc(user.value.uid).update({
+      profilePic: pic
+    })
+
+    commit('updateProfilePic', pic)
+  }
 }
 
 export const mutations = {
@@ -124,4 +146,11 @@ export const mutations = {
       state.user.following = 0;
       state.user.tag = null;
   },
+  updateUserdata(state, user_) {
+    state.user.name = user_.name;
+    state.user.bio = user_.bio;
+  },
+  updateProfilePic(state, pic) {
+    state.user.profilePic = pic;
+  }
 }

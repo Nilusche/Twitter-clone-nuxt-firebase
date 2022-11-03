@@ -16,7 +16,7 @@
         <div class="flex border-b border-twgrey-200 z-0 p-4 mr-0">             
             <div class="flex">
                 <span class="flex">
-                    <img class="rounded-full w-12 h-12 mr-2" src="https://picsum.photos/40/40" alt="">
+                    <img class="rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out hover:cursor-pointer" @click="navigateToProfile"  src="https://picsum.photos/40/40" alt="">
                     <div class="block">
                         <div ref="content_div" class="message-box-content p-2 focus:outline-none focus:before:text-twgrey-300 pb-3 border-b border-twgrey" contenteditable="true" placeholder="What's happening?"></div>
                         <div class="pt-3 lg:flex md:flex block">
@@ -86,7 +86,10 @@ export default {
                 this.$refs.content_div.innerText = ''
                 this.$emit('addTweet', tweet)
             }
-        }
+        },
+        navigateToProfile(){
+            this.$router.push(this.$store.state.user.id)
+        },
     }
 }
 </script>

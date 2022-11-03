@@ -1,5 +1,41 @@
 <template>
-    <div class="h-screen w-full -mr-12">
+    <div class="h-screen w-full -mr-12 relative">
+        <div v-if="showProfile==true && this.$route.params.id == this.$store.state.uid" class="absolute bottom-0 top-48 left-0 right-0 w-full z-50 bg-white rounded-lg" style="height:50%">
+            <div class="flex">
+                <div class="rounded-full bg-white  w-9 h-9 m-3  hover:bg-twgrey-200 hover:cursor-pointer" @click="showProfile = false">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-9 h-9">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+
+                </div>
+                <div class="flex flex-col justify-center flex-grow  ">
+                    <div class="font-bold text-xl">Edit profile</div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <button class="px-4 py-1 bg-twblack-200 text-white font-bold rounded-full mr-4 hover:bg-twblack-100" @click="updateProfile">Save</button>
+                </div>
+            </div>
+
+            <div class=" h-full p-4 mb-64">
+                <div>
+                    <img :src="currentUser.profilePic" alt="" class="object-fit h-20 w-20 rounded-full border-white border-4">
+                    
+                   
+                <label class="block mb-2 text-sm font-medium text-twgrey-400"  for="file_input">Upload new avatar</label>
+                <input @change="handleFileChange" class="block w-full text-sm text-twgrey-400 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer mb-2  focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                <p class="mt-1 text-sm text-twgrey-400  mb-4" id="file_input_help">PNG, JPG</p>
+
+                </div>
+                <label for="name" class="text-twgrey-400 font-semibold" max-length="50">Name</label>
+                <div class="w-full mb-4" id="name">
+                    <input v-model="profilename" class="bg-white  appearance-none border-2 border-gray-200 rounded-md w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-twblue" id="inline-full-name" type="text" value="Jane Doe">
+                </div>
+                <label for="bio" class="text-twgrey-400 font-semibold">Bio</label>
+                <div class="w-full mb-4" id="bio">
+                    <textarea v-model="profilebio" class="bg-white  appearance-none border-2 border-gray-200 rounded-md w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-twblue" id="inline-full-name" max-length="160" value="Jane Doe"></textarea>
+                </div>
+            </div>
+        </div>
         <div class="head h-14 flex ml-2 border-b">
                 <div class="">
                         <span @click="$router.go(-1)">
@@ -31,14 +67,17 @@
             <div class="bg-twgrey-200 h-60">
                 <div class="relative left-5 top-36 w-11/12">
                     <div class= "bottom-auto w-44">
-                    <div class="h-44 w-44 rounded-full bg-gray-300 ">
-                    <img src="https://picsum.photos/200/200" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4">    
+                    <div class="h-44 w-44 rounded-full bg-gray-300">
+                        <img v-if="currentUser" :src="currentUser.profilePic" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4">   
+                        <button class="absolute right-0 top-32 font-bold px-3 py-2 border border-twgrey-300 hover:bg-twgrey-200 rounded-full" @click="toggleProfileSection">Edit Profile</button>
+
+                       
                     </div>
                 </div>
                 <div class="">
-                    <div class="font-bold text-2xl w-44">Laravel Alt</div>
-                    <div class="text-twgrey-400 w-44">@Alt Laravel</div>
-                    <div class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing.</div>
+                    <div class="font-bold text-2xl w-44"  v-if="currentUser">{{currentUser.name}}</div>
+                    <div class="text-twgrey-400 w-44"  v-if="currentUser">@{{currentUser.tag}}</div>
+                    <div class="mt-4" v-if="currentUser">{{currentUser.bio}}</div>
                     <div class="text-twgrey-400 mt-4">
                         <svg
                             width="22"
@@ -91,16 +130,16 @@
                 <div class="mt-4">
                     <div class="flex">
                         <div class="flex">
-                            <div class="font-bold mr-1 ">1</div>
+                            <div class="font-bold mr-1 ">{{currentUser.following}}</div>
                             <div class="text-twgrey-400">Following</div>
                         </div>
                         <div class="flex ml-4">
-                            <div class="font-bold mr-1">1</div>
+                            <div class="font-bold mr-1">{{currentUser.followers}}</div>
                             <div class="text-twgrey-400">Followers</div>
                         </div>
+                        
                     </div>
                 </div>
-                
                 </div>
                 <!-- Filters-->
                 <div class="flex relative left-0 top-40 right-20 bottom-auto mt-8 justify-center">
@@ -156,14 +195,24 @@
             </div>
             
         </div>
+
+
     </div>
   
 
 </template>
+<style scoped>
 
+</style>
 <script>
 import { projectFirestore } from '@/firebase/config';
+import useStorage from '@/composables/useStorage.js'
+import {ref} from 'vue'
+
+
+
 export default {
+    props:["userID"],
     data() {
         return {
             selected: 1,
@@ -171,10 +220,59 @@ export default {
             tweets_replies : [],
             media : [],
             likes : [],
-            loading : true
+            loading : true,
+            showProfile : false,
+            profilename: "",
+            profilebio: "",
+            currentUser: null
+        }
+    },
+
+    setup(){
+        const {filePath, url, uploadFile} = useStorage()
+        const file = ref('')
+        const fileerror = ref('')
+        const types = ['image/png', 'image/jpeg', 'image/jpg']
+        //const store = useStore()
+
+        const handleCreate = async () => { 
+            if(file.value){
+                await uploadFile(file.value, "profiles")
+                console.log(url.value)
+            }
+
+            return url.value;
+            
+        }
+
+        const handleFileChange = (e)=>{
+  
+            const selected = e.target.files[0];
+            if (selected && types.includes(selected.type)) {
+                file.value = selected;
+                fileerror.value = ''
+            }else{
+                file.value = null; 
+                fileerror.value = 'Please select a valid image file'
+            }
+        }
+
+        return {
+            filePath, url, handleCreate, handleFileChange, file, fileerror
         }
     },
     async mounted(){
+        // fetch user from url and set it to currentUser
+        //get user doc from firestore with id
+        await projectFirestore.collection('users').doc(this.userID).get().then(doc => {
+            this.currentUser = doc.data()
+            this.profilename = doc.data().name
+            this.profilebio = doc.data().bio
+            console.log(this.currentUser)
+        })
+
+
+
         // get all my tweets and add attribute id to each tweet
         await projectFirestore.collection('tweets').where('uid', '==', this.$store.state.user.id).orderBy('createdAt', 'desc').onSnapshot(snapshot => {
             this.tweets = snapshot.docs.map(doc => 
@@ -212,9 +310,7 @@ export default {
             // append the retweets to the tweets array and sort by date
             this.tweets = this.tweets.concat(retweets).sort((a, b) => b.createdAt - a.createdAt);
         }
-        
-       
-        
+    
     },
     methods: {
         async filter(id) {
@@ -252,6 +348,35 @@ export default {
         },
         navigate(tweet){
             this.$router.push(`/${tweet.uid}/status/${tweet.id}`);
+        },
+        toggleProfileSection(){
+            if(!this.loading){
+                this.showProfile = !this.showProfile;
+            }
+        },
+
+        async updateProfile(){
+            // update user in firebase
+            projectFirestore.collection('users').doc(this.$store.state.user.id).update({
+                name: this.profilename,
+                bio: this.profilebio
+            }).then(async() => {
+                // update user in vuex
+                this.$store.dispatch('updateUser', {
+                    name: this.profilename,
+                    bio: this.profilebio
+                })
+                // check if user has upload a new profile picture
+                const url = await this.handleCreate();
+                this.$store.dispatch('updatePic', {
+                    pic: url
+                })
+                this.showProfile = false;
+            })
+
+
+            
+
         }
     }
 }
