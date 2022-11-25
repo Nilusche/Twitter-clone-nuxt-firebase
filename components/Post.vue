@@ -36,9 +36,9 @@
                  </div>
 
                 <div class="block">
-                    <span class="font-bold">Nil</span>
-                    <span class="text-gray-400">@Nil_i0</span>
-                    <span class="text-gray-400">⋅23h</span>
+                    <span class="font-bold">{{tweetusername}}</span>
+                    <span class="text-gray-400">{{tweetusertag}}</span>
+                    <span class="text-gray-400">⋅{{tweetusertime}}</span>
                     <div v-html="tweet.content">
                         
                     </div>
@@ -145,7 +145,9 @@ export default{
     props: ['tweet', "retweeted"],
     data(){
         return{ 
-            tweetuser: null,
+            tweetusername: "",
+            tweetusertag: "",
+            tweetusertime: "",
             check: false,
             hover: false,
             profilePic: null,
@@ -154,6 +156,10 @@ export default{
     async mounted(){
         this.tweetuser = await projectFirestore.collection('users').doc(this.tweet.uid).get()
         //set content in innerHtml
+
+        this.tweetusername = this.tweetuser.data().name
+        this.tweetusertag = this.tweetuser.data().tag
+        this.tweetusertime = this.timeSince(this.tweet.createdAt)
 
         let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
 
@@ -242,7 +248,36 @@ export default{
         },
         navigate(){
         this.$router.push(`/${this.tweet.uid}/status/${this.tweet.id}`);
-      }   
+
+        }  ,
+        timeSince(date){
+          //get the current time
+          const now = new Date();
+          //get the difference between the current time and the tweet creation time
+          const seconds = Math.floor((now - date) / 1000);
+          //calculate the number of years, months, days, hours, minutes and seconds since the tweet was created
+          let interval = Math.floor(seconds / 31536000);
+          if (interval > 1) {
+            return interval + " y";
+          }
+          interval = Math.floor(seconds / 2592000);
+          if (interval > 1) {
+            return interval + " mo";
+          }
+          interval = Math.floor(seconds / 86400);
+          if (interval > 1) {
+            return interval + " d";
+          }
+          interval = Math.floor(seconds / 3600);
+          if (interval > 1) {
+            return interval + " h";
+          }
+          interval = Math.floor(seconds / 60);
+          if (interval > 1) {
+            return interval + " min";
+          }
+          return Math.floor(seconds) + " sec";
+        }
     },
         
 

@@ -7,7 +7,7 @@
 
                 <!--Post-->
                 
-                <div v-for="tweet in tweets" :key="tweet.content + tweet.createdAt" >
+                <div v-for="tweet in tweets" :key="tweet.createdAt" >
                     <Post :tweet="tweet" @loaded="handleLoaded"/>
                 </div>
                 <div v-if="loading" class="flex justify-center">
@@ -113,6 +113,21 @@ export default {
         this.loading = false;
       }
 
+      // get all the tweets which the user follows
+      const following = await projectFirestore.collection('following').where('follower', '==', this.$store.state.user.id).get();
+      const followingIds = following.docs.map(doc => doc.data().following);
+      const followingTweets = await projectFirestore.collection('tweets').where('uid', 'in', followingIds).orderBy('createdAt', 'desc').get();
+      this.tweets = this.tweets.concat(followingTweets.docs.map(doc => 
+        ({
+          id: doc.id,
+          ...doc.data()
+        })
+      ));
+
+      //order tweets by date
+      this.tweets.sort((a, b) => b.createdAt - a.createdAt);
+
+      this.loading = false;
     },
     methods:{
       logout(){
@@ -128,8 +143,10 @@ export default {
       },
       navigate(tweet){
         this.$router.push(`/${tweet.uid}/status/${tweet.id}`);
-      }
+      },
+
     },
+
 }
 
 </script>
