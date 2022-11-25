@@ -19,11 +19,16 @@
           
           </span>
             <span class="flex">
-                <img class="rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
+                <img v-if="!this.profilePic" class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
                 @mouseover="hover = true"
                 @mouseleave="hover = false"
                 @click="navigateToProfile" 
                  src="https://picsum.photos/40/40" alt="">
+                 <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
+                @mouseover="hover = true"
+                @mouseleave="hover = false"
+                @click="navigateToProfile" 
+                 :src="this.profilePic" alt="">
 
                  <div v-if="hover" class="relative">
 
@@ -143,6 +148,7 @@ export default{
             tweetuser: null,
             check: false,
             hover: false,
+            profilePic: null,
         }
     },
     async mounted(){
@@ -166,6 +172,12 @@ export default{
                 this.retweeted = false
             }
         })
+
+        this.profilePic = await projectFirestore.collection('users').doc(this.tweet.uid).get().then(doc => {
+            return doc.data().profilePic
+        })
+
+
         this.$emit('loaded')
     },
     methods: {

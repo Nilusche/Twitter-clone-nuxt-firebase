@@ -18,7 +18,7 @@
 
             <div class=" h-full p-4 mb-64">
                 <div>
-                    <img :src="currentUser.profilePic" alt="" class="object-fit h-20 w-20 rounded-full border-white border-4">
+                    <img :src="currentUser.profilePic" alt="" class="object-cover h-20 w-20 rounded-full border-white border-4">
                     
                    
                 <label class="block mb-2 text-sm font-medium text-twgrey-400"  for="file_input">Upload new avatar</label>
@@ -58,7 +58,7 @@
                 <div class="flex mb-1">
                     <div class="flex flex-col p-2 ml-4">
                         <span class="justify-start font-bold text-xl">Home</span>
-                        <span class="font-bold text-twgrey-400 text-xs">9 Tweets</span>
+                        <span class="font-bold text-twgrey-400 text-xs">Many Tweets</span>
                     </div>
                 </div>
                 
@@ -130,11 +130,11 @@
                 <div class="mt-4">
                     <div class="flex">
                         <div class="flex">
-                            <div class="font-bold mr-1 ">{{currentUser.following}}</div>
+                            <div class="font-bold mr-1 ">{{following}}</div>
                             <div class="text-twgrey-400">Following</div>
                         </div>
                         <div class="flex ml-4">
-                            <div class="font-bold mr-1">{{currentUser.followers}}</div>
+                            <div class="font-bold mr-1">{{followers}}</div>
                             <div class="text-twgrey-400">Followers</div>
                         </div>
                         
@@ -224,7 +224,9 @@ export default {
             showProfile : false,
             profilename: "",
             profilebio: "",
-            currentUser: null
+            currentUser: null,
+            following:0,
+            followers:0
         }
     },
 
@@ -238,7 +240,6 @@ export default {
         const handleCreate = async () => { 
             if(file.value){
                 await uploadFile(file.value, "profiles")
-                console.log(url.value)
             }
 
             return url.value;
@@ -261,16 +262,19 @@ export default {
             filePath, url, handleCreate, handleFileChange, file, fileerror
         }
     },
-    async mounted(){
+    async created(){
         // fetch user from url and set it to currentUser
         //get user doc from firestore with id
         await projectFirestore.collection('users').doc(this.userID).get().then(doc => {
             this.currentUser = doc.data()
             this.profilename = doc.data().name
             this.profilebio = doc.data().bio
-            console.log(this.currentUser)
-        })
+            this.followers = this.currentUser.followers
+            this.following = this.currentUser.following
 
+        })
+        
+        console.log(this.currentUser)
 
 
         // get all my tweets and add attribute id to each tweet
@@ -336,7 +340,6 @@ export default {
                     })
                 })
                 
-                console.log(this.likes);
 
             }
 
@@ -373,6 +376,9 @@ export default {
                 })
                 this.showProfile = false;
             })
+
+            this.currentUser.name = this.profilename;
+            this.currentUser.bio = this.profilebio;
 
 
             
