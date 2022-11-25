@@ -18,7 +18,8 @@
 
             <div class=" h-full p-4 mb-64">
                 <div>
-                    <img :src="currentUser.profilePic" alt="" class="object-cover h-20 w-20 rounded-full border-white border-4">
+                    <img v-if="currentUser.profilePic" :src="currentUser.profilePic" alt="" class="object-cover h-20 w-20 rounded-full border-white border-4">
+                    <img v-else src="https://via.placeholder.com/40" alt="" class="object-cover h-20 w-20 rounded-full border-white border-4">
                     
                    
                 <label class="block mb-2 text-sm font-medium text-twgrey-400"  for="file_input">Upload new avatar</label>
@@ -68,10 +69,9 @@
                 <div class="relative left-5 top-36 w-11/12">
                     <div class= "bottom-auto w-44">
                     <div class="h-44 w-44 rounded-full bg-gray-300">
-                        <img v-if="currentUser" :src="currentUser.profilePic" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4">   
-                        <button class="absolute right-0 top-32 font-bold px-3 py-2 border border-twgrey-300 hover:bg-twgrey-200 rounded-full" @click="toggleProfileSection">Edit Profile</button>
-
-                       
+                        <img v-if="currentUser && currentUser.profilePic!=''" :src="currentUser.profilePic" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4">   
+                        <img v-else src="https://via.placeholder.com/100" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4"> 
+                        <button v-if="this.userID == this.$store.state.user.id" class="absolute right-0 top-32 font-bold px-3 py-2 border border-twgrey-300 hover:bg-twgrey-200 rounded-full" @click="toggleProfileSection">Edit Profile</button>
                     </div>
                 </div>
                 <div class="">
@@ -274,11 +274,10 @@ export default {
 
         })
         
-        console.log(this.currentUser)
 
 
         // get all my tweets and add attribute id to each tweet
-        await projectFirestore.collection('tweets').where('uid', '==', this.$store.state.user.id).orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+        await projectFirestore.collection('tweets').where('uid', '==', this.userID).orderBy('createdAt', 'desc').onSnapshot(snapshot => {
             this.tweets = snapshot.docs.map(doc => 
             ({
                 id: doc.id,
@@ -288,7 +287,7 @@ export default {
         }
         );
 
-        let user_Id = this.$store.state.user.id;
+        let user_Id = this.userID;
         // get all tweet ids from retweets that have the user id
         let retweet_ids = [];
         await projectFirestore.collection('retweets').where('uid', '==', user_Id).get().then(snapshot => {
@@ -314,7 +313,6 @@ export default {
             // append the retweets to the tweets array and sort by date
             this.tweets = this.tweets.concat(retweets).sort((a, b) => b.createdAt - a.createdAt);
         }
-    
     },
     methods: {
         async filter(id) {

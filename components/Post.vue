@@ -23,7 +23,7 @@
                 @mouseover="hover = true"
                 @mouseleave="hover = false"
                 @click="navigateToProfile" 
-                 src="https://picsum.photos/40/40" alt="">
+                 src="https://via.placeholder.com/40" alt="">
                  <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
                 @mouseover="hover = true"
                 @mouseleave="hover = false"
