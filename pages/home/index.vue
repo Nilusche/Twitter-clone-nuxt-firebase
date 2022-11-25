@@ -28,7 +28,7 @@
                 
         </div>
         <!--Search Section-->
-         <div class=" hidden lg:inline-block lg:col-span-1" @click="logout">
+         <div class=" hidden lg:inline-block lg:col-span-1">
           <Search/>
           <Trends/>
           <who-to-follow/>

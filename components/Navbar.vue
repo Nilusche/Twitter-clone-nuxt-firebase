@@ -54,8 +54,8 @@
                     <div class="flex">
                         <img v-if="!$store.state.user.id|| $store.state.user.id&&  !$store.state.user.profilePic" class="object-cover flex justify-center w-12 rounded-full mr-2" src="https://via.placeholder.com/40" alt="">
                         <img v-else class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" :src="$store.state.user.profilePic" alt="">
-                        <div class="lg:w-25">
-                                <span class="text-sm font-bold lg:block hidden">{{$store.state.user.name}}</span>
+                        <div class="lg:w-32">
+                                <span class="text-sm font-bold truncate lg:block hidden overflow-auto">{{$store.state.user.name}}</span>
                             <span class="lg:inline-block  hidden text-twgrey-400 text-sm -mt-3">@{{$store.state.user.tag}}</span>
                         </div>
                         <div class="pl-14 pt-1 font-bold text-xl lg:block hidden">
