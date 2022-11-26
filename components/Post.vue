@@ -159,7 +159,7 @@ export default{
 
         this.tweetusername = this.tweetuser.data().name
         this.tweetusertag = this.tweetuser.data().tag
-        this.tweetusertime = this.timeSince(this.tweet.createdAt)
+        this.tweetusertime = this.timeSince(this.tweet.createdAt.toDate())
 
         let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
 
