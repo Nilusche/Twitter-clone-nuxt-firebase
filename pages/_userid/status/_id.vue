@@ -50,8 +50,8 @@
                         <div></div>
                       </div>
                   </div>
-                  <div class="mt-5 text-xl">
-                    {{this.tweet.content}}
+                  <div class="mt-5 text-xl" v-html="this.tweet.content">
+                    
                   </div>
                   <div class="text-twgrey-400 border-twgrey-200 border-b py-3">
                     {{timestampToDate(this.tweet.createdAt) }}Twitterclone Web App

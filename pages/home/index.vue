@@ -7,7 +7,7 @@
 
                 <!--Post-->
                 <div v-for="tweet in tweets" :key="tweet.createdAt" >
-                    <Post :tweet="tweet" @loaded="handleLoaded"/>
+                    <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id"/>
                 </div>
                 <div v-if="loading" class="flex justify-center">
                  <svg class="h-6" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -89,15 +89,16 @@ export default {
       }
 
       //fetch user tweets from firebase
-      /*
+      
       const tweets = await projectFirestore.collection('tweets').where('uid', '==', this.$store.state.user.id).orderBy('createdAt', 'desc').get();
       this.tweets = tweets.docs.map(doc => 
         ({
           id: doc.id,
           ...doc.data()
         })
-      );*/
+      );
       //get tweets as snapshot
+      /*
      await projectFirestore.collection('tweets').where('uid', '==', this.$store.state.user.id).orderBy('createdAt', 'desc').onSnapshot(snapshot => {
         this.tweets = snapshot.docs.map(doc => 
           ({
@@ -106,7 +107,7 @@ export default {
           })
         );
       }
-      );
+      );*/
 
       if(this.tweets.length ==0){ 
         this.loading = false;
@@ -137,8 +138,9 @@ export default {
     },
     methods:{
       
-      handleTweetAdd(tweet){
+      async handleTweetAdd(tweet){
         this.tweets.unshift(tweet);
+        console.log("Hello")
       },
       handleLoaded(){
         this.loading = false;
@@ -146,7 +148,12 @@ export default {
       navigate(tweet){
         this.$router.push(`/${tweet.uid}/status/${tweet.id}`);
       },
+      async handleDeleted(tweet){
+        console.log("deleted");
+        console.log(this.tweets)
+        this.tweets = this.tweets.filter(t => t.id != tweet);
 
+      },
     },
 
 }

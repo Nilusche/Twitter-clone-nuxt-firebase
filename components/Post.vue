@@ -131,18 +131,38 @@
                             <span></span>
                         </span>
                     </div>
+                    <span v-if="showDelete" @click.stop="handleDelete" class=" relative text-red-500 bg-white left-48 rounded-md shadow-md hover:bg-twgrey-200 px-7 py-2 h-8" style="z-index:9999; top:-5.4rem">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                      </svg>
+                      <span> Delete</span>
+
+                    </span>
                 </div>
-            
+                <div class="py-2 px-2 hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full" v-if="this.$store.state.user.id == tweet.uid">
+                  <span  @click.stop="showDelete=!showDelete">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" style="color:gray"/>
+                  </svg>
+                </span>
+                  
+                </div>
+                
+                
+                
+
             </span>
+            
         </div>
     </div>
 </template>
 
 
 <script>
+import { Store } from 'vuex'
 import { projectFirestore } from '../firebase/config'
 export default{
-    props: ['tweet', "retweeted"],
+    props: ['tweet', "retweeted" , "id"],
     data(){
         return{ 
             tweetusername: "",
@@ -151,6 +171,7 @@ export default{
             check: false,
             hover: false,
             profilePic: null,
+            showDelete : false,
         }
     },
     async mounted(){
@@ -159,7 +180,8 @@ export default{
 
         this.tweetusername = this.tweetuser.data().name
         this.tweetusertag = this.tweetuser.data().tag
-        this.tweetusertime = this.timeSince(this.tweet.createdAt.toDate())
+        this.tweet.id = this.id
+        
 
         let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
 
@@ -183,7 +205,14 @@ export default{
             return doc.data().profilePic
         })
 
-
+        if(this.tweet.createdAt){
+          try{
+            this.tweetusertime = this.timeSince(this.tweet.createdAt.toDate())
+          }catch(err){
+            console.log(err)
+          }
+          
+        }
         this.$emit('loaded')
     },
     methods: {
@@ -278,6 +307,29 @@ export default{
           }
           return Math.floor(seconds) + " sec";
         }
+        ,
+        async handleDelete(){
+            //delete tweet
+            await projectFirestore.collection('tweets').doc(this.tweet.id).delete()
+            //delete likes
+            await projectFirestore.collection('likes').where('tweetid', '==', this.tweet.id).get().then(async querySnapshot => {
+                querySnapshot.forEach(async doc => {
+                    await projectFirestore.collection('likes').doc(doc.id).delete()
+                })
+            })
+            //delete retweets
+            await projectFirestore.collection('retweets').where('tweetid', '==', this.tweet.id).get().then(async querySnapshot => {
+                querySnapshot.forEach(async doc => {
+                    await projectFirestore.collection('retweets').doc(doc.id).delete()
+                })
+            })
+            //delete replies
+
+            //emit event to parent
+            this.$emit('deleted', this.tweet.id)
+
+            this.showDelete = false
+        },
     },
         
 

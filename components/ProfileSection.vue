@@ -166,7 +166,7 @@
             <template v-if="selected == 1">
                 <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in tweets" :key="tweet.id" @click="navigate(tweet)">
                     <!---Print Posts with retweeted equal true twice-->
-                    <Post :retweeted="tweet.retweeted" :tweet="tweet" @loaded="handleLoaded" class="w-full"/>
+                    <Post :retweeted="tweet.retweeted" :tweet="tweet"  @loaded="handleLoaded" :id="tweet.id" class="w-full"/>
                    
                 </div> 
             </template>
@@ -174,21 +174,21 @@
             <template v-if="selected == 2">
                 <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in tweets_replies" :key="tweet.id" @click="navigate(tweet)">
                     <!---Print Posts with retweeted equal true twice-->
-                    <Post :tweet="tweet" @loaded="handleLoaded" class="w-full"/>
+                    <Post :tweet="tweet" @loaded="handleLoaded" :id="tweet.id" class="w-full"/>
                    
                 </div> 
             </template>
             <template v-if="selected == 3">
                 <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in media" :key="tweet.id" @click="navigate(tweet)">
                     <!---Print Posts with retweeted equal true twice-->
-                    <Post  :tweet="tweet" @loaded="handleLoaded" class="w-full"/>
+                    <Post  :tweet="tweet" @loaded="handleLoaded" :id="tweet.id" class="w-full"/>
                    
                 </div> 
             </template>
             <template v-if="selected == 4">
                 <div class="flex relative left-0 top-40  bottom-auto w-full" v-for="tweet in likes" :key="tweet.id" @click="navigate(tweet)">
                     <!---Print Posts with retweeted equal true twice-->
-                    <Post  :tweet="tweet" @loaded="handleLoaded" class="w-full"/>
+                    <Post  :tweet="tweet" @loaded="handleLoaded" :id="tweet.id" class="w-full"/>
                    
                 </div> 
             </template>

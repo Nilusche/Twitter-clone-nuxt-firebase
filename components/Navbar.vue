@@ -50,10 +50,10 @@
                     <span class="lg:visible invisible">Tweet</span>
                 </button>
                 <!--Profile Section-->
-                <NuxtLink :to="'/' + this.$store.state.user.id" class="btn lg:w-56 mt-28  w-20 btn-hover transition ease-in-out">
+                <NuxtLink :to="'/' + this.$store.state.user.id" class="btn lg:w-56 mt-28  w-24 btn-hover transition ease-in-out">
                     <div class="flex">
                         <img v-if="!$store.state.user.id|| $store.state.user.id&&  !$store.state.user.profilePic" class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" src="@/assets/images/default_profile_400x400.png" alt="">
-                        <img v-else class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" :src="$store.state.user.profilePic" alt="">
+                        <img v-else class="object-cover  rounded-full w-24 h-12 mr-2  transition ease-in-out hover:cursor-pointer" :src="$store.state.user.profilePic" alt="">
                         <div class="lg:w-32">
                                 <span class="text-sm font-bold truncate lg:block hidden overflow-auto">{{$store.state.user.name}}</span>
                             <span class="lg:inline-block  hidden text-twgrey-400 text-sm -mt-3">@{{$store.state.user.tag}}</span>
