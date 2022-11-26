@@ -23,7 +23,7 @@
                 @mouseover="hover = true"
                 @mouseleave="hover = false"
                 @click="navigateToProfile" 
-                 src="https://via.placeholder.com/40" alt="">
+                 src="@/assets/images/default_profile_400x400.png" alt="">
                  <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
                 @mouseover="hover = true"
                 @mouseleave="hover = false"

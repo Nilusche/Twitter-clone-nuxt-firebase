@@ -28,8 +28,33 @@
                                 <span class="justify-start font-bold text-xl">Tweet</span>
                             </div>
                         </div>
+
+                        
                 </div>
+                <div class="flex flex-col ml-2 mt-4">
+                  <div class="flex"> 
+                    <img v-if="!this.profilePic" class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 hover:cursor-pointer transition ease-in-out" 
+                      @mouseover="hover = true"
+                      @mouseleave="hover = false"
+                      @click="navigateToProfile" 
+                      src="@/assets/images/default_profile_400x400.png" alt="">
+                      <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition hover:cursor-pointer ease-in-out" 
+                      @mouseover="hover = true"
+                      @mouseleave="hover = false"
+                      @click="navigateToProfile" 
+                      :src="this.profilePic" alt="">
+
+                      <div class="flex flex-col">
+                        <div class="text-black font-bold">LaravelAlt</div>
+                        <div class="text-twgrey-400">@AltLaravel</div>
+
+                      </div>
+                  </div>
+                </div>
+                  
+
             </div>
+            
         </div>
         <!--Search Section-->
         <div class=" hidden lg:inline-block lg:col-span-1" >
@@ -77,7 +102,90 @@
 </template>
 
 <script>
+import { projectFirestore } from '@/firebase/config'
 export default {
-   
+  data () {
+      return {
+        tweetusername: "",
+        tweetusertag: "",
+        tweetusertime: "",
+        check: false,
+        hover: false,
+        profilePic: null,
+        tweet: null,
+      }
+  },
+  async mounted () {
+    //fetch tweet with the id from the route
+    const id = this.$route.params.id
+    const res = await projectFirestore.collection('tweets').doc(id).get()
+    this.tweet = res.data()
+    console.log(id)
+    //fetch user data
+    this.tweetuser = await projectFirestore.collection('users').doc(this.tweet.uid).get()
+    
+
+    this.tweetusername = this.tweetuser.data().name
+    this.tweetusertag = this.tweetuser.data().tag
+    this.tweetusertime = this.timeSince(this.tweet.createdAt)
+
+    let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
+
+    await projectFirestore.collection('likes').doc(uid_tweet_id).get().then(doc => {
+        if(doc.exists){
+            this.check = true
+        }else{
+            this.check = false
+        }
+    })
+
+    await projectFirestore.collection('retweets').doc(uid_tweet_id).get().then(doc => {
+        if(doc.exists){
+            this.retweeted = true
+        }else{
+            this.retweeted = false
+        }
+    })
+
+    this.profilePic = await projectFirestore.collection('users').doc(this.tweet.uid).get().then(doc => {
+        return doc.data().profilePic
+    })
+
+
+    
+  },
+  methods:{
+    navigateToProfile(){
+        this.$router.push(this.tweet.uid)
+    },
+    timeSince(date){
+          //get the current time
+          const now = new Date();
+          //get the difference between the current time and the tweet creation time
+          const seconds = Math.floor((now - date) / 1000);
+          //calculate the number of years, months, days, hours, minutes and seconds since the tweet was created
+          let interval = Math.floor(seconds / 31536000);
+          if (interval > 1) {
+            return interval + " y";
+          }
+          interval = Math.floor(seconds / 2592000);
+          if (interval > 1) {
+            return interval + " mo";
+          }
+          interval = Math.floor(seconds / 86400);
+          if (interval > 1) {
+            return interval + " d";
+          }
+          interval = Math.floor(seconds / 3600);
+          if (interval > 1) {
+            return interval + " h";
+          }
+          interval = Math.floor(seconds / 60);
+          if (interval > 1) {
+            return interval + " min";
+          }
+          return Math.floor(seconds) + " sec";
+        }
+  }
 }
 </script>

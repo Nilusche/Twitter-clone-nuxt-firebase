@@ -7,7 +7,7 @@
                 <div class="hover:bg-twgrey-200 p-3 transition ease-in-out"  v-for="user in list_of_users" :key="user.uid">
                     <div class="flex relative">
                         <img v-if="user.profilePic && user.profilePic != ''" class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" :src="user.profilePic" alt="">
-                        <img v-else class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" src="https://via.placeholder.com/40" alt="">
+                        <img v-else class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" src="@/assets/images/default_profile_400x400.png" alt="">
                         <div class="lg:w-25">
                                 <span class="text-sm font-bold lg:block">{{user.name}}</span>
                             <span class=" text-sm lg:inline-block  hidden text-twgrey-400">{{user.tag}}</span>

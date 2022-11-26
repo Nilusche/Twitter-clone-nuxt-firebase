@@ -52,7 +52,7 @@
                 <!--Profile Section-->
                 <NuxtLink :to="'/' + this.$store.state.user.id" class="btn lg:w-56 mt-28  w-20 btn-hover transition ease-in-out">
                     <div class="flex">
-                        <img v-if="!$store.state.user.id|| $store.state.user.id&&  !$store.state.user.profilePic" class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" src="https://via.placeholder.com/40" alt="">
+                        <img v-if="!$store.state.user.id|| $store.state.user.id&&  !$store.state.user.profilePic" class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" src="@/assets/images/default_profile_400x400.png" alt="">
                         <img v-else class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" :src="$store.state.user.profilePic" alt="">
                         <div class="lg:w-32">
                                 <span class="text-sm font-bold truncate lg:block hidden overflow-auto">{{$store.state.user.name}}</span>

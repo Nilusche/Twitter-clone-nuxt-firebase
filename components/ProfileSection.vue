@@ -19,7 +19,7 @@
             <div class=" h-full p-4 mb-64">
                 <div>
                     <img v-if="currentUser.profilePic" :src="currentUser.profilePic" alt="" class="object-cover h-20 w-20 rounded-full border-white border-4">
-                    <img v-else src="https://via.placeholder.com/40" alt="" class="object-cover h-20 w-20 rounded-full border-white border-4">
+                    <img v-else src="@/assets/images/default_profile_400x400.png" alt="" class="object-cover h-20 w-20 rounded-full border-white border-4">
                     
                    
                 <label class="block mb-2 text-sm font-medium text-twgrey-400"  for="file_input">Upload new avatar</label>
@@ -70,7 +70,7 @@
                     <div class= "bottom-auto w-44">
                     <div class="h-44 w-44 rounded-full bg-gray-300">
                         <img v-if="currentUser && currentUser.profilePic!=''" :src="currentUser.profilePic" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4">   
-                        <img v-else src="https://via.placeholder.com/100" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4"> 
+                        <img v-else src="@/assets/images/default_profile_400x400.png" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4"> 
                         <button v-if="this.userID == this.$store.state.user.id" class="absolute right-0 top-32 font-bold px-3 py-2 border border-twgrey-300 hover:bg-twgrey-200 rounded-full" @click="toggleProfileSection">Edit Profile</button>
                     </div>
                 </div>
