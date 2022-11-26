@@ -25,9 +25,7 @@ export const actions = {
       // remove @ from tagline
       tagline = tagline.replace('@','');      
     }
-    //is tagline in users unique?
-    const tag = await projectFirestore.collection('users').where('tag', '==', tagline).get();
-    if(tag.empty){
+
       const res = await useSignup(email, password, username);
       if(res.error) {
         throw new Error(res.error);
@@ -56,9 +54,7 @@ export const actions = {
         commit('setUser', user)
         return res.user.value;
       }
-    }else{
-      throw new Error("Tag already in use");
-    }
+    
     
   },
   async login({ commit }, { email, password }) {

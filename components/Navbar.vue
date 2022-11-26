@@ -42,17 +42,17 @@
                     <svg class="inline-block w-5 ml-1 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M272 304h-96C78.8 304 0 382.8 0 480c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32C448 382.8 369.2 304 272 304zM48.99 464C56.89 400.9 110.8 352 176 352h96c65.16 0 119.1 48.95 127 112H48.99zM224 256c70.69 0 128-57.31 128-128c0-70.69-57.31-128-128-128S96 57.31 96 128C96 198.7 153.3 256 224 256zM224 48c44.11 0 80 35.89 80 80c0 44.11-35.89 80-80 80S144 172.1 144 128C144 83.89 179.9 48 224 48z"/></svg>
                     <span class="lg:visible invisible">Profile</span>
                 </NuxtLink>
-                <NuxtLink to="/home"  class="ml-2 btn lg:w-32  btn-small btn-hover transition ease-in-out">
+                <button @click="logout"  class="ml-2 btn lg:w-36  btn-small btn-hover transition ease-in-out">
                     <svg  class="inline-block w-7 mb-1 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M120 256C120 286.9 94.93 312 64 312C33.07 312 8 286.9 8 256C8 225.1 33.07 200 64 200C94.93 200 120 225.1 120 256zM280 256C280 286.9 254.9 312 224 312C193.1 312 168 286.9 168 256C168 225.1 193.1 200 224 200C254.9 200 280 225.1 280 256zM328 256C328 225.1 353.1 200 384 200C414.9 200 440 225.1 440 256C440 286.9 414.9 312 384 312C353.1 312 328 286.9 328 256z"/></svg>
-                    <span class="lg:visible invisible">More</span>
-                </NuxtLink>
+                    <span class="lg:visible invisible">Logout</span>
+                </button>
                 <button class="ml-2 btn-tweet bg-twblue hover:bg-twdarkblue transition ease-in-out">
                     <span class="lg:visible invisible">Tweet</span>
                 </button>
                 <!--Profile Section-->
                 <NuxtLink :to="'/' + this.$store.state.user.id" class="btn lg:w-56 mt-28  w-20 btn-hover transition ease-in-out">
                     <div class="flex">
-                        <img v-if="!$store.state.user.id|| $store.state.user.id&&  !$store.state.user.profilePic" class="object-cover flex justify-center w-12 rounded-full mr-2" src="https://via.placeholder.com/40" alt="">
+                        <img v-if="!$store.state.user.id|| $store.state.user.id&&  !$store.state.user.profilePic" class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" src="https://via.placeholder.com/40" alt="">
                         <img v-else class="object-cover flex justify-center w-12 h-12 rounded-full mr-2" :src="$store.state.user.profilePic" alt="">
                         <div class="lg:w-32">
                                 <span class="text-sm font-bold truncate lg:block hidden overflow-auto">{{$store.state.user.name}}</span>
@@ -74,5 +74,12 @@ export default {
         routename: this.$route.path,
     }
   },
+  methods:{
+    logout(){
+        this.$store.dispatch('logout').then(()=>{
+            this.$router.push('/');
+        });
+    },
+  }
 };
 </script>

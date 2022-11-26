@@ -63,7 +63,7 @@
         </div>
         <div class="fixed bottom-0 w-screen bg-black text-twgrey-400 py-4 text-center">
             This application is made for educational purposes only. No commercial use is allowed.
-            (c) 2020 TwitterClone Nilusche Liyanaarachchi
+            (c) 2022 TwitterClone Nilusche Liyanaarachchi
         </div>
         </div>
     <div v-if="showSignIn" class="absolute  lg:top-20 lg:left-1/3 lg:w-1/3 lg:bottom-32  top-0 left-0 w-screen  bg-black rounded-lg text-white border border-twblue">

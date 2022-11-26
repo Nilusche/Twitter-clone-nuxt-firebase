@@ -66,16 +66,16 @@ export default {
 
         // update the count of followers of the current user
         const res = await projectFirestore.collection('users').doc(follower).get()
-        const followers = res.data().followers
+        const followers = res.data().following
         await projectFirestore.collection('users').doc(follower).update({
-            followers: followers + 1
+            following: followers + 1
         })
 
         // update the count of following of the user being followed
         const res2 = await projectFirestore.collection('users').doc(following).get()
-        const followingCount = res2.data().following
+        const followingCount = res2.data().followers
         await projectFirestore.collection('users').doc(following).update({
-            following: followingCount + 1
+            followers: followingCount + 1
         })
 
         //update the store

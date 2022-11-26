@@ -6,7 +6,6 @@
                 <Create @addTweet="handleTweetAdd"/>
 
                 <!--Post-->
-                
                 <div v-for="tweet in tweets" :key="tweet.createdAt" >
                     <Post :tweet="tweet" @loaded="handleLoaded"/>
                 </div>
@@ -22,7 +21,7 @@
                                   from="0 50 50"
                                   to="360 50 50" 
                                   repeatCount="indefinite" />
-                          </path>
+                              </path>
                   </svg>
                 </div>
                 
@@ -116,25 +115,28 @@ export default {
       // get all the tweets which the user follows
       const following = await projectFirestore.collection('following').where('follower', '==', this.$store.state.user.id).get();
       const followingIds = following.docs.map(doc => doc.data().following);
-      const followingTweets = await projectFirestore.collection('tweets').where('uid', 'in', followingIds).orderBy('createdAt', 'desc').get();
-      this.tweets = this.tweets.concat(followingTweets.docs.map(doc => 
-        ({
-          id: doc.id,
-          ...doc.data()
-        })
-      ));
+      if(followingIds.length !=0){
+        const followingTweets = await projectFirestore.collection('tweets').where('uid', 'in', followingIds).orderBy('createdAt', 'desc').get();
+        this.tweets = this.tweets.concat(followingTweets.docs.map(doc => 
+          ({
+            id: doc.id,
+            ...doc.data()
+          })
+        ));
+      }
+      
 
       //order tweets by date
+      if(this.tweets.length ==0){ 
+        this.loading = false;
+        return;
+      }
       this.tweets.sort((a, b) => b.createdAt - a.createdAt);
 
       this.loading = false;
     },
     methods:{
-      logout(){
-        this.$store.dispatch('logout').then(()=>{
-          this.$router.push('/');
-        });
-      },
+      
       handleTweetAdd(tweet){
         this.tweets.unshift(tweet);
       },
