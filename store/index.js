@@ -93,7 +93,10 @@ export const actions = {
     await useLogout();
   },
   async createTweet({ commit }, { tweet }) {
-    await projectFirestore.collection('tweets').add(tweet);
+    
+    const res = await projectFirestore.collection('tweets').add(tweet);
+    
+    tweet.id = res.id;
     return tweet
   },
 

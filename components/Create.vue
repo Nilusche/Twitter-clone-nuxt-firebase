@@ -87,6 +87,7 @@ export default {
                 this.$store.dispatch('createTweet',{tweet})   
                 this.$refs.content_div.innerText = ''
                 this.$emit('addTweet', tweet)
+                // reload the page to show the new tweet
             }
         },
         navigateToProfile(){

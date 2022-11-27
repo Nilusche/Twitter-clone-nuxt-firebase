@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="grid lg:grid-cols-3 md:grid-cols-9 sm:grid-cols-9 grid-cols-1 grid-rows-1 border-r  gap-4">
-        <Navbar/>
+        <Navbar @tweetPopUp="triggerPopup=true"/>
          <div class="bg-white border-r border-l lg:block lg:col-span-1 col-span-8 tweets overflow-y-auto">
                 <Create @addTweet="handleTweetAdd"/>
 
@@ -23,6 +23,10 @@
                                   repeatCount="indefinite" />
                               </path>
                   </svg>
+                </div>
+
+                <div v-if="triggerPopup">
+                    <TweetPopUp @triggerPopup="triggerPopup=false" @tweet="handleTweetAdd"/>
                 </div>
                 
         </div>
@@ -80,7 +84,8 @@ export default {
     data(){
       return {
         tweets : [],
-        loading : true
+        loading : true,
+        triggerPopup : false,
       }
     },
     async mounted(){

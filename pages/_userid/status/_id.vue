@@ -32,7 +32,7 @@
                         
                 </div>
                 <div v-for="parent in parents" :key="parent.id" class="flex justify-between">
-                    <Post class="w-full" :tweet="parent" :isReply="true" @loaded="handleLoaded" @deleted="handleDeleted" :id="parent.id"/>
+                    <Post class="w-full" :tweet="parent" :isReply="true" @loaded="handleLoaded" @deleted="filterDeleted" :id="parent.id"/>
                 </div>
                 <div class="flex flex-col ml-4 mt-4 mr-4" v-if="loaded">
                   
@@ -172,11 +172,11 @@
                     </span>
                   </div>
                   <div v-for="reply in replies" :key="reply.id" class="flex justify-between py-3 border-b border-twgrey-200">
-                      <Post class="w-full" :tweet="reply" @loaded="handleLoaded" @deleted="handleDeleted" :id="reply.id"/>
+                      <Post class="w-full" :tweet="reply" @loaded="handleLoaded" @deleted="filterDeleted" :id="reply.id"/>
                   </div>
                   <div class="flex justify-between py-3 ml-4 border-b border-twgrey-200">
                     <div class="flex">
-                        <img v-if="!this.profilePic" class="object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 hover:cursor-pointer transition ease-in-out" 
+                        <img v-if="!this.$store.state.user.profilePic" class="object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 hover:cursor-pointer transition ease-in-out" 
                           @mouseover="hover = true"
                           @mouseleave="hover = false"
                           @click="navigateToProfile" 
@@ -185,14 +185,14 @@
                           @mouseover="hover = true"
                           @mouseleave="hover = false"
                           @click="navigateToProfile" 
-                          :src="this.profilePic" alt="">
+                          :src="this.$store.state.user.profilePic" alt="">
                           
                           <div class="flex flex-col justify-center ">
                             <div ref="content_div" class="message-box-content p-2 focus:outline-none focus:before:text-gray-600 pb-3 " contenteditable="true" placeholder="Tweet your reply"></div>
                           </div>
                       </div>
                       <div class="flex flex-col justify-center mr-4">
-                        <button @click="handleCreateTweet" class="px-4 py-1 rounded-full bg-twblue text-white font-bold cursor-pointer hover:bg-twdarkblue">Reply</button>
+                        <button @click.stop="handleCreateTweet" class="px-4 py-1 rounded-full bg-twblue text-white font-bold cursor-pointer hover:bg-twdarkblue">Reply</button>
                       </div>
                   </div>
                 </div>
@@ -278,7 +278,6 @@ export default {
     }
     this.tweet.createdAt = res.data().createdAt.toDate()
     this.tweet.id = res.id
-    console.log(res.data())
     //fetch user data
     this.tweetuser = await projectFirestore.collection('users').doc(this.tweet.uid).get()
     
@@ -339,7 +338,7 @@ export default {
     //reverse the array so that the first parent is at the top
     this.parents = parents.reverse()
 
-    console.log(this.parents)
+
 
     
   
@@ -460,6 +459,11 @@ export default {
                 }
             })
         },
+        filterDeleted(id){
+            //filter out the tweet with the id from the replies array
+            this.replies = this.replies.filter(reply => reply.id !== id)
+        },
+
         async handleDelete(){
             //delete tweet
             await projectFirestore.collection('tweets').doc(this.tweet.id).delete()
@@ -477,14 +481,32 @@ export default {
             })
             //delete replies
 
+            // for each reply in the replies array delete the reply
+            this.replies.forEach(async reply => {
+                await projectFirestore.collection('tweets').doc(reply.id).delete()
+                //delete likes
+                await projectFirestore.collection('likes').where('tweetid', '==', reply.id).get().then(async querySnapshot => {
+                    querySnapshot.forEach(async doc => {
+                        await projectFirestore.collection('likes').doc(doc.id).delete()
+                    })
+                })
+                //delete retweets
+                await projectFirestore.collection('retweets').where('tweetid', '==', reply.id).get().then(async querySnapshot => {
+                    querySnapshot.forEach(async doc => {
+                        await projectFirestore.collection('retweets').doc(doc.id).delete()
+                    })
+                })
+            })
+
             // route back to home
             this.$router.push('/home')
+
 
             this.showDelete = false
         },
         handleCreateTweet(){
             const content = this.$refs.content_div.innerText
-            console.log("hello")
+
             if(content.length > 0){
                 //keep newlines in the content for firebase
                 const contentWithNewlines = content.replace(/\n/g, '<br>')
@@ -497,8 +519,9 @@ export default {
                     retweets:0,
                     replyTo: this.tweet.id
                 }
-                this.$store.dispatch('createTweet',{tweet})   
+                const res = this.$store.dispatch('createTweet',{tweet})   
                 this.$refs.content_div.innerText = ''
+                console.log(res)
                 // add tweet to the replies array
                 this.replies.push(tweet)
             }

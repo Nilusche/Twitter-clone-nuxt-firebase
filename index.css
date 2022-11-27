@@ -8,7 +8,7 @@
     @apply text-left  py-3 px-4 rounded-full text-lg mb-2;
 }
 .btn-tweet{
-    @apply lg:w-56  w-14 font-bold mt-3 text-white  text-center  py-3 px-4 rounded-full text-lg mb-2;
+    @apply lg:w-56  w-12 font-bold mt-3 text-white  text-center  py-3 px-4 rounded-full text-lg mb-2;
 }
 .btn-hover{
     @apply hover:bg-twgrey-200

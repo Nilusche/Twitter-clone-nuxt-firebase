@@ -143,7 +143,7 @@
                       <span> Delete</span>
 
                     </span>
-                    <div v-if="repliedTo" @click="navigate" class="text-twblue py-4 pr-2 hover:bg-twgrey-200">Show this Thread</div>
+                    <div v-if="repliedTo && this.$route.path=='/home'" @click="navigate" class="text-twblue py-4 pr-2 hover:bg-twgrey-200">Show this Thread</div>
                 </div>
                 <div class="py-2 px-2 hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full" v-if="this.$store.state.user.id == tweet.uid">
                   <span  @click.stop="showDelete=!showDelete">
@@ -185,7 +185,7 @@ export default{
     async mounted(){
         this.tweetuser = await projectFirestore.collection('users').doc(this.tweet.uid).get()
         //set content in innerHtml
-
+      
         this.tweetusername = this.tweetuser.data().name
         this.tweetusertag = this.tweetuser.data().tag
         this.tweet.id = this.id
