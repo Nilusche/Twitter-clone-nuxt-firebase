@@ -143,6 +143,7 @@
                       <span> Delete</span>
 
                     </span>
+                    <div v-if="this.tweet.replyTo" @click="navigate" class="text-twblue py-4 pr-2 hover:bg-twgrey-200">Show this Thread</div>
                 </div>
                 <div class="py-2 px-2 hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full" v-if="this.$store.state.user.id == tweet.uid">
                   <span  @click.stop="showDelete=!showDelete">
@@ -155,10 +156,11 @@
                 
                 
                 
-
+                
             </span>
             
         </div>
+        
     </div>
 </template>
 
