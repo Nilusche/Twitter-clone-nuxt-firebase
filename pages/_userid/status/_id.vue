@@ -32,28 +32,47 @@
                         
                 </div>
                 <div class="flex flex-col ml-6 mt-4 mr-4" v-if="loaded">
-                  <div class="flex"> 
-                    <img v-if="!this.profilePic" class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 hover:cursor-pointer transition ease-in-out" 
-                      @mouseover="hover = true"
-                      @mouseleave="hover = false"
-                      @click="navigateToProfile" 
-                      src="@/assets/images/default_profile_400x400.png" alt="">
-                      <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition hover:cursor-pointer ease-in-out" 
-                      @mouseover="hover = true"
-                      @mouseleave="hover = false"
-                      @click="navigateToProfile" 
-                      :src="this.profilePic" alt="">
-
-                      <div class="flex flex-col">
-                        <div class="text-black font-bold">{{tweetusername}}</div>
-                        <div class="text-twgrey-400">{{tweetusertag}}</div>
-                        <div></div>
+                  
+                  <div class="flex justify-between">
+                      <div class="flex">
+                        <img v-if="!this.profilePic" class="object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 hover:cursor-pointer transition ease-in-out" 
+                          @mouseover="hover = true"
+                          @mouseleave="hover = false"
+                          @click="navigateToProfile" 
+                          src="@/assets/images/default_profile_400x400.png" alt="">
+                          <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition hover:cursor-pointer ease-in-out" 
+                          @mouseover="hover = true"
+                          @mouseleave="hover = false"
+                          @click="navigateToProfile" 
+                          :src="this.profilePic" alt="">
+                          
+                          <div class="flex flex-col">
+                            <div class="text-black font-bold">{{tweetusername}}</div>
+                            <div class="text-twgrey-400">@{{tweetusertag}}</div>
+                          </div>
                       </div>
+                      
+                      <div class=" py-2 px-2 hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full" v-if="this.$store.state.user.id == tweet.uid">
+                        <span  @click.stop="showDelete=!showDelete">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" style="color:gray"/>
+                          </svg>
+                        </span>
+                      </div>
+
+                      
                   </div>
+                  <span v-if="showDelete" @click.stop="handleDelete" class=" w-36 relative text-red-500 -top-12 bg-white hover:cursor-pointer  rounded-md shadow-md hover:bg-twgrey-200 px-6 py-2 h-10" style="z-index:9999; right:-19rem">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg>
+                    <span> Delete</span>
+
+                  </span>
                   <div class="mt-5 text-xl" v-html="this.tweet.content">
                     
                   </div>
-                  <div class="text-twgrey-400 border-twgrey-200 border-b py-3">
+                  <div v-if="this.tweet" class="text-twgrey-400 border-twgrey-200 border-b py-3">
                     {{timestampToDate(this.tweet.createdAt) }}Twitterclone Web App
                   </div>
                   <div class="text-twgrey-400 border-twgrey-200 border-b py-3 hover:cursor-pointer hover:bg-twgrey-200">
@@ -212,7 +231,8 @@ export default {
         hover: false,
         profilePic: null,
         loaded: false,
-        tweet: null
+        tweet: null,
+        showDelete: false,
       }
   },
   async udpated(){
@@ -223,6 +243,9 @@ export default {
     const id = this.$route.params.id
     const res = await projectFirestore.collection('tweets').doc(id).get()
     this.tweet = res.data()
+    if(!this.tweet){
+      this.$router.push('/home')
+    }
     this.tweet.createdAt = res.data().createdAt.toDate()
     this.tweet.id = res.id
     console.log(res.data())
@@ -367,6 +390,28 @@ export default {
                     })
                 }
             })
+        },
+        async handleDelete(){
+            //delete tweet
+            await projectFirestore.collection('tweets').doc(this.tweet.id).delete()
+            //delete likes
+            await projectFirestore.collection('likes').where('tweetid', '==', this.tweet.id).get().then(async querySnapshot => {
+                querySnapshot.forEach(async doc => {
+                    await projectFirestore.collection('likes').doc(doc.id).delete()
+                })
+            })
+            //delete retweets
+            await projectFirestore.collection('retweets').where('tweetid', '==', this.tweet.id).get().then(async querySnapshot => {
+                querySnapshot.forEach(async doc => {
+                    await projectFirestore.collection('retweets').doc(doc.id).delete()
+                })
+            })
+            //delete replies
+
+            // route back to home
+            this.$router.push('/home')
+
+            this.showDelete = false
         },
       
       }
