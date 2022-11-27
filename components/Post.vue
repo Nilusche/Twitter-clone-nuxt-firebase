@@ -1,6 +1,6 @@
 <template>
-    <div class="flex border-b border-twgrey-200 z-0 p-4 pr-12 hover:bg-twgrey-50 transition ease-in-out cursor-pointer" @click="navigate">             
-        <div>
+    <div :class="{borderbottom:!this.isReply}" class="flex  z-0 p-4 pr-12 hover:bg-twgrey-50 transition ease-in-out cursor-pointer" @click="navigate">             
+        <div class="">
           <span v-if="retweeted == true" class ="relative left-8 text-gray-400 bottom-1">
             <svg class="icon icon-retweet   inline-block" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
               <g fill="none" fill-rule="evenodd" stroke="#53688c" stroke-linecap="round" stroke-width="2" transform="translate(2.25 5.5)">
@@ -19,16 +19,21 @@
           
           </span>
             <span class="flex">
-                <img v-if="!this.profilePic" class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
-                @mouseover="hover = true"
-                @mouseleave="hover = false"
-                @click="navigateToProfile" 
-                 src="@/assets/images/default_profile_400x400.png" alt="">
-                 <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
-                @mouseover="hover = true"
-                @mouseleave="hover = false"
-                @click="navigateToProfile" 
-                 :src="this.profilePic" alt="">
+                <div class="flex flex-col">
+                  <img v-if="!this.profilePic" class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
+                  @mouseover="hover = true"
+                  @mouseleave="hover = false"
+                  @click="navigateToProfile" 
+                  src="@/assets/images/default_profile_400x400.png" alt="">
+                  <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
+                  @mouseover="hover = true"
+                  @mouseleave="hover = false"
+                  @click="navigateToProfile" 
+                  :src="this.profilePic" alt="">
+                  <div class="flex-grow" v-if="this.isReply">
+                    <div class=" mt-7 bg-twgrey-300" style="height:2px; width:3em; transform: rotate(90deg);"></div>
+                  </div>
+                </div>
 
                  <div v-if="hover" class="relative">
 
@@ -162,7 +167,7 @@
 import { Store } from 'vuex'
 import { projectFirestore } from '../firebase/config'
 export default{
-    props: ['tweet', "retweeted" , "id"],
+    props: ['tweet', "retweeted" , "id", "isReply"],
     data(){
         return{ 
             tweetusername: "",
@@ -628,5 +633,10 @@ input[type=checkbox] {
   100% {
     transform: scale(1);
   }
+}
+
+.borderbottom{
+  border-bottom-width: 1px;
+  border-color: #EFF1F1;
 }
 </style>

@@ -25,13 +25,16 @@
                         </div>
                         <div class="flex mb-1">
                             <div class="flex flex-col p-3 ml-4">
-                                <span class="justify-start font-bold text-xl">Tweet</span>
+                                <span class="justify-start font-bold text-xl">Thread</span>
                             </div>
                         </div>
 
                         
                 </div>
-                <div class="flex flex-col ml-6 mt-4 mr-4" v-if="loaded">
+                <div v-for="parent in parents" :key="parent.id" class="flex justify-between">
+                    <Post class="w-full" :tweet="parent" :isReply="true" @loaded="handleLoaded" @deleted="handleDeleted" :id="parent.id"/>
+                </div>
+                <div class="flex flex-col ml-4 mt-4 mr-4" v-if="loaded">
                   
                   <div class="flex justify-between">
                       <div class="flex">
@@ -168,8 +171,32 @@
                         </span>
                     </span>
                   </div>
+                  <div v-for="reply in replies" :key="reply.id" class="flex justify-between py-3 border-b border-twgrey-200">
+                      <Post class="w-full" :tweet="reply" @loaded="handleLoaded" @deleted="handleDeleted" :id="reply.id"/>
+                  </div>
+                  <div class="flex justify-between py-3 ml-4 border-b border-twgrey-200">
+                    <div class="flex">
+                        <img v-if="!this.profilePic" class="object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 hover:cursor-pointer transition ease-in-out" 
+                          @mouseover="hover = true"
+                          @mouseleave="hover = false"
+                          @click="navigateToProfile" 
+                          src="@/assets/images/default_profile_400x400.png" alt="">
+                          <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition hover:cursor-pointer ease-in-out" 
+                          @mouseover="hover = true"
+                          @mouseleave="hover = false"
+                          @click="navigateToProfile" 
+                          :src="this.profilePic" alt="">
+                          
+                          <div class="flex flex-col justify-center ">
+                            <div ref="content_div" class="message-box-content p-2 focus:outline-none focus:before:text-gray-600 pb-3 " contenteditable="true" placeholder="Tweet your reply"></div>
+                          </div>
+                      </div>
+                      <div class="flex flex-col justify-center mr-4">
+                        <button @click="handleCreateTweet" class="px-4 py-1 rounded-full bg-twblue text-white font-bold cursor-pointer hover:bg-twdarkblue">Reply</button>
+                      </div>
+                  </div>
                 </div>
-                  
+                
 
             </div>
             
@@ -220,6 +247,7 @@
 </template>
 
 <script>
+import {timestamp} from '@/firebase/config.js'
 import { projectFirestore } from '@/firebase/config'
 export default {
   data () {
@@ -233,6 +261,8 @@ export default {
         loaded: false,
         tweet: null,
         showDelete: false,
+        replies: [],
+        parents:[],
       }
   },
   async udpated(){
@@ -279,11 +309,50 @@ export default {
         return doc.data().profilePic
     })
 
+    //fetch replies
+    // all fetch all tweets where replyTo is equal to the id of the tweet
+    const replies = await projectFirestore.collection('tweets').where('replyTo', '==', id).get()
+    this.replies = replies.docs.map(doc => {
+      return { ...doc.data(), id: doc.id }
+    })
+
     this.loaded = true
 
+
+    //check if this tweet is a reply to another tweet
+    const parents = []
+    if(this.tweet.replyTo){
+      let parent = await this.fetchTweet(this.tweet.replyTo)
+      if(parent){
+        parents.push(parent)
+        while(parent.replyTo){
+          parent = await this.fetchTweet(parent.replyTo)
+          if(parent){
+            parents.push(parent)
+          }else{
+            break
+          }
+        }
+      }
+    }
+    this.parents = parents
+    //reverse the array so that the first parent is at the top
+    this.parents = parents.reverse()
+
+    console.log(this.parents)
+
+    
+  
     
   },
   methods:{
+    async fetchTweet(id){
+      //fetch tweet with the id and return it with the id
+      const res = await projectFirestore.collection('tweets').doc(id).get()
+      const tweet = res.data()
+      tweet.id = res.id
+      return tweet
+    },
     navigateToProfile(){
         this.$router.push(this.tweet.uid)
     },
@@ -413,7 +482,30 @@ export default {
 
             this.showDelete = false
         },
-      
+        handleCreateTweet(){
+            const content = this.$refs.content_div.innerText
+            console.log("hello")
+            if(content.length > 0){
+                //keep newlines in the content for firebase
+                const contentWithNewlines = content.replace(/\n/g, '<br>')
+                const tweet = {
+                    content: contentWithNewlines,
+                    uid: this.$store.state.user.id,
+                    createdAt:timestamp(),
+                    likes:0,
+                    comments:0,
+                    retweets:0,
+                    replyTo: this.tweet.id
+                }
+                this.$store.dispatch('createTweet',{tweet})   
+                this.$refs.content_div.innerText = ''
+                // add tweet to the replies array
+                this.replies.push(tweet)
+            }
+        },
+        handleLoaded(){
+          this.loading = false;
+        },
       }
 
 }

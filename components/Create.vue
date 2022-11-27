@@ -82,6 +82,7 @@ export default {
                     likes:0,
                     comments:0,
                     retweets:0,
+                    replyTo: null,
                 }
                 this.$store.dispatch('createTweet',{tweet})   
                 this.$refs.content_div.innerText = ''
