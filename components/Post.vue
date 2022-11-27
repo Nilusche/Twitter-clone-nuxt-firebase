@@ -143,7 +143,7 @@
                       <span> Delete</span>
 
                     </span>
-                    <div v-if="this.tweet.replyTo" @click="navigate" class="text-twblue py-4 pr-2 hover:bg-twgrey-200">Show this Thread</div>
+                    <div v-if="repliedTo" @click="navigate" class="text-twblue py-4 pr-2 hover:bg-twgrey-200">Show this Thread</div>
                 </div>
                 <div class="py-2 px-2 hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full" v-if="this.$store.state.user.id == tweet.uid">
                   <span  @click.stop="showDelete=!showDelete">
@@ -179,6 +179,7 @@ export default{
             hover: false,
             profilePic: null,
             showDelete : false,
+            repliedTo:false
         }
     },
     async mounted(){
@@ -220,6 +221,16 @@ export default{
           }
           
         }
+
+        //to check if this tweet has been replied to see if its id is in the replyTo field of any other tweet
+        await projectFirestore.collection('tweets').where('replyTo', '==', this.tweet.id).get().then(querySnapshot => {
+          if(querySnapshot.docs.length > 0){
+            this.repliedTo = true
+          }
+        })
+
+
+
         this.$emit('loaded')
     },
     methods: {

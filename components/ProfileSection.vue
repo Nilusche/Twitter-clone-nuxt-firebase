@@ -339,6 +339,14 @@ export default {
                 })
                 
 
+            }else if(this.selected == 2){
+                //filter all tweets that have a replyTo attribute that is not null
+                this.tweets_replies = this.tweets.filter(tweet => tweet.replyTo != null);
+                
+            }else if(this.selected == 1){
+                //only show tweets that are not replies or have been replied to
+                this.tweets_replies = this.tweets.filter(tweet => tweet.replyTo == null);
+                
             }
 
 
