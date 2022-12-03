@@ -19,7 +19,7 @@
                             <button class="py-2 w-72 ml-2 rounded-full font-semibold hover:bg-twgrey-200 bg-white text-black ">
                                 <div class="flex justify-center">
                                     <img src="../assets/images/google-symbol.png" alt="" class="object-contain mr-1">
-                                    <span>Sign up with Google (not impl.)</span> 
+                                    <span>Sign up with Google</span> 
                                 </div>
                             </button>
                         </div>
@@ -27,7 +27,7 @@
                             <button class="py-2 w-72 ml-2 rounded-full font-semibold hover:bg-twgrey-200 bg-white text-black ">
                                 <div class="flex justify-center">
                                     <img src="../assets/images/apple-logo.png" alt="" class="object-contain mr-1">
-                                    <span>Sign up with Apple (not impl.)</span> 
+                                    <span>Sign up with Apple</span> 
                                 </div>
                             </button>
                         </div>
@@ -81,7 +81,7 @@
                     <button class="py-2 w-76 px-1 rounded-full font-semibold hover:bg-twgrey-200 bg-white text-black ">
                         <div class="flex justify-center">
                             <img src="../assets/images/google-symbol.png" alt="" class="object-contain mr-1">
-                            <span>Continue to Google (Not Implemented)</span> 
+                            <span>Continue to Google</span> 
                         </div>
                     </button>
                 </div>
@@ -89,7 +89,7 @@
                     <button class="py-2 w-76 px-1 rounded-full font-semibold hover:bg-twgrey-200 bg-white text-black ">
                         <div class="flex justify-center">
                             <img src="../assets/images/apple-logo.png" alt="" class="object-contain mr-1">
-                            <span>Continue to Apple (Not Implemented)</span> 
+                            <span>Continue to Apple</span> 
                         </div>
                     </button>
                 </div>
@@ -152,7 +152,7 @@
                     <button class="py-2 w-76 px-1 rounded-full font-semibold hover:bg-twgrey-200 bg-white text-black ">
                         <div class="flex justify-center">
                             <img src="../assets/images/google-symbol.png" alt="" class="object-contain mr-1">
-                            <span>Continue to Google (Not Implemented)</span> 
+                            <span>Continue to Google</span> 
                         </div>
                     </button>
                 </div>
@@ -160,7 +160,7 @@
                     <button class="py-2 w-76 px-1 rounded-full font-semibold hover:bg-twgrey-200 bg-white text-black ">
                         <div class="flex justify-center">
                             <img src="../assets/images/apple-logo.png" alt="" class="object-contain mr-1">
-                            <span>Continue to Apple (Not Implemented)</span> 
+                            <span>Continue to Apple</span> 
                         </div>
                     </button>
                 </div>
