@@ -10,7 +10,7 @@
                     </span>
                     <span class="lg:visible invisible">Home</span>
                 </NuxtLink>
-                <NuxtLink to="/explore" :class="{'font-bold': routename=='/explore'}" class="ml-4 btn lg:w-40  btn-small btn-hover transition ease-in-out">
+                <NuxtLink to="/explore" :class="{'font-bold': routename=='/explore' || routename.includes('explore') }" class="ml-4 btn lg:w-40  btn-small btn-hover transition ease-in-out">
                     <svg class="inline-block w-7 mb-1 mr-2 h-6 -ml-1 -mt-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                     </svg>
