@@ -72,6 +72,10 @@
                         <img v-if="currentUser && currentUser.profilePic!=''" :src="currentUser.profilePic" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4">   
                         <img v-else src="@/assets/images/default_profile_400x400.png" alt="" class="object-cover h-44 w-44 rounded-full border-white border-4"> 
                         <button v-if="this.userID == this.$store.state.user.id" class="absolute right-0 top-32 font-bold px-3 py-2 border border-twgrey-300 hover:bg-twgrey-200 rounded-full" @click="toggleProfileSection">Edit Profile</button>
+                        <template v-else>
+                            <button v-if="(followingUser == true)" class="absolute right-0 top-32 font-bold px-3 py-2 border border-twgrey-300 hover:bg-twgrey-200 rounded-full" @click="unfollow(currentUser.uid)">Unfollow</button>
+                            <button v-else class="absolute right-0 top-32 font-bold px-3 py-2 border border-twgrey-300 hover:bg-twgrey-200 rounded-full" @click="follow(currentUser.uid)">Follow</button>
+                        </template>
                     </div>
                 </div>
                 <div class="">
@@ -226,7 +230,8 @@ export default {
             profilebio: "",
             currentUser: null,
             following:0,
-            followers:0
+            followers:0,
+            followingUser:false,
         }
     },
 
@@ -316,6 +321,17 @@ export default {
 
             
         }
+
+
+        // check if the current user is following the user
+        let docId =  this.$store.state.user.id + "_"+  this.currentUser.uid
+        console.log(docId)
+        await projectFirestore.collection('following').doc(docId).get().then(doc => {
+            if(doc.exists){
+                this.followingUser = true
+            }
+        })
+
     },
     methods: {
         async filter(id) {
@@ -392,6 +408,71 @@ export default {
 
             
 
+        },
+        async follow(id){
+        //create a new document in the following collection
+        //set document id as follower_following
+
+            const follower = this.$store.state.user.id
+            const following = id
+            const docId = follower + '_' + following
+
+            //check if the user is already following the person
+            const res = await projectFirestore.collection('following').doc(docId).get();
+            if(res.exists){
+                
+            }else{
+
+
+                await projectFirestore.collection('following').doc(docId).set({
+                    follower: follower,
+                    following: following
+                })
+
+                // update the count of followers of the current user
+                const res = await projectFirestore.collection('users').doc(follower).get()
+                const followers = res.data().following
+                await projectFirestore.collection('users').doc(follower).update({
+                    following: followers + 1
+                })
+
+                // update the count of following of the user being followed
+                const res2 = await projectFirestore.collection('users').doc(following).get()
+                const followingCount = res2.data().followers
+                await projectFirestore.collection('users').doc(following).update({
+                    followers: followingCount + 1
+                })
+            }
+            this.followingUser = true;
+        },
+
+        async unfollow(id){
+            const follower = this.$store.state.user.id
+            const following = id
+            const docId = follower + '_' + following
+
+            //check if the user is already following the person
+            const res = await projectFirestore.collection('following').doc(docId).get();
+
+            //if the user is following the person, delete the document
+            if(res.exists){
+                await projectFirestore.collection('following').doc(docId).delete()
+
+                // update the count of followers of the current user
+                const res = await projectFirestore.collection('users').doc(follower).get()
+                const followers = res.data().following
+                await projectFirestore.collection('users').doc(follower).update({
+                    following: followers - 1
+                })
+
+                // update the count of following of the user being unfollowed
+                const res2 = await projectFirestore.collection('users').doc(following).get()
+                const followingCount = res2.data().follower
+                await projectFirestore.collection('users').doc(following).update({
+                    follower: followingCount - 1
+                })
+            }
+            this.followingUser = false;
         }
     }
 }
