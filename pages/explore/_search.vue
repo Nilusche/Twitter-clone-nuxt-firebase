@@ -29,11 +29,11 @@
                     
                 </div>
                 <div class="flex relative left-0  bottom-auto  justify-center">
-                    <div @click="filter(1)" class="pt-3 border-b px-7 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">Top</span> <span v-if="selected == 1" class="mt-3 bg-twblue h-1 w-12 rounded-lg text-transparent" style="width:2rem"></span></div>
-                    <div @click="filter(2)" class="pt-3 border-b px-7 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">Latest</span> <span v-if="selected == 2" class="mt-3 bg-twblue h-1 rounded-lg text-transparent" style="width:2rem"></span></div>
-                    <div @click="filter(3)" class="pt-3 border-b px-7 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">People</span> <span v-if="selected == 3" class="mt-3 bg-twblue h-1 rounded-lg text-transparent" style="width:2rem"></span></div>
-                    <div @click="filter(4)" class="pt-3 border-b px-7 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">Photos</span> <span v-if="selected == 4" class="mt-3 bg-twblue h-1 rounded-lg text-transparent"  style="width:2rem"></span></div>
-                    <div @click="filter(5)" class="pt-3 border-b px-7 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">Videos</span> <span v-if="(selected == 5)" class="mt-3 bg-twblue h-1 rounded-lg text-transparent"  style="width:2rem"></span></div>
+                    <div @click="filter(1)" class="pt-3 border-b px-5 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">Top</span> <span v-if="selected == 1" class="mt-3 bg-twblue h-1  rounded-lg text-transparent" style="width:2rem"></span></div>
+                    <div @click="filter(2)" class="pt-3 border-b px-5 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">Latest</span> <span v-if="selected == 2" class="mt-3 bg-twblue h-1 rounded-lg text-transparent" style="width:2rem"></span></div>
+                    <div @click="filter(3)" class="pt-3 border-b px-5 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">People</span> <span v-if="selected == 3" class="mt-3 bg-twblue h-1 rounded-lg text-transparent" style="width:2rem"></span></div>
+                    <div @click="filter(4)" class="pt-3 border-b px-5 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">Photos</span> <span v-if="selected == 4" class="mt-3 bg-twblue h-1 rounded-lg text-transparent"  style="width:2rem"></span></div>
+                    <div @click="filter(5)" class="pt-3 border-b px-5 flex-grow flex flex-col items-center hover:bg-twgrey-200 cursor-pointer transition ease-in-out"><span class="text-center">Videos</span> <span v-if="(selected == 5)" class="mt-3 bg-twblue h-1 rounded-lg text-transparent"  style="width:2rem"></span></div>
                 </div>
                 <div v-if="(this.tweets.length==0 && this.people.length==0)" class="flex justify-center relative left-0 top-40">
                  <svg class="h-6" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -86,10 +86,6 @@
                             <div class="text-twgrey-400">@{{people[0].tag}}</div>
                             <div>{{people[0].bio}}</div>
                         </div>
-                        <div class="flex flex-col justify-center" v-if="(people[0].uid != $store.state.user.id)">
-                            <button v-if="!people[0].followed" @click="follow(people[0].uid)" class="bg-twblack-200 hover:bg-twblack-100 transition ease-in-out rounded-full px-5 py-2 font-semibold text-twgrey-100">Follow</button>
-                            <button v-else @click="unfollow(people[0].uid)" class="bg-white hover:bg-twgrey-100  transition ease-in-out rounded-full px-5 py-2 font-semibold text-black">Unfollow</button>
-                        </div>
                     </div>
                     <div v-if="((people.length>0) && selected==1)">
                         <div @click="filter(3)" class="px-4 py-3 hover:bg-twgrey-200 hover:cursor-pointer transition ease-in-out border-b border-twgrey-200">
@@ -118,8 +114,9 @@
                             <div class="text-twgrey-400">@{{pupil.tag}}</div>
                             <div>{{pupil.bio}}</div>
                         </div>
-                        <div class="flex flex-col justify-center">
-                            
+                        <div class="flex flex-col justify-center" v-if="(pupil.uid != $store.state.user.id)">
+                            <button v-if="!pupil.followed" @click="follow(pupil.uid)" class="bg-twblack-200 hover:bg-twblack-100 transition ease-in-out rounded-full px-5 py-2 font-semibold text-twgrey-100">Follow</button>
+                            <button v-else @click="unfollow(pupil.uid)" class="bg-white hover:bg-black hover:text-white border border-black  transition ease-in-out rounded-full px-5 py-2 font-semibold text-black">Unfollow</button>
                         </div>
                     </div>
                 </template>
@@ -218,6 +215,8 @@ export default {
                 return { ...doc.data(), id: doc.id }
             });
             this.people = this.people.filter(user => user.name.toLowerCase().includes(search.toLowerCase()));
+            //filter out the current user
+            this.people = this.people.filter(user => user.uid != this.$store.state.user.id);
                 
             //check for every tweet if it is retweeted by the user and if it is, add the property retweeted to the tweet
             //fetch retweets from firebase
@@ -243,7 +242,8 @@ export default {
             //check if the user is following the person
             this.people.forEach(person => {
                 follows.forEach(follow => {
-                    if(follow.follower === person.uid && follow.follower === this.$store.state.user.id){
+                    console.log(follow.follower,this.$store.state.user.id, follow.following, person.id)
+                    if(follow.follower === this.$store.state.user.id && follow.following=== person.uid){
                         person.followed = true;
                     }
                 })
@@ -340,6 +340,28 @@ export default {
             const follower = this.$store.state.user.id
             const following = id
             const docId = follower + '_' + following
+
+            //check if the user is already following the person
+            const res = await projectFirestore.collection('following').doc(docId).get();
+
+            //if the user is following the person, delete the document
+            if(res.exists){
+                await projectFirestore.collection('following').doc(docId).delete()
+
+                // update the count of followers of the current user
+                const res = await projectFirestore.collection('users').doc(follower).get()
+                const followers = res.data().following
+                await projectFirestore.collection('users').doc(follower).update({
+                    following: followers - 1
+                })
+
+                // update the count of following of the user being unfollowed
+                const res2 = await projectFirestore.collection('users').doc(following).get()
+                const followingCount = res2.data().follower
+                await projectFirestore.collection('users').doc(following).update({
+                    follower: followingCount - 1
+                })
+            }
         }
     }
 }
