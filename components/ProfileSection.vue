@@ -332,6 +332,8 @@ export default {
             }
         })
 
+        this.loading = false;
+
     },
     methods: {
         async filter(id) {

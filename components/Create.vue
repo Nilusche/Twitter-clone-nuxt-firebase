@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div class="flex border-b border-twgrey-200 z-0 p-4 mr-0">             
+        <div class="flex border-b border-twgrey-200  p-4 mr-0">             
             <div class="flex">
                 <span class="flex">
                     <img v-if="!$store.state.user.id|| $store.state.user.id&&  !$store.state.user.profilePic" class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out hover:cursor-pointer" @click="navigateToProfile"  src="@/assets/images/default_profile_400x400.png" alt="">
@@ -86,6 +86,9 @@ export default {
                 }
                 this.$store.dispatch('createTweet',{tweet})   
                 this.$refs.content_div.innerText = ''
+                //create new property on the tweet object called id
+                tweet.id = this.$store.state.tempID;
+                
                 this.$emit('addTweet', tweet)
                 // reload the page to show the new tweet
             }

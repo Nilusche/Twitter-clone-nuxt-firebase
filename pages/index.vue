@@ -265,7 +265,6 @@ export default{
         }
     },
     mounted(){
-        console.log(this.$store.state.user)
         if(this.$store.state.user.id != null){
             this.$router.push('/home')
         }

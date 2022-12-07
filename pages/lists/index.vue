@@ -53,7 +53,89 @@
 </template>
 
 <script>
+import {getRecommendations} from '@/Machine Learning/TweetRecommender'
+import {projectFirestore} from '@/firebase/config'
 export default {
-   
+  data(){
+  return{
+
+  }
+  },
+  async mounted(){
+    // fetch tweets from firebase but not as a snapshot
+    let tweetData = await projectFirestore.collection('tweets').get()
+
+    // create a new array called tweet to store all the tweets content in
+    let tweets = []
+
+    // loop through the tweetData and push the data into the tweets array
+    tweetData.forEach(doc => {
+      let content = doc.data().content.replace('<br>', ' ')
+      tweets.push({
+        id: doc.id,
+        content: content,
+      })
+    })
+
+    // get the last tweet that the user has liked
+    // fetch the likes from firebase where uid is equal to the current user
+    let likesData = await projectFirestore.collection('likes').where('uid', '==', this.$store.state.user.id).get()
+    let likes = []
+    likesData.forEach(doc => {
+      likes.push(doc.data().tweetid)
+    })
+
+    // get all the tweets that the user has liked
+    let likedTweets = []
+    for(let i = 0; i < likes.length; i++){
+      let tweet = await projectFirestore.collection('tweets').doc(likes[i]).get()
+      if(tweet){
+        // remove the <br> character from the tweet
+        likedTweets.push({
+          id: tweet.id,
+          content: tweet.data().content,
+          createdAt: tweet.data().createdAt
+        })
+      }
+    }
+
+    // if the user has liked a tweet then get the recommendations
+    if(likedTweets.length > 0){
+      // remove the <br> character from the tweet
+      likedTweets.forEach(tweet => {
+        tweet.content = tweet.content.replace('<br>', ' ')
+      })
+
+      // sort the tweets by the date they were created
+      likedTweets.sort((a, b) => {
+        return b.createdAt - a.createdAt
+      })
+
+      
+
+
+      // filter all the tweets that the user has liked (in the likedTweets array) and remove them from the tweets array
+      tweets = tweets.filter(tweet => {
+        let found = false
+        likedTweets.forEach(likedTweet => {
+          if(tweet.content == likedTweet.content){
+            found = true
+          }
+        })
+        return !found
+      })
+
+
+      //get the last tweet that the user has liked
+      let lastTweet = likedTweets[0]
+
+      // get the recommendations
+      console.log(likedTweets)
+      let recommendations = getRecommendations(lastTweet.content, tweets)
+      console.log(recommendations)
+    }
+
+      
+  }
 }
 </script>

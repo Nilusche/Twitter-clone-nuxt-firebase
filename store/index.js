@@ -16,7 +16,8 @@ export const state = () => ({
     followers:0,
     following:0,
     tag: null,
-  }
+  },
+  tempID: null,
 })
 
 export const actions = {
@@ -95,9 +96,7 @@ export const actions = {
   async createTweet({ commit }, { tweet }) {
     
     const res = await projectFirestore.collection('tweets').add(tweet);
-    
-    tweet.id = res.id;
-    return tweet
+    commit('updateTempID', res.id)
   },
 
   async updateUser({ commit }, {name, bio}) {
@@ -151,5 +150,9 @@ export const mutations = {
   },
   updateProfilePic(state, pic) {
     state.user.profilePic = pic;
+  },
+  updateTempID(state, id) {
+    state.tempID = id;
   }
+  
 }

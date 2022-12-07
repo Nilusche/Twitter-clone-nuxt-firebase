@@ -11,84 +11,14 @@
             
         </div>
         <!--Trend-->
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
+        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer" v-for="trend in topFeatures" :key="trend.content" @click="handleSearch(trend.term)">
             <div class="relative">
-                <span class="text-twgrey-400 text-xs">Trending in Germany</span>
-                <span class="font-bold block text-sm">HBOMax</span>
-                <span class="text-twgrey-400 text-xs">1,281 Tweets</span>
+                <span class="text-twgrey-400 text-xs">Trending in Twitterclone</span>
+                <span class="font-bold block text-sm">{{trend.term}}</span>
+                <span  class="text-twgrey-400 text-xs">{{trend.termCount}} Tweets</span>
                 <div class="absolute top-0 right-0">
                     <button class="rounded-full hover:bg-twgrey-300">
                         <svg class="h-6 w-6 " xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
-            <div class="relative">
-                <span class="text-twgrey-400 text-xs">Arts & culture Trending</span>
-                <span class="font-bold block text-sm">#WEBTOON</span>
-                <span class="text-twgrey-400 text-xs">2,246 Tweets</span>
-                <div class="absolute top-0 right-0">
-                    <button class="rounded-full hover:bg-twgrey-300">
-                        <svg class="h-6 w-6 " xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
-            <div class="relative">
-                <span class="text-twgrey-400 text-xs">Gaming Trending</span>
-                <span class="font-bold block text-sm">#GTAV</span>
-                <span class="text-twgrey-400 text-xs">6,458 Tweets</span>
-                <div class="absolute top-0 right-0">
-                    <button class="rounded-full hover:bg-twgrey-300">
-                        <svg class="h-6 w-6 " xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
-            <div class="relative">
-                <span class="text-twgrey-400 text-xs">Entertainment Trending</span>
-                <span class="font-bold block text-sm">FNAF</span>
-                <span class="text-twgrey-400 text-xs">5,845 Tweets</span>
-                <div class="absolute top-0 right-0">
-                    <button class="rounded-full hover:bg-twgrey-300">
-                        <svg class="h-6 w-6 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
-            <div class="relative">
-                <span class="text-twgrey-400 text-xs">Trending in Germany</span>
-                <span class="font-bold block text-sm">Benzin</span>
-                <span class="text-twgrey-400 text-xs">4,216 Tweets</span>
-                <div class="absolute top-0 right-0">
-                    <button class="rounded-full hover:bg-twgrey-300">
-                        <svg class="h-6 w-6 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer">
-            <div class="relative">
-                <span class="text-twgrey-400 text-xs">Gaming Trending</span>
-                <span class="font-bold block text-sm">#Assassins Creed</span>
-                <span class="text-twgrey-400 text-xs">4,238 Tweets</span>
-                <div class="absolute top-0 right-0">
-                    <button class="rounded-full hover:bg-twgrey-300">
-                        <svg class="h-6 w-6 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
                         </svg>
                     </button>
@@ -97,3 +27,191 @@
         </div>
     </div>
 </template>
+
+
+<script>
+// import the natural library
+import {getFeatures, getTopics, getRake} from '../Machine Learning/featureExtraction.js'
+import {projectFirestore} from '../firebase/config.js'
+export default{
+    data(){
+        return{
+            topFeatures : [],
+        }
+    },
+    async mounted(){
+        // fetch the tweets from the database
+
+        // set the top features as the past top features
+        // fetch the trends from the database and sort by date
+        const trends = await projectFirestore.collection('trends').orderBy('date', 'desc').get()
+
+        // get the first document
+        /*
+        if(trends.docs.length>0){
+            
+            const trend = trends.docs[0].data()
+            // check if the trend's date is today and if it is then set the top features as the trend's top features and return
+            
+            if(new Date(trend.date).getDate() === new Date().getDate()){
+                if(trend.topFeatures.length > 6){
+                    trend.topFeatures = trend.topFeatures.slice(0,6)
+                }
+                
+                this.topFeatures = trend.topFeatures
+                return
+            }
+        }
+        */
+        
+      
+
+
+        // update the trends collection by taking the top features 
+
+        const tweets = await projectFirestore.collection('tweets').get()
+
+        if(tweets.docs.length === 0){
+            return
+        }
+
+        // tweets contains an attribute called content which is a string
+        // concatenate all the tweets into one string
+        let tweetString = ''
+        tweets.forEach(tweet => {
+            tweetString += tweet.data().content + ' '
+        })
+
+        //remove the chracter "<br>" from the string
+        tweetString = tweetString.replaceAll('<br>', ' ')
+
+
+        
+        
+        // get the features from the tweet string
+        const features = getFeatures(tweetString)
+        // sort the features by their tfidf score in ascending order
+        features.sort((a,b) => b.tfidf - a.tfidf)
+        
+        
+        
+        
+    
+
+        // get all tweets that contain a hashtag
+        const tweetsWithHashtags = tweets.docs.filter(tweet => tweet.data().content.match(/#[a-zA-Z0-9]+/g))
+
+        // get all the hashtags from the tweets
+        const hashtags = tweetsWithHashtags.map(tweet => tweet.data().content.match(/#[a-zA-Z0-9]+/g))
+
+        // count the number of times a hashtag appears
+        const hashtagCount = {}
+        hashtags.forEach(tweetHashtags => {
+            tweetHashtags.forEach(hashtag => {
+                if(hashtagCount[hashtag]){
+                    hashtagCount[hashtag] += 1
+                }else{
+                    hashtagCount[hashtag] = 1
+                }
+            })
+        })
+
+        // sort the hashtags by their count in descending order
+        const sortedHashtags = Object.keys(hashtagCount).sort((a,b) => hashtagCount[b] - hashtagCount[a])
+
+        // delete duplicates (lowercase and uppercase)
+        for(let i=0; i<sortedHashtags.length; i++){
+            for(let j=i+1; j<sortedHashtags.length; j++){
+                if(sortedHashtags[i].toLowerCase() === sortedHashtags[j].toLowerCase()){
+                    sortedHashtags.splice(j,1)
+                    j--
+                }
+            }
+        }
+
+
+        // get the top 3 hashtags
+        const topHashtags = sortedHashtags.slice(0,3)
+        
+        // get the top 5 features that do not include the top hashtag terms or a substring of the top hashtag terms
+        let topFeatures = []
+        for(let i=0; i<features.length; i++){
+            let feature = features[i].term
+            let isSubstring = false
+            for(let j=0; j<topHashtags.length; j++){
+                let hashtag = topHashtags[j]
+                if(feature.includes(hashtag.slice(1))){
+                    isSubstring = true
+                    break
+                }
+            }
+
+            if(!isSubstring){
+                topFeatures.push(features[i])
+            }
+
+            if(topFeatures.length === 5){
+                break
+            }
+        }
+        // mix the top features and top hashtags
+        const mixedFeatures = topFeatures.concat(topHashtags.map(hashtag => {
+            return {
+                term : hashtag,
+                tfidf : 0
+            }
+        }))
+        
+        
+        // randomly shuffle the mixed features
+        for(let i=0; i<mixedFeatures.length; i++){
+            let randomIndex = Math.floor(Math.random() * mixedFeatures.length)
+            let temp = mixedFeatures[i]
+            mixedFeatures[i] = mixedFeatures[randomIndex]
+            mixedFeatures[randomIndex] = temp
+        }
+
+        this.topFeatures = mixedFeatures
+
+        for(var i =0; i<mixedFeatures.length; i++){
+            const term = mixedFeatures[i].term
+            // how often does the term appear in the tweets (lowercase and uppercase)
+            let termCount = 0
+            for(let j=0; j<tweets.docs.length; j++){
+                const tweet = tweets.docs[j].data().content
+                if(tweet.toLowerCase().includes(term.toLowerCase())){
+                    termCount++
+                }
+            }
+            
+            mixedFeatures[i]['termCount'] = termCount
+        }
+
+
+
+
+        // save the top features to the database with the date
+        const date = new Date()
+        const dateString = date.toDateString()
+        projectFirestore.collection('trends').add({
+            mixedFeatures,
+            date : dateString
+        })
+
+
+        
+
+        
+    },
+    methods:{
+        handleSearch(term){
+            this.$router.push("/explore/" + term)
+        }
+    }
+    
+}
+
+
+
+
+</script>

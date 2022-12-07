@@ -28,15 +28,32 @@ module.exports = {
       twblack:{
         100: "#282e34",
         200: "#14171A"
-      }
+      },
+      
     
       
     },
       fontFamily:{
         'montserrat':['Roboto', 'sans-serif']
+      },
+      width:{
+        '128':'32rem',
+        '136':'35rem',
+        '144':'36rem',
+        '150':'37rem',
+        '152':'38rem',
+        '160':'40rem',
+        '176':'44rem',
+        '192':'48rem',
+        '208':'52rem',
+        '224':'56rem',
+        '240':'60rem',
+        '256':'64rem',
+        '272':'68rem',
       }
       
     },
+    
   },
   plugins: [],
 }

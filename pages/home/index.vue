@@ -4,7 +4,7 @@
         <Navbar @tweetPopUp="triggerPopup=true"/>
          <div class="bg-white border-r border-l lg:block lg:col-span-1 col-span-8 tweets overflow-y-auto">
                 <Create @addTweet="handleTweetAdd"/>
-
+                
                 <!--Post-->
                 <div v-for="tweet in tweets" :key="tweet.createdAt" >
                     <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id"/>
@@ -145,7 +145,6 @@ export default {
       
       async handleTweetAdd(tweet){
         this.tweets.unshift(tweet);
-        console.log("Hello")
       },
       handleLoaded(){
         this.loading = false;

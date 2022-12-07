@@ -225,19 +225,30 @@ export default{
         }
 
         //to check if this tweet has been replied to see if its id is in the replyTo field of any other tweet
+        /*
         await projectFirestore.collection('tweets').where('replyTo', '==', this.tweet.id).get().then(querySnapshot => {
           if(querySnapshot.docs.length > 0){
             this.repliedTo = true
           }
         })
+        */
+        //to check if this tweet has been replied to see if its id is in the replyTo field of any other tweet but not as a snapshot
+        const res1=  await projectFirestore.collection('tweets').where('replyTo', '==', this.tweet.id).get()
+        if(res1.docs.length > 0){
+          this.repliedTo = true
+        }
+        
 
 
-        // search the content of the tweet for #hashtag and make them clickable
+
+        // search the content of the tweet for @username and #hashtag and make them clickable
         let content = this.tweet.content
         let words = content.split(' ')
         let newContent = ''
         words.forEach(word => {
-          if(word.startsWith('#')){
+          if(word.startsWith('@')){
+            newContent += `<a class="font-semibold text-twblue hover:underline">${word}</a> `
+          }else if(word.startsWith('#')){
             newContent += `<a href="/explore/${word.slice(1)}"font-semibold class="text-twblue hover:underline">${word}</a> `
           }else{
             newContent += word + ' '
@@ -350,6 +361,9 @@ export default{
                     await projectFirestore.collection('likes').doc(doc.id).delete()
                 })
             })
+            
+            
+
             //delete retweets
             await projectFirestore.collection('retweets').where('tweetid', '==', this.tweet.id).get().then(async querySnapshot => {
                 querySnapshot.forEach(async doc => {
