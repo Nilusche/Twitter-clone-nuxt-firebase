@@ -1,7 +1,7 @@
 <template>
-    <div :class="{borderbottom:!this.isReply}" class="flex  z-0 p-4 pr-12 hover:bg-twgrey-50 transition ease-in-out cursor-pointer" @click="navigate">             
-        <div class="">
-          <span v-if="retweeted == true" class ="relative left-8 text-gray-400 bottom-1">
+    <div :class="{borderbottom:!this.isReply}" class="flex  p-4  hover:bg-twgrey-50 transition ease-in-out cursor-pointer " @click="navigate">             
+        <div class="grow ">
+          <div v-if="retweeted == true" class ="relative left-8 text-gray-400 bottom-1 ">
             <svg class="icon icon-retweet   inline-block" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
               <g fill="none" fill-rule="evenodd" stroke="#53688c" stroke-linecap="round" stroke-width="2" transform="translate(2.25 5.5)">
                   <g transform="translate(0 1)">
@@ -17,30 +17,29 @@
             
             You retweeted this
           
-          </span>
-            <span class="flex">
-                <div class="flex flex-col">
-                  <img v-if="!this.profilePic" class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
+            </div>
+            <div class="flex ">
+                <div class="flex flex-col ">
+                  <img v-if="!this.profilePic" class=" object-cover rounded-full w-12 h-12 mr-1 hover:contrast-50 transition ease-in-out" 
                   @mouseover="hover = true"
                   @mouseleave="hover = false"
-                  @click="navigateToProfile" 
+                  @click="navigateToProfile" style="min-width:48px;"
                   src="@/assets/images/default_profile_400x400.png" alt="">
-                  <img v-else class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out" 
+                  <img v-else class=" object-cover rounded-full w-12 h-12 mr-1 hover:contrast-50 transition ease-in-out" 
                   @mouseover="hover = true"
-                  @mouseleave="hover = false"
-                  @click="navigateToProfile" 
+                  @mouseleave="hover = false" style="min-width:48px;"
                   :src="this.profilePic" alt="">
                   <div class="flex-grow" v-if="this.isReply">
                     <div class=" mt-7 bg-twgrey-300" style="height:2px; width:3em; transform: rotate(90deg);"></div>
                   </div>
                 </div>
 
-                 <div v-if="hover" class="relative">
+                 <div v-if="hover" class="relative ">
 
 
                  </div>
 
-                <div class="block">
+                <div class="grow">
                     <span class="font-bold">{{tweetusername}}</span>
                     <span class="text-gray-400">{{tweetusertag}}</span>
                     <span class="text-gray-400">⋅{{tweetusertime}}</span>
@@ -136,28 +135,31 @@
                             <span></span>
                         </span>
                     </div>
-                    <span v-if="showDelete" @click.stop="handleDelete" class=" relative text-red-500 bg-white left-48 rounded-md shadow-md hover:bg-twgrey-200 px-7 py-2 h-8" style="z-index:9999; top:-5.4rem">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                      </svg>
-                      <span> Delete</span>
-
-                    </span>
+                    
                     <div v-if="repliedTo && this.$route.path=='/home'" @click="navigate" class="text-twblue py-4 pr-2 hover:bg-twgrey-200">Show this Thread</div>
                 </div>
-                <div class="py-2 px-2 hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full" v-if="this.$store.state.user.id == tweet.uid">
-                  <span  @click.stop="showDelete=!showDelete">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" style="color:gray"/>
-                  </svg>
-                </span>
-                  
+                <div class="flex flex-col">
+                  <div class="p-2  hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full " >
+                    <span  @click.stop="showDelete=!showDelete">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                      </svg>
+
+                    </span>
+                    
+                  </div>
+                  <div v-if="showDelete" class="p-2  hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full" >
+                    <span  @click.stop="handleDelete" class=" text-red-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                      </svg>
+
+                    </span>
+                      
+                  </div>
                 </div>
                 
-                
-                
-                
-            </span>
+              </div>
             
         </div>
         
@@ -229,6 +231,19 @@ export default{
           }
         })
 
+
+        // search the content of the tweet for #hashtag and make them clickable
+        let content = this.tweet.content
+        let words = content.split(' ')
+        let newContent = ''
+        words.forEach(word => {
+          if(word.startsWith('#')){
+            newContent += `<a href="/explore/${word.slice(1)}"font-semibold class="text-twblue hover:underline">${word}</a> `
+          }else{
+            newContent += word + ' '
+          }
+        })
+        this.tweet.content = newContent
 
 
         this.$emit('loaded')
