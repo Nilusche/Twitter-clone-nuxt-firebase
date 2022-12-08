@@ -661,26 +661,20 @@ export default {
 
    methods:{
     async doit(){
-        // get all user ids from firestore
-        const users = await projectFirestore.collection('users').get()
-        const usersIds = users.docs.map(doc => doc.id)
+        // delete 100 random tweets that have not been liked or retweeted
         
-        // loop tweets
-        for (let i = 1; i < tweets.length; i++) {
-            const tweet = tweets[i];
-            // pic a random user
-            const randomUser = usersIds[Math.floor(Math.random() * usersIds.length)]
-            // insert tweet to firestore
-            await projectFirestore.collection('tweets').add({
-                content: tweet,
-                uid: randomUser,
-                createdAt: timestamp(),
-                likes: 0,
-                retweets: 0,
-                comments: 0,
-                replyTo: null,
-            })
-        }
+        // get all tweets
+        const tweets = await projectFirestore.collection('tweets').get()
+        // get all tweets that have not been liked or retweeted
+        const tweetsNotLikedOrRetweeted = tweets.docs.filter(tweet => tweet.data().likes.length === 0 && tweet.data().retweets.length === 0)
+        // get 100 random tweets
+        const randomTweets = tweetsNotLikedOrRetweeted.sort(() => Math.random() - 0.5).slice(0, 100)
+        // delete the tweets
+        randomTweets.forEach(tweet => {
+            projectFirestore.collection('tweets').doc(tweet.id).delete()
+        })
+        
+
     }
    }
 }

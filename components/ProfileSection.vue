@@ -282,6 +282,7 @@ export default {
 
 
         // get all my tweets and add attribute id to each tweet
+        /*
         await projectFirestore.collection('tweets').where('uid', '==', this.userID).orderBy('createdAt', 'desc').onSnapshot(snapshot => {
             this.tweets = snapshot.docs.map(doc => 
             ({
@@ -290,7 +291,16 @@ export default {
             })
             );
         }
+        );*/
+
+        const res = await projectFirestore.collection('tweets').where('uid', '==', this.userID).orderBy('createdAt', 'desc').get()
+        this.tweets = res.docs.map(doc => 
+            ({
+                id: doc.id,
+                ...doc.data()
+            })
         );
+
 
         let user_Id = this.userID;
         // get all tweet ids from retweets that have the user id
