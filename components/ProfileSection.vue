@@ -471,7 +471,7 @@ export default {
                 const res2 = await projectFirestore.collection('users').doc(following).get()
                 const followingCount = res2.data().follower
                 await projectFirestore.collection('users').doc(following).update({
-                    follower: followingCount - 1
+                    followers: followingCount - 1
                 })
             }
             this.followingUser = false;
