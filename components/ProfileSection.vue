@@ -267,7 +267,7 @@ export default {
             filePath, url, handleCreate, handleFileChange, file, fileerror
         }
     },
-    async mounted(){
+    async created(){
         // fetch user from url and set it to currentUser
         //get user doc from firestore with id
         await projectFirestore.collection('users').doc(this.userID).get().then(doc => {
