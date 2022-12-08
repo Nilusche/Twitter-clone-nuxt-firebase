@@ -286,8 +286,8 @@ export default{
           content: this.tweet.content,
           createdAt: this.tweet.createdAt,
           replyTo: this.tweet.replyTo,
-          retweetCount: this.tweet.retweetCount,
-          likeCount: this.tweet.likeCount,
+          retweets: this.tweet.retweets,
+          likes: this.tweet.likes,
           retweeted: this.retweeted,
           liked: this.check,
           profilePic: this.profilePic,
@@ -344,6 +344,25 @@ export default{
                     })
                 }
             })
+            const information = {
+              id: this.tweet.id,
+              uid: this.tweet.uid,
+              content: this.tweet.content,
+              createdAt: this.tweet.createdAt,
+              replyTo: this.tweet.replyTo,
+              retweets: this.tweet.retweets,
+              likes: this.tweet.likes,
+              retweeted: this.retweeted,
+              liked: this.check,
+              profilePic: this.profilePic,
+              tweetusername: this.tweetusername,
+              tweetusertag: this.tweetusertag,
+              tweetusertime: this.tweetusertime,
+              repliedTo: this.repliedTo,
+            }
+
+            this.$store.commit('updateSpecificTweets', information)
+            
         },
         async handleRetweet(){
           if(this.retweeted){
@@ -372,6 +391,27 @@ export default{
                     })
                 }
             })
+
+            const information = {
+                id: this.tweet.id,
+                uid: this.tweet.uid,
+                content: this.tweet.content,
+                createdAt: this.tweet.createdAt,
+                replyTo: this.tweet.replyTo,
+                retweets: this.tweet.retweets,
+                likes: this.tweet.likes,
+                retweeted: this.retweeted,
+                liked: this.check,
+                profilePic: this.profilePic,
+                tweetusername: this.tweetusername,
+                tweetusertag: this.tweetusertag,
+                tweetusertime: this.tweetusertime,
+                repliedTo: this.repliedTo,
+              }
+
+              this.$store.commit('updateSpecificTweets', information)
+
+
         },
         navigateToProfile(){
           this.$router.replace({path: '/' + this.tweet.uid})
@@ -429,10 +469,16 @@ export default{
             })
             //delete replies
 
+            //dispatch store  action to delete tweet from store
+            this.$store.dispatch('deleteTweet', this.tweet.id)
+
+
             //emit event to parent
             this.$emit('deleted', this.tweet.id)
 
             this.showDelete = false
+
+
         },
     },
         
