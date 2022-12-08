@@ -359,7 +359,9 @@ export default {
       return tweet
     },
     navigateToProfile(){
-        this.$router.push(this.tweet.uid)
+        // route to this tweet's uid
+        this.$router.replace({path: '/' + this.tweet.uid})
+
     },
     timeSince(date){
           //get the current time

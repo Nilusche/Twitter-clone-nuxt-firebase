@@ -37,7 +37,9 @@ export default {
             this.list_of_users.push(doc.data())
         }
     })
-    this.list_of_users = this.list_of_users.slice(0,3)
+    //get 3 random users
+    this.list_of_users = this.list_of_users.sort(() => Math.random() - 0.5)
+    
 
 
     //get all the users that the current user is following from the following collection
@@ -48,6 +50,8 @@ export default {
     //filter the users that the current user is following from the list of users
     this.list_of_users = this.list_of_users.filter(user => !following_users.includes(user.uid))
 
+
+    this.list_of_users = this.list_of_users.slice(0,3)
    
   },
   methods:{
@@ -78,8 +82,6 @@ export default {
             followers: followingCount + 1
         })
 
-        //update the store
-        this.$store.dispatch('getUser', this.$store.state.user.id)
 
         //remove the user from the list of users
         this.list_of_users = this.list_of_users.filter(user => user.uid != id)

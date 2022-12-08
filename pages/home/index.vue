@@ -80,6 +80,8 @@ import {mapState} from 'vuex'
 import { projectFirestore } from '@/firebase/config';
 
 export default {
+  
+
     name: "IndexPage",
     data(){
       return {
@@ -88,7 +90,14 @@ export default {
         triggerPopup : false,
       }
     },
-    async mounted(){
+    async created(){
+      console.log('home created')
+      if(this.$store.state.tweets != null){
+        this.tweets = this.$store.state.tweets;
+        this.loading = false;
+      }
+
+
       if(this.$store.state.user.id == null){
         this.$router.push('/');
       }
@@ -102,6 +111,9 @@ export default {
           ...doc.data()
         })
       );
+
+      
+
       //get tweets as snapshot
       /*
      await projectFirestore.collection('tweets').where('uid', '==', this.$store.state.user.id).orderBy('createdAt', 'desc').onSnapshot(snapshot => {
@@ -139,8 +151,17 @@ export default {
       }
       this.tweets.sort((a, b) => b.createdAt - a.createdAt);
 
+
+      // dispatch the tweets to the store
+      this.$store.dispatch('setTweets', this.tweets);
+
       this.loading = false;
     },
+
+    async mounted(){
+      this.tweets = this.$store.state.tweets;
+    },
+
     methods:{
       
       async handleTweetAdd(tweet){

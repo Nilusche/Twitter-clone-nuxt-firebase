@@ -39,30 +39,30 @@ export default{
             topFeatures : [],
         }
     },
-    async mounted(){
+    async created(){
         // fetch the tweets from the database
-
+        
         // set the top features as the past top features
         // fetch the trends from the database and sort by date
         const trends = await projectFirestore.collection('trends').orderBy('date', 'desc').get()
 
         // get the first document
-        /*
-        if(trends.docs.length>0){
+        
+        if(trends.docs&&  trends.docs.length>0){
             
             const trend = trends.docs[0].data()
             // check if the trend's date is today and if it is then set the top features as the trend's top features and return
             
             if(new Date(trend.date).getDate() === new Date().getDate()){
-                if(trend.topFeatures.length > 6){
-                    trend.topFeatures = trend.topFeatures.slice(0,6)
+                if(trend.mixedFeatures.length > 6){
+                    trend.mixedFeatures = trend.mixedFeatures.slice(0,6)
                 }
                 
-                this.topFeatures = trend.topFeatures
+                this.topFeatures = trend.mixedFeatures
                 return
             }
         }
-        */
+        
         
       
 
@@ -199,9 +199,15 @@ export default{
         })
 
 
-        
+        // dispatch an event to update the trends in the explore page
+        this.$store.dispatch('updateTrends', mixedFeatures)
 
         
+    },
+
+    async mounted(){
+        // get the topics from the store
+        this.topFeatures = this.$store.state.topFeatures
     },
     methods:{
         handleSearch(term){

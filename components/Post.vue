@@ -184,7 +184,26 @@ export default{
             repliedTo:false
         }
     },
-    async mounted(){
+    async created(){
+       if(this.$store.state.specificTweets.length > 0){
+
+
+        const specificTweets = this.$store.state.specificTweets
+        const tweet = specificTweets.find(tweet => tweet.id === this.tweet.id)
+        if(tweet){
+          this.retweeted = tweet.retweeted
+          this.check = tweet.liked
+          this.profilePic = tweet.profilePic
+          this.tweetusername = tweet.tweetusername
+          this.tweetusertag = tweet.tweetusertag
+          this.tweetusertime = tweet.tweetusertime
+          this.repliedTo = tweet.repliedTo
+        }
+
+        return
+      }
+
+
         this.tweetuser = await projectFirestore.collection('users').doc(this.tweet.uid).get()
         //set content in innerHtml
       
@@ -258,7 +277,45 @@ export default{
 
 
         this.$emit('loaded')
+
+
+        // store every information about the tweet in the store
+        const information = {
+          id: this.tweet.id,
+          uid: this.tweet.uid,
+          content: this.tweet.content,
+          createdAt: this.tweet.createdAt,
+          replyTo: this.tweet.replyTo,
+          retweetCount: this.tweet.retweetCount,
+          likeCount: this.tweet.likeCount,
+          retweeted: this.retweeted,
+          liked: this.check,
+          profilePic: this.profilePic,
+          tweetusername: this.tweetusername,
+          tweetusertag: this.tweetusertag,
+          tweetusertime: this.tweetusertime,
+          repliedTo: this.repliedTo,
+        }
+
+        this.$store.commit('updateSpecificTweets', information)
+
+
     },
+
+    async mounted(){
+       const specificTweets = this.$store.state.specificTweets
+        const tweet = specificTweets.find(tweet => tweet.id === this.tweet.id)
+        if(tweet){
+          this.retweeted = tweet.retweeted
+          this.check = tweet.liked
+          this.profilePic = tweet.profilePic
+          this.tweetusername = tweet.tweetusername
+          this.tweetusertag = tweet.tweetusertag
+          this.tweetusertime = tweet.tweetusertime
+          this.repliedTo = tweet.repliedTo
+        }
+    },
+
     methods: {
         async handleLike(){
             document.getElementById(`checkbox-${this.tweet.id}`).checked = !document.getElementById(`checkbox-${this.tweet.id}`).checked
@@ -317,7 +374,7 @@ export default{
             })
         },
         navigateToProfile(){
-            this.$router.push(this.tweet.uid)
+          this.$router.replace({path: '/' + this.tweet.uid})
         },
         navigate(){
         this.$router.push(`/${this.tweet.uid}/status/${this.tweet.id}`);

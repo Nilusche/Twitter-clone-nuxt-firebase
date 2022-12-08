@@ -18,6 +18,11 @@ export const state = () => ({
     tag: null,
   },
   tempID: null,
+  tweets: [],
+  specificTweets: [],
+  trends: [],
+  users: [],
+  
 })
 
 export const actions = {
@@ -119,6 +124,19 @@ export const actions = {
     })
 
     commit('updateProfilePic', pic)
+  },
+
+  async setTweet({ commit }, { tweets }) {
+    commit('setTweet', tweets)
+  },
+
+  async updateTrends({ commit }, {mixedFeatures}) {
+    commit('setTrends', mixedFeatures)
+  },
+
+  async updateSpecificTweets({ commit }, {information}) {
+    commit('setSpecificTweets', information)
+
   }
 }
 
@@ -153,6 +171,18 @@ export const mutations = {
   },
   updateTempID(state, id) {
     state.tempID = id;
+  },
+
+  setTweet(state, tweets) {
+    state.tweets = tweets;
+  },
+
+  setTrends(state, mixedFeatures) {
+    state.trends = mixedFeatures;
+  },
+
+  setSpecificTweets(state, information) {
+    state.specificTweets.push(information)
   }
   
 }
