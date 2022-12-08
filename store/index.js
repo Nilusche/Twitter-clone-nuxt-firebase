@@ -96,7 +96,10 @@ export const actions = {
   },
   async logout({ commit }) {
     commit('logoutUser');
+    
     await useLogout();
+
+    commit('resetState');
   },
   async createTweet({ commit }, { tweet }) {
     
@@ -212,7 +215,7 @@ export const mutations = {
           likes: information.likes,
           profilePic: this.profilePic,
       })
-      
+
     }
   },
   updateTweets(state, tweet) {
@@ -220,6 +223,21 @@ export const mutations = {
   },
   deleteTweet(state, id) {
     state.tweets = state.tweets.filter(tweet => tweet.id !== id)
-  }
+  },
   
+
+  resetState(state){
+    state.user.id = null;
+    state.user.name = null;
+    state.user.email = null;
+    state.user.profilePic = null;
+    state.user.bio = null;
+    state.user.followers = 0;
+    state.user.following = 0;
+    state.user.tag = null;
+    state.tweets = [];
+    state.trends = [];
+    state.specificTweets = [];
+    state.tempID = null;
+  }
 }
