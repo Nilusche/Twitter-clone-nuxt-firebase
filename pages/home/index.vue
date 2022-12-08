@@ -91,10 +91,11 @@ export default {
       }
     },
     async created(){
-      console.log('home created')
+      
       if(this.$store.state.tweets != null){
         this.tweets = this.$store.state.tweets;
         this.loading = false;
+        return
       }
 
 

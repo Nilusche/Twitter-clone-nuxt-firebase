@@ -101,7 +101,11 @@ export const actions = {
   async createTweet({ commit }, { tweet }) {
     
     const res = await projectFirestore.collection('tweets').add(tweet);
+
     commit('updateTempID', res.id)
+
+    // also commit tweet to store
+    commit('updateTweets', tweet)
   },
 
   async updateUser({ commit }, {name, bio}) {
@@ -183,6 +187,9 @@ export const mutations = {
 
   setSpecificTweets(state, information) {
     state.specificTweets.push(information)
+  },
+  updateTweets(state, tweet) {
+    state.tweets.unshift(tweet)
   }
   
 }
