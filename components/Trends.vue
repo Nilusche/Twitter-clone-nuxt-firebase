@@ -43,6 +43,7 @@ export default{
 
         if( this.$store.state.trends && this.$store.state.trends.length > 0){
             this.topFeatures = this.$store.state.trends
+            return;
         }
         // check if firebase permissions are enabled
 
