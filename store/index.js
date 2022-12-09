@@ -96,7 +96,10 @@ export const actions = {
   },
   async logout({ commit }) {
     commit('logoutUser');
+    
     await useLogout();
+
+    commit('resetState');
   },
   async createTweet({ commit }, { tweet }) {
     
@@ -141,6 +144,9 @@ export const actions = {
   async updateSpecificTweets({ commit }, {information}) {
     commit('setSpecificTweets', information)
 
+  },
+  async deleteTweet({ commit }, {id}) {
+    commit('deleteTweet', id)
   }
 }
 
@@ -186,10 +192,52 @@ export const mutations = {
   },
 
   setSpecificTweets(state, information) {
-    state.specificTweets.push(information)
+    // if tweet with same id exists, replace it
+    let index = state.specificTweets.findIndex(tweet => tweet.id === information.id)
+    if(index !== -1){
+      state.specificTweets.splice(index, 1, information)
+    }else{
+      state.specificTweets.unshift(information)
+    }
+
+    // also update the tweets array
+    index = state.tweets.findIndex(tweet => tweet.id === information.id)
+    if(index !== -1){
+      state.tweets.splice(index, 1, information)
+    }else{
+      state.tweets.unshift({
+          id: information.id,
+          uid: information.uid,
+          content: information.content,
+          createdAt: information.createdAt,
+          replyTo: information.replyTo,
+          retweets: information.retweets,
+          likes: information.likes,
+          profilePic: this.profilePic,
+      })
+
+    }
   },
   updateTweets(state, tweet) {
     state.tweets.unshift(tweet)
-  }
+  },
+  deleteTweet(state, id) {
+    state.tweets = state.tweets.filter(tweet => tweet.id !== id)
+  },
   
+
+  resetState(state){
+    state.user.id = null;
+    state.user.name = null;
+    state.user.email = null;
+    state.user.profilePic = null;
+    state.user.bio = null;
+    state.user.followers = 0;
+    state.user.following = 0;
+    state.user.tag = null;
+    state.tweets = [];
+    state.trends = [];
+    state.specificTweets = [];
+    state.tempID = null;
+  }
 }
