@@ -107,8 +107,6 @@ export const actions = {
 
     commit('updateTempID', res.id)
 
-    // also commit tweet to store
-    commit('updateTweets', tweet)
   },
 
   async updateUser({ commit }, {name, bio}) {

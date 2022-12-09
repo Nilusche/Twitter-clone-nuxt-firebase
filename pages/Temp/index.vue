@@ -24,19 +24,20 @@ export default {
         })
         // parse to json
         const trends = JSON.parse(response)
-        console.log(trends)
+        
     },
 
     methods:{
         async setKey(){
             let dateString = new Date().toDateString()
             //remove spaces
-            dateString = dateString.replace(/\s/g, '')
-            
-            const res = await this.$axios.$post('/api/keys', {
-                key : 'trends' + ':'+  dateString,
-                value : JSON.stringify(this.$store.state.trends)
+            let curDateStr = new Date().toDateString()
+            //remove spaces
+            curDateStr = curDateStr.replace(/\s/g, '')
+            const res = await this.$axios.$post('/api/del', {
+                key : 'timeline' + ':'+  this.$store.state.user.id + ':' + curDateStr,
             })
+            console.log(res)
         }
     }
 }

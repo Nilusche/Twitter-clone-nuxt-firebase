@@ -42,6 +42,11 @@ app.get('/api/keys', (req, res) => {
     });
 });
 
+app.post('/api/del', (req, res) => {
+    const key = req.body.key;
+    redis.del(key);
+    res.json("key deleted");
+});
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);

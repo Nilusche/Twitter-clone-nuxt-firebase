@@ -70,6 +70,7 @@
 </template>
 
 <script>
+
 export default {
   data(){
     return{
@@ -77,7 +78,14 @@ export default {
     }
   },
   methods:{
-    logout(){
+    async logout(){
+        let curDateStr = new Date().toDateString()
+        //remove spaces
+        curDateStr = curDateStr.replace(/\s/g, '')
+        const res = await this.$axios.$post('/api/del', {
+            key : 'timeline' + ':'+  this.$store.state.user.id + ':' + curDateStr,
+        })
+
         this.$store.dispatch('logout').then(()=>{
             this.$router.push('/');
         });

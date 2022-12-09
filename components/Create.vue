@@ -83,12 +83,18 @@ export default {
                     comments:0,
                     retweets:0,
                     replyTo: null,
+                    profilePic: this.$store.state.user.profilePic,
                 }
                 this.$store.dispatch('createTweet',{tweet})   
                 this.$refs.content_div.innerText = ''
                 //create new property on the tweet object called id
                 tweet.id = this.$store.state.tempID;
                 
+
+                tweet.tweetusertime = this.timeSince(new Date())
+                tweet.tweetusername =  this.$store.state.user.name,
+                tweet.tweetusertag =  this.$store.state.user.tag,
+
                 this.$emit('addTweet', tweet)
                 // reload the page to show the new tweet
             }
@@ -96,6 +102,34 @@ export default {
         navigateToProfile(){
             this.$router.push(this.$store.state.user.id)
         },
+        timeSince(date){
+          //get the current time
+          const now = new Date();
+          //get the difference between the current time and the tweet creation time
+          const seconds = Math.floor((now - date) / 1000);
+          //calculate the number of years, months, days, hours, minutes and seconds since the tweet was created
+          let interval = Math.floor(seconds / 31536000);
+          if (interval > 1) {
+            return interval + " y";
+          }
+          interval = Math.floor(seconds / 2592000);
+          if (interval > 1) {
+            return interval + " mo";
+          }
+          interval = Math.floor(seconds / 86400);
+          if (interval > 1) {
+            return interval + " d";
+          }
+          interval = Math.floor(seconds / 3600);
+          if (interval > 1) {
+            return interval + " h";
+          }
+          interval = Math.floor(seconds / 60);
+          if (interval > 1) {
+            return interval + " min";
+          }
+          return Math.floor(seconds) + " sec";
+        }
     }
 }
 </script>

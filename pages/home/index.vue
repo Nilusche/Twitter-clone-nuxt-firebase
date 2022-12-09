@@ -7,7 +7,7 @@
                 
                 <!--Post-->
                 <div v-for="tweet in tweets" :key="tweet.id" >
-                    <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id"/>
+                    <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id" @update="handleUpdate"/>
                 </div>
                 <div v-if="loading" class="flex justify-center">
                  <svg class="h-6" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -96,8 +96,11 @@ export default {
         return
       }
       */
+      let  date  = new Date().toDateString();
+      // remove whitespace
+      date = date.replace(/\s/g, '');
 
-      const queryStr = 'timeline:' + this.$store.state.user.id
+      const queryStr = 'timeline:' + this.$store.state.user.id + ":" + date;
       const response =  await this.$axios.$get('/api/keys', {
           params : {
               key : queryStr
@@ -107,6 +110,7 @@ export default {
       if(response){
         const tweets = JSON.parse(response);
         this.tweets = tweets;
+
         return
       }
 
@@ -168,10 +172,29 @@ export default {
       // dispatch the tweets to the store
       //this.$store.commit('setTweets', this.tweets);
 
+      //iterate through tweets
+      this.tweets.forEach(tweet => {
+          if(tweet){
+            let content = tweet.content
+            let words = content.split(' ')
+            let newContent = ''
+            words.forEach(word => {
+              if(word.startsWith('@')){
+                newContent += `<a class="font-semibold text-twblue hover:underline">${word}</a> `
+              }else if(word.startsWith('#')){
+                newContent += `<a href="/explore/${word.slice(1)}"font-semibold class="text-twblue hover:underline">${word}</a> `
+              }else{
+                newContent += word + ' '
+              }
+            })
+            tweet.content = newContent
+          }
+        })
+
       this.loading = false;
 
       const res = await this.$axios.$post('/api/keys', {
-          key : 'timeline' + ':'+  this.$store.state.user.id,
+          key : 'timeline' + ':'+  this.$store.state.user.id + ':' + date,
           value : JSON.stringify(this.tweets)
       })
 
@@ -180,7 +203,15 @@ export default {
     methods:{
       
       async handleTweetAdd(tweet){
-        //this.tweets.unshift(tweet);
+        this.tweets.unshift(tweet);
+        console.log(tweet)
+        let  date  = new Date().toDateString();
+        // remove whitespace
+        date = date.replace(/\s/g, '');
+        const res = await this.$axios.$post('/api/keys', {
+          key : 'timeline' + ':'+  this.$store.state.user.id + ':' + date,
+          value : JSON.stringify(this.tweets)
+        })
       },
       handleLoaded(){
         this.loading = false;
@@ -190,8 +221,24 @@ export default {
       },
       async handleDeleted(tweet){
         this.tweets = this.tweets.filter(t => t.id != tweet);
+        let  date  = new Date().toDateString();
+        // remove whitespace
+        date = date.replace(/\s/g, '');
+        const res = await this.$axios.$post('/api/keys', {
+          key : 'timeline' + ':'+  this.$store.state.user.id + ':' + date,
+          value : JSON.stringify(this.tweets)
+        })
 
       },
+      async handleUpdate(){
+        let  date  = new Date().toDateString();
+        // remove whitespace
+        date = date.replace(/\s/g, '');
+        const res = await this.$axios.$post('/api/keys', {
+          key : 'timeline' + ':'+  this.$store.state.user.id + ':' + date,
+          value : JSON.stringify(this.tweets)
+        })
+      }
     },
 
 }

@@ -42,7 +42,7 @@
                 <div class="grow">
                     <span class="font-bold">{{tweetusername}}</span>
                     <span class="text-gray-400">{{tweetusertag}}</span>
-                    <span class="text-gray-400">⋅{{tweetusertime}}</span>
+                    <span class="text-gray-400" v-if="tweetusertime">⋅{{tweetusertime}}</span>
                     <div v-html="tweet.content">
                         
                     </div>
@@ -178,12 +178,12 @@ export default{
             prop_retweeted: this.retweeted,
             prop_id: this.id,
             prop_isReply: this.isReply,
-            tweetusername: "",
-            tweetusertag: "",
-            tweetusertime: "",
+            tweetusername:  this.tweet.tweetusername ?? "",
+            tweetusertag:  this.tweet.tweetusertag ?? "",
+            tweetusertime: this.tweet.tweetusertime ?? "",
             check: false,
             hover: false,
-            profilePic: null,
+            profilePic: this.tweet.profilePic ?? "",
             showDelete : false,
             repliedTo:false
         }
@@ -196,11 +196,14 @@ export default{
         const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.prop_tweet.id)
         if(tweet){
           this.check = tweet.liked
+          this.prop_retweeted = tweet.retweeted
+          this.prop_isReply = tweet.isReply
           this.profilePic = tweet.profilePic
           this.tweetusername = tweet.tweetusername
           this.tweetusertag = tweet.tweetusertag
           this.tweetusertime = tweet.tweetusertime
           this.repliedTo = tweet.repliedTo
+
         }
 
         return
@@ -264,20 +267,7 @@ export default{
 
 
         // search the content of the tweet for @username and #hashtag and make them clickable
-        let content = this.prop_tweet.content
-        let words = content.split(' ')
-        let newContent = ''
-        words.forEach(word => {
-          if(word.startsWith('@')){
-            newContent += `<a class="font-semibold text-twblue hover:underline">${word}</a> `
-          }else if(word.startsWith('#')){
-            newContent += `<a href="/explore/${word.slice(1)}"font-semibold class="text-twblue hover:underline">${word}</a> `
-          }else{
-            newContent += word + ' '
-          }
-        })
-        
-        this.$store.commit('setTweetContent', {id: this.prop_tweet.id, content: newContent})
+      
 
 
         this.$emit('loaded')
@@ -303,19 +293,6 @@ export default{
         this.$store.commit('setSpecificTweets', information)
 
 
-    },
-
-    async mounted(){
-       const specificTweets = this.$store.state.specificTweets
-        const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.prop_tweet.id)
-        if(tweet){
-          this.check = tweet.liked
-          this.profilePic = tweet.profilePic
-          this.tweetusername = tweet.tweetusername
-          this.tweetusertag = tweet.tweetusertag
-          this.tweetusertime = tweet.tweetusertime
-          this.repliedTo = tweet.repliedTo
-        }
     },
 
     methods: {
@@ -346,6 +323,7 @@ export default{
                     })
                 }
             })
+            this.$emit('update')
             
         },
         async handleRetweet(){
@@ -375,6 +353,7 @@ export default{
                     })
                 }
             })
+            this.$emit('update')
 
         },
         navigateToProfile(){
