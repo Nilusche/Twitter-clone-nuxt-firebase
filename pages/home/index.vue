@@ -6,7 +6,7 @@
                 <Create @addTweet="handleTweetAdd"/>
                 
                 <!--Post-->
-                <div v-for="tweet in tweets" :key="tweet.createdAt" >
+                <div v-for="tweet in tweets" :key="tweet.id" >
                     <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id"/>
                 </div>
                 <div v-if="loading" class="flex justify-center">

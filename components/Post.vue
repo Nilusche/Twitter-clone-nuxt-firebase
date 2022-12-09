@@ -189,7 +189,8 @@ export default{
 
 
         const specificTweets = this.$store.state.specificTweets
-        const tweet = specificTweets.find(tweet => tweet.id === this.tweet.id)
+        console.log(specificTweets)
+        const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.tweet.id)
         if(tweet){
           this.retweeted = tweet.retweeted
           this.check = tweet.liked
@@ -304,7 +305,7 @@ export default{
 
     async mounted(){
        const specificTweets = this.$store.state.specificTweets
-        const tweet = specificTweets.find(tweet => tweet.id === this.tweet.id)
+        const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.tweet.id)
         if(tweet){
           this.retweeted = tweet.retweeted
           this.check = tweet.liked

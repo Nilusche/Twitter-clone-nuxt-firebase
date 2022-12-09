@@ -133,8 +133,8 @@ export const actions = {
     commit('updateProfilePic', pic)
   },
 
-  async setTweet({ commit }, { tweets }) {
-    commit('setTweet', tweets)
+  async setTweets({ commit }, { tweets }) {
+    commit('setTweets', tweets)
   },
 
   async updateTrends({ commit }, {mixedFeatures}) {
@@ -183,7 +183,7 @@ export const mutations = {
     state.tempID = id;
   },
 
-  setTweet(state, tweets) {
+  setTweets(state, tweets) {
     state.tweets = tweets;
   },
 
