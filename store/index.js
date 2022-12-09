@@ -186,44 +186,10 @@ export const mutations = {
   },
 
   setSpecificTweets(state, information) {
-<<<<<<< HEAD
     state.specificTweets.push(information)
   },
   updateTweets(state, tweet) {
     state.tweets.unshift(tweet)
-=======
-    // if tweet with same id exists, replace it
-    let index = state.specificTweets.findIndex(tweet => tweet.id === information.id)
-    if(index !== -1){
-      state.specificTweets.splice(index, 1, information)
-    }else{
-      state.specificTweets.unshift(information)
-    }
-
-    // also update the tweets array
-    index = state.tweets.findIndex(tweet => tweet.id === information.id)
-    if(index !== -1){
-      state.tweets.splice(index, 1, information)
-    }else{
-      state.tweets.unshift({
-          id: information.id,
-          uid: information.uid,
-          content: information.content,
-          createdAt: information.createdAt,
-          replyTo: information.replyTo,
-          retweets: information.retweets,
-          likes: information.likes,
-          profilePic: this.profilePic,
-      })
-      
-    }
-  },
-  updateTweets(state, tweet) {
-    state.tweets.unshift(tweet)
-  },
-  deleteTweet(state, id) {
-    state.tweets = state.tweets.filter(tweet => tweet.id !== id)
->>>>>>> parent of 6c74ee8 (reset state)
   }
   
 }
