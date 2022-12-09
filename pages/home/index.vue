@@ -154,7 +154,7 @@ export default {
 
 
       // dispatch the tweets to the store
-      this.$store.dispatch('setTweets', this.tweets);
+      this.$store.commit('setTweets', this.tweets);
 
       this.loading = false;
     },

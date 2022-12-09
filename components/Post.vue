@@ -191,10 +191,11 @@ export default{
     async created(){
        if(this.$store.state.specificTweets.length > 0){
 
-
         const specificTweets = this.$store.state.specificTweets
+
         const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.prop_tweet.id)
         if(tweet){
+          
           this.prop_retweeted = tweet.retweeted
           this.check = tweet.liked
           this.profilePic = tweet.profilePic
@@ -202,6 +203,13 @@ export default{
           this.tweetusertag = tweet.tweetusertag
           this.tweetusertime = tweet.tweetusertime
           this.repliedTo = tweet.repliedTo
+          this.prop_tweet.likes = tweet.likes
+          this.prop_tweet.retweets = tweet.retweets
+          this.prop_tweet.replyTo = tweet.replyTo
+          this.prop_tweet.createdAt = tweet.createdAt
+          this.prop_tweet.uid = tweet.uid
+          this.prop_tweet.id = tweet.id
+          this.prop_tweet.content = tweet.content
         }
 
         return
@@ -300,8 +308,7 @@ export default{
           tweetusertime: this.tweetusertime,
           repliedTo: this.repliedTo,
         }
-
-        this.$store.dispatch('updateSpecificTweets', information)
+        this.$store.commit('setSpecificTweets', information)
 
 
     },
@@ -317,6 +324,13 @@ export default{
           this.tweetusertag = tweet.tweetusertag
           this.tweetusertime = tweet.tweetusertime
           this.repliedTo = tweet.repliedTo
+          this.prop_tweet.likes = tweet.likes
+          this.prop_tweet.retweets = tweet.retweets
+          this.prop_tweet.replyTo = tweet.replyTo
+          this.prop_tweet.createdAt = tweet.createdAt
+          this.prop_tweet.uid = tweet.uid
+          this.prop_tweet.id = tweet.id
+          this.prop_tweet.content = tweet.content
         }
     },
 

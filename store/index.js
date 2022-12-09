@@ -142,6 +142,7 @@ export const actions = {
   },
 
   async updateSpecificTweets({ commit }, {information}) {
+    console.log(information)
     commit('setSpecificTweets', information)
 
   },
@@ -193,7 +194,7 @@ export const mutations = {
 
   setSpecificTweets(state, information) {
     // if tweet with same id exists, replace it
-    let index = state.specificTweets.findIndex(tweet => tweet.id === information.id)
+    let index = state.specificTweets.findIndex(tweet => tweet &&  tweet.id === information.id)
     if(index !== -1){
       state.specificTweets.splice(index, 1, information)
     }else{
