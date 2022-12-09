@@ -41,19 +41,39 @@ export default{
     },
     async mounted(){
 
+        /*
         if( this.$store.state.trends && this.$store.state.trends.length > 0){
             this.topFeatures = this.$store.state.trends
             return;
-        }
+        }*/
         // check if firebase permissions are enabled
-
-
+        
         // fetch the tweets from the database
+
+        let curDateStr = new Date().toDateString()
+        //remove spaces
+        curDateStr = curDateStr.replace(/\s/g, '')
+        const queryStr = 'trends:' + curDateStr
+        const response =  await this.$axios.$get('/api/keys', {
+            params : {
+                key : queryStr
+            }
+        })
+        // parse to json
+
+        if(!response){
+            const trends = JSON.parse(response)
+            this.topFeatures = trends
+            this.$store.commit('updateTrends', trends)
+            return
+        }
+
         
         // set the top features as the past top features
         // fetch the trends from the database and sort by date
+        /*
         const trends = await projectFirestore.collection('trends').orderBy('date', 'desc').get()
-
+        
         // get the first document
         
         if(trends.docs&&  trends.docs.length>0){
@@ -67,10 +87,12 @@ export default{
                 }
                 
                 this.topFeatures = trend.mixedFeatures
+                this.$store.commit('updateTrends', trend.mixedFeatures)
                 return
             }
         }
         
+        */
         
       
 
@@ -198,6 +220,8 @@ export default{
 
 
 
+
+
         // save the top features to the database with the date
         const date = new Date()
         const dateString = date.toDateString()
@@ -208,7 +232,8 @@ export default{
 
 
         // dispatch an event to update the trends in the explore page
-        this.$store.dispatch('updateTrends', mixedFeatures)
+        this.$store.commit('updateTrends', mixedFeatures)
+
 
         
     },

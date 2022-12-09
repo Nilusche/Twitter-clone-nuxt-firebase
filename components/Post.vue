@@ -276,7 +276,8 @@ export default{
             newContent += word + ' '
           }
         })
-        this.prop_tweet.content = newContent
+        
+        this.$store.commit('setTweetContent', {id: this.prop_tweet.id, content: newContent})
 
 
         this.$emit('loaded')

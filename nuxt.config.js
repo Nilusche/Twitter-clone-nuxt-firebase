@@ -1,5 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  //ssr: false,
+  mode:'spa',
   head: {
     title: 'Twitter',
     htmlAttrs: {
@@ -34,6 +36,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -46,5 +50,17 @@ export default {
 
       // ....
    }
+  },
+
+  axios: {
+    proxy: true,
+    prefix: '/api',
+  },
+
+  proxy: {
+    '/api': { 
+      target: 'http://localhost:3080', 
+      pathRewrite: {'^/api': ''},
+       changeOrigin: true }
   }
 }

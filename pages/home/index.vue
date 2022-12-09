@@ -80,9 +80,7 @@ import {mapState} from 'vuex'
 import { projectFirestore } from '@/firebase/config';
 
 export default {
-  
 
-    name: "IndexPage",
     data(){
       return {
         tweets : [],

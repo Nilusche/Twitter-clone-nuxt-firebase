@@ -10,7 +10,11 @@
     "tail": "tailwindcss -i ./index.css -o ./assets/main.css --watch"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/proxy": "^2.1.0",
+    "body-parser": "^1.20.1",
     "core-js": "^3.19.3",
+    "express": "^4.18.2",
     "firebase": "^9.9.2",
     "fs": "^0.0.1-security",
     "ioredis": "^5.2.4",

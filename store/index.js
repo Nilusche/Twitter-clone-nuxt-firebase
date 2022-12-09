@@ -138,7 +138,7 @@ export const actions = {
   },
 
   async updateTrends({ commit }, {mixedFeatures}) {
-    commit('setTrends', mixedFeatures)
+    commit('updateTrends', mixedFeatures)
   },
 
   async updateSpecificTweets({ commit }, {information}) {
@@ -188,7 +188,7 @@ export const mutations = {
     state.tweets = tweets;
   },
 
-  setTrends(state, mixedFeatures) {
+  updateTrends(state, mixedFeatures) {
     state.trends = mixedFeatures;
   },
 
@@ -223,5 +223,15 @@ export const mutations = {
     state.specificTweets = [];
     state.tempID = null;
     state.topFeatures= [];
-  }
+  },
+
+  setTweetContent(state, content) {
+    // find the tweet with the same id and update the content
+    let index = state.tweets.findIndex(tweet => tweet &&  tweet.id === content.id)
+    if(index !== -1){
+      // update the content
+      state.tweets[index].content = content.content
+    }
+  },
+
 }
