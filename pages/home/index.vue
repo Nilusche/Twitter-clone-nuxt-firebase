@@ -92,7 +92,7 @@ export default {
     },
     async created(){
       
-      if(this.$store.state.tweets != null){
+      if(this.$store.state.tweets != null && this.$store.state.tweets.length > 0){
         this.tweets = this.$store.state.tweets;
         this.loading = false;
         return
