@@ -158,11 +158,6 @@ export default {
 
       this.loading = false;
     },
-
-    async mounted(){
-      this.tweets = this.$store.state.tweets;
-    },
-
     methods:{
       
       async handleTweetAdd(tweet){
