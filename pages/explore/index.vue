@@ -3,6 +3,10 @@
 <div class="grid lg:grid-cols-3 md:grid-cols-9 sm:grid-cols-9 grid-cols-8 grid-rows-1 border-r  gap-4">
         <Navbar/>
          <div class="bg-white border-r border-l lg:block lg:col-span-1 col-span-8 tweets overflow-y-auto">
+          <div class="flex flex-col items-center  ">
+              <Search/>
+                <Trends/>
+          </div>
                 
                  
         </div>
