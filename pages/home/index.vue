@@ -90,7 +90,7 @@ export default {
         triggerPopup : false,
       }
     },
-    async created(){
+    async mounted(){
       
       if(this.$store.state.tweets != null && this.$store.state.tweets.length > 0){
         this.tweets = this.$store.state.tweets;
@@ -166,7 +166,7 @@ export default {
     methods:{
       
       async handleTweetAdd(tweet){
-        this.tweets.unshift(tweet);
+        //this.tweets.unshift(tweet);
       },
       handleLoaded(){
         this.loading = false;

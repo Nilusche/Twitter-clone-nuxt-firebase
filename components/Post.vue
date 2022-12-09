@@ -195,21 +195,12 @@ export default{
 
         const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.prop_tweet.id)
         if(tweet){
-          
-          this.prop_retweeted = tweet.retweeted
           this.check = tweet.liked
           this.profilePic = tweet.profilePic
           this.tweetusername = tweet.tweetusername
           this.tweetusertag = tweet.tweetusertag
           this.tweetusertime = tweet.tweetusertime
           this.repliedTo = tweet.repliedTo
-          this.prop_tweet.likes = tweet.likes
-          this.prop_tweet.retweets = tweet.retweets
-          this.prop_tweet.replyTo = tweet.replyTo
-          this.prop_tweet.createdAt = tweet.createdAt
-          this.prop_tweet.uid = tweet.uid
-          this.prop_tweet.id = tweet.id
-          this.prop_tweet.content = tweet.content
         }
 
         return
@@ -317,20 +308,12 @@ export default{
        const specificTweets = this.$store.state.specificTweets
         const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.prop_tweet.id)
         if(tweet){
-          this.prop_retweeted = tweet.retweeted
           this.check = tweet.liked
           this.profilePic = tweet.profilePic
           this.tweetusername = tweet.tweetusername
           this.tweetusertag = tweet.tweetusertag
           this.tweetusertime = tweet.tweetusertime
           this.repliedTo = tweet.repliedTo
-          this.prop_tweet.likes = tweet.likes
-          this.prop_tweet.retweets = tweet.retweets
-          this.prop_tweet.replyTo = tweet.replyTo
-          this.prop_tweet.createdAt = tweet.createdAt
-          this.prop_tweet.uid = tweet.uid
-          this.prop_tweet.id = tweet.id
-          this.prop_tweet.content = tweet.content
         }
     },
 
