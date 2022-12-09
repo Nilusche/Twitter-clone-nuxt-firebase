@@ -199,24 +199,6 @@ export const mutations = {
     }else{
       state.specificTweets.unshift(information)
     }
-
-    // also update the tweets array
-    index = state.tweets.findIndex(tweet => tweet.id === information.id)
-    if(index !== -1){
-      state.tweets.splice(index, 1, information)
-    }else{
-      state.tweets.unshift({
-          id: information.id,
-          uid: information.uid,
-          content: information.content,
-          createdAt: information.createdAt,
-          replyTo: information.replyTo,
-          retweets: information.retweets,
-          likes: information.likes,
-          profilePic: this.profilePic,
-      })
-
-    }
   },
   updateTweets(state, tweet) {
     state.tweets.unshift(tweet)

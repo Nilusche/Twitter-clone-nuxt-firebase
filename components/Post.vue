@@ -344,24 +344,6 @@ export default{
                     })
                 }
             })
-            const information = {
-              id: this.tweet.id,
-              uid: this.tweet.uid,
-              content: this.tweet.content,
-              createdAt: this.tweet.createdAt,
-              replyTo: this.tweet.replyTo,
-              retweets: this.tweet.retweets,
-              likes: this.tweet.likes,
-              retweeted: this.retweeted,
-              liked: this.check,
-              profilePic: this.profilePic,
-              tweetusername: this.tweetusername,
-              tweetusertag: this.tweetusertag,
-              tweetusertime: this.tweetusertime,
-              repliedTo: this.repliedTo,
-            }
-
-            this.$store.commit('updateSpecificTweets', information)
             
         },
         async handleRetweet(){
@@ -391,26 +373,6 @@ export default{
                     })
                 }
             })
-
-            const information = {
-                id: this.tweet.id,
-                uid: this.tweet.uid,
-                content: this.tweet.content,
-                createdAt: this.tweet.createdAt,
-                replyTo: this.tweet.replyTo,
-                retweets: this.tweet.retweets,
-                likes: this.tweet.likes,
-                retweeted: this.retweeted,
-                liked: this.check,
-                profilePic: this.profilePic,
-                tweetusername: this.tweetusername,
-                tweetusertag: this.tweetusertag,
-                tweetusertime: this.tweetusertime,
-                repliedTo: this.repliedTo,
-              }
-
-              this.$store.commit('updateSpecificTweets', information)
-
 
         },
         navigateToProfile(){
