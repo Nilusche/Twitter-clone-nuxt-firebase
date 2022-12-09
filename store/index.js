@@ -221,5 +221,6 @@ export const mutations = {
     state.trends = [];
     state.specificTweets = [];
     state.tempID = null;
+    state.topFeatures= [];
   }
 }

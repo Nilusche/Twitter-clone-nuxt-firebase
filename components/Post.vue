@@ -193,7 +193,6 @@ export default{
 
 
         const specificTweets = this.$store.state.specificTweets
-        console.log(specificTweets)
         const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.prop_tweet.id)
         if(tweet){
           this.prop_retweeted = tweet.retweeted

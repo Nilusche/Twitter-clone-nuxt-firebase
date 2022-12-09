@@ -175,8 +175,6 @@ export default {
         this.$router.push(`/${tweet.uid}/status/${tweet.id}`);
       },
       async handleDeleted(tweet){
-        console.log("deleted");
-        console.log(this.tweets)
         this.tweets = this.tweets.filter(t => t.id != tweet);
 
       },

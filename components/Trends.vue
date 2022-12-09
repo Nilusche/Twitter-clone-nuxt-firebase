@@ -39,7 +39,14 @@ export default{
             topFeatures : [],
         }
     },
-    async created(){
+    async mounted(){
+
+        if( this.$store.state.trends && this.$store.state.trends.length > 0){
+            this.topFeatures = this.$store.state.trends
+        }
+        // check if firebase permissions are enabled
+
+
         // fetch the tweets from the database
         
         // set the top features as the past top features
@@ -203,11 +210,6 @@ export default{
         this.$store.dispatch('updateTrends', mixedFeatures)
 
         
-    },
-
-    async mounted(){
-        // get the topics from the store
-        this.topFeatures = this.$store.state.topFeatures
     },
     methods:{
         handleSearch(term){

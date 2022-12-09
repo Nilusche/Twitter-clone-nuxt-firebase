@@ -267,7 +267,7 @@ export default {
             filePath, url, handleCreate, handleFileChange, file, fileerror
         }
     },
-    async created(){
+    async mounted(){
         // fetch user from url and set it to currentUser
         //get user doc from firestore with id
         await projectFirestore.collection('users').doc(this.userID).get().then(doc => {
@@ -335,7 +335,6 @@ export default {
 
         // check if the current user is following the user
         let docId =  this.$store.state.user.id + "_"+  this.currentUser.uid
-        console.log(docId)
         await projectFirestore.collection('following').doc(docId).get().then(doc => {
             if(doc.exists){
                 this.followingUser = true
