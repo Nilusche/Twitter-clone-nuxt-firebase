@@ -55,8 +55,8 @@
                         </span>
                         <span class="mr-2 lg:mr-4 cursor-pointer hover:text-twgreen ">
                             <span class="rounded-full  mr-1 hover:bg-twgrey-200 p-2 pr-3" @click.stop="handleRetweet" >
-                                <span class="rt rt-retweet " :class="{active:retweeted}">
-                                <svg :class="{green:retweeted}" class="icon icon-retweet mb-1 ml-1  inline-block" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+                                <span class="rt rt-retweet " :class="{active:prop_retweeted}">
+                                <svg :class="{green:prop_retweeted}" class="icon icon-retweet mb-1 ml-1  inline-block" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
                                     <g fill="none" fill-rule="evenodd" stroke="#53688c" stroke-linecap="round" stroke-width="2" transform="translate(2.25 5.5)">
                                         <g transform="translate(0 1)">
                                         <path d="m1.0651197 1.03553391-.02958579 5 5-.0295858" transform="matrix(-.70710678 .70710678 -.70710678 -.70710678 8.535534 3.535534)"/>
@@ -77,7 +77,7 @@
                         </span>
                         <span class="mr-2 lg:mr-4  cursor-pointer hover:text-twred">
                             <span class="rounded-full p-2 mr-1 hover:bg-twgrey-200">
-                                <input type="checkbox" :id="`checkbox-${this.tweet.id}`" :checked="check" :class="{checkbox:check}" />
+                                <input type="checkbox" :id="`checkbox-${this.prop_tweet.id}`" :checked="check" :class="{checkbox:check}" />
                                 <label for="checkbox" class="inline-block"  @click.stop="handleLike" :class="{checked:check}">
                                     <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
                                         <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
@@ -174,6 +174,10 @@ export default{
     props: ['tweet', "retweeted" , "id", "isReply"],
     data(){
         return{ 
+            prop_tweet: this.tweet,
+            prop_retweeted: this.retweeted,
+            prop_id: this.id,
+            prop_isReply: this.isReply,
             tweetusername: "",
             tweetusertag: "",
             tweetusertime: "",
@@ -190,9 +194,9 @@ export default{
 
         const specificTweets = this.$store.state.specificTweets
         console.log(specificTweets)
-        const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.tweet.id)
+        const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.prop_tweet.id)
         if(tweet){
-          this.retweeted = tweet.retweeted
+          this.prop_retweeted = tweet.retweeted
           this.check = tweet.liked
           this.profilePic = tweet.profilePic
           this.tweetusername = tweet.tweetusername
@@ -205,15 +209,15 @@ export default{
       }
 
 
-        this.tweetuser = await projectFirestore.collection('users').doc(this.tweet.uid).get()
+        this.tweetuser = await projectFirestore.collection('users').doc(this.prop_tweet.uid).get()
         //set content in innerHtml
       
         this.tweetusername = this.tweetuser.data().name
         this.tweetusertag = this.tweetuser.data().tag
-        this.tweet.id = this.id
+        this.prop_tweet.id = this.id
         
 
-        let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
+        let uid_tweet_id = this.$store.state.user.id + '_' + this.prop_tweet.id
 
         await projectFirestore.collection('likes').doc(uid_tweet_id).get().then(doc => {
             if(doc.exists){
@@ -225,19 +229,19 @@ export default{
 
         await projectFirestore.collection('retweets').doc(uid_tweet_id).get().then(doc => {
             if(doc.exists){
-                this.retweeted = true
+                this.prop_retweeted = true
             }else{
-                this.retweeted = false
+                this.prop_retweeted = false
             }
         })
 
-        this.profilePic = await projectFirestore.collection('users').doc(this.tweet.uid).get().then(doc => {
+        this.profilePic = await projectFirestore.collection('users').doc(this.prop_tweet.uid).get().then(doc => {
             return doc.data().profilePic
         })
 
-        if(this.tweet.createdAt){
+        if(this.prop_tweet.createdAt){
           try{
-            this.tweetusertime = this.timeSince(this.tweet.createdAt.toDate())
+            this.tweetusertime = this.timeSince(this.prop_tweet.createdAt.toDate())
           }catch(err){
             console.log(err)
           }
@@ -253,7 +257,7 @@ export default{
         })
         */
         //to check if this tweet has been replied to see if its id is in the replyTo field of any other tweet but not as a snapshot
-        const res1=  await projectFirestore.collection('tweets').where('replyTo', '==', this.tweet.id).get()
+        const res1=  await projectFirestore.collection('tweets').where('replyTo', '==', this.prop_tweet.id).get()
         if(res1.docs.length > 0){
           this.repliedTo = true
         }
@@ -262,7 +266,7 @@ export default{
 
 
         // search the content of the tweet for @username and #hashtag and make them clickable
-        let content = this.tweet.content
+        let content = this.prop_tweet.content
         let words = content.split(' ')
         let newContent = ''
         words.forEach(word => {
@@ -274,7 +278,7 @@ export default{
             newContent += word + ' '
           }
         })
-        this.tweet.content = newContent
+        this.prop_tweet.content = newContent
 
 
         this.$emit('loaded')
@@ -282,14 +286,14 @@ export default{
 
         // store every information about the tweet in the store
         const information = {
-          id: this.tweet.id,
-          uid: this.tweet.uid,
-          content: this.tweet.content,
-          createdAt: this.tweet.createdAt,
-          replyTo: this.tweet.replyTo,
-          retweets: this.tweet.retweets,
-          likes: this.tweet.likes,
-          retweeted: this.retweeted,
+          id: this.prop_tweet.id,
+          uid: this.prop_tweet.uid,
+          content: this.prop_tweet.content,
+          createdAt: this.prop_tweet.createdAt,
+          replyTo: this.prop_tweet.replyTo,
+          retweets: this.prop_tweet.retweets,
+          likes: this.prop_tweet.likes,
+          retweeted: this.prop_retweeted,
           liked: this.check,
           profilePic: this.profilePic,
           tweetusername: this.tweetusername,
@@ -298,16 +302,16 @@ export default{
           repliedTo: this.repliedTo,
         }
 
-        this.$store.commit('updateSpecificTweets', information)
+        this.$store.dispatch('updateSpecificTweets', information)
 
 
     },
 
     async mounted(){
        const specificTweets = this.$store.state.specificTweets
-        const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.tweet.id)
+        const tweet = specificTweets.find(tweet => tweet &&  tweet.id === this.prop_tweet.id)
         if(tweet){
-          this.retweeted = tweet.retweeted
+          this.prop_retweeted = tweet.retweeted
           this.check = tweet.liked
           this.profilePic = tweet.profilePic
           this.tweetusername = tweet.tweetusername
@@ -319,68 +323,68 @@ export default{
 
     methods: {
         async handleLike(){
-            document.getElementById(`checkbox-${this.tweet.id}`).checked = !document.getElementById(`checkbox-${this.tweet.id}`).checked
-            document.getElementById(`checkbox-${this.tweet.id}`).classList.toggle('checkbox')
+            document.getElementById(`checkbox-${this.prop_tweet.id}`).checked = !document.getElementById(`checkbox-${this.prop_tweet.id}`).checked
+            document.getElementById(`checkbox-${this.prop_tweet.id}`).classList.toggle('checkbox')
             
-            let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
+            let uid_tweet_id = this.$store.state.user.id + '_' + this.prop_tweet.id
             //check if tweet has been liked by current user
             await projectFirestore.collection('likes').doc(uid_tweet_id).get().then(async doc => {
                 if(doc.exists){
                     //if liked, remove like
                     await projectFirestore.collection('likes').doc(uid_tweet_id).delete()
                     //decrement count tweet document
-                    this.tweet.likes -=1
-                    await projectFirestore.collection('tweets').doc(this.tweet.id).update({
-                        likes: this.tweet.likes
+                    this.prop_tweet.likes -=1
+                    await projectFirestore.collection('tweets').doc(this.prop_tweet.id).update({
+                        likes: this.prop_tweet.likes
                     })
                 }else{
                     //if not liked, add like
                     await projectFirestore.collection('likes').doc(uid_tweet_id).set({
                         uid: this.$store.state.user.id,
-                        tweetid: this.tweet.id
+                        tweetid: this.prop_tweet.id
                     })
-                    this.tweet.likes++
-                    await projectFirestore.collection('tweets').doc(this.tweet.id).update({
-                        likes: this.tweet.likes
+                    this.prop_tweet.likes++
+                    await projectFirestore.collection('tweets').doc(this.prop_tweet.id).update({
+                        likes: this.prop_tweet.likes
                     })
                 }
             })
             
         },
         async handleRetweet(){
-          if(this.retweeted){
-              this.retweeted = false
+          if(this.prop_retweeted){
+              this.prop_retweeted = false
           }
-            this.retweeted = !this.retweeted
-            let uid_tweet_id = this.$store.state.user.id + '_' + this.tweet.id
+            this.prop_retweeted = !this.prop_retweeted
+            let uid_tweet_id = this.$store.state.user.id + '_' + this.prop_tweet.id
             await projectFirestore.collection('retweets').doc(uid_tweet_id).get().then(async doc => {
                 if(doc.exists){
                     //if retweeted, remove retweet
                     await projectFirestore.collection('retweets').doc(uid_tweet_id).delete()
                     //decrement count tweet document
-                    this.tweet.retweets -=1
-                    await projectFirestore.collection('tweets').doc(this.tweet.id).update({
-                        retweets: this.tweet.retweets
+                    this.prop_tweet.retweets -=1
+                    await projectFirestore.collection('tweets').doc(this.prop_tweet.id).update({
+                        retweets: this.prop_tweet.retweets
                     })
                 }else{
                     //if not retweeted, add retweet
                     await projectFirestore.collection('retweets').doc(uid_tweet_id).set({
                         uid: this.$store.state.user.id,
-                        tweetid: this.tweet.id
+                        tweetid: this.prop_tweet.id
                     })
-                    this.tweet.retweets++
-                    await projectFirestore.collection('tweets').doc(this.tweet.id).update({
-                        retweets: this.tweet.retweets
+                    this.prop_tweet.retweets++
+                    await projectFirestore.collection('tweets').doc(this.prop_tweet.id).update({
+                        retweets: this.prop_tweet.retweets
                     })
                 }
             })
 
         },
         navigateToProfile(){
-          this.$router.replace({path: '/' + this.tweet.uid})
+          this.$router.replace({path: '/' + this.prop_tweet.uid})
         },
         navigate(){
-        this.$router.push(`/${this.tweet.uid}/status/${this.tweet.id}`);
+        this.$router.push(`/${this.prop_tweet.uid}/status/${this.prop_tweet.id}`);
 
         }  ,
         timeSince(date){
@@ -414,9 +418,9 @@ export default{
         ,
         async handleDelete(){
             //delete tweet
-            await projectFirestore.collection('tweets').doc(this.tweet.id).delete()
+            await projectFirestore.collection('tweets').doc(this.prop_tweet.id).delete()
             //delete likes
-            await projectFirestore.collection('likes').where('tweetid', '==', this.tweet.id).get().then(async querySnapshot => {
+            await projectFirestore.collection('likes').where('tweetid', '==', this.prop_tweet.id).get().then(async querySnapshot => {
                 querySnapshot.forEach(async doc => {
                     await projectFirestore.collection('likes').doc(doc.id).delete()
                 })
@@ -425,7 +429,7 @@ export default{
             
 
             //delete retweets
-            await projectFirestore.collection('retweets').where('tweetid', '==', this.tweet.id).get().then(async querySnapshot => {
+            await projectFirestore.collection('retweets').where('tweetid', '==', this.prop_tweet.id).get().then(async querySnapshot => {
                 querySnapshot.forEach(async doc => {
                     await projectFirestore.collection('retweets').doc(doc.id).delete()
                 })
@@ -433,11 +437,11 @@ export default{
             //delete replies
 
             //dispatch store  action to delete tweet from store
-            this.$store.dispatch('deleteTweet', this.tweet.id)
+            this.$store.dispatch('deleteTweet', this.prop_tweet.id)
 
 
             //emit event to parent
-            this.$emit('deleted', this.tweet.id)
+            this.$emit('deleted', this.prop_tweet.id)
 
             this.showDelete = false
 
