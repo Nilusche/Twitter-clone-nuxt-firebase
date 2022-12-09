@@ -61,7 +61,7 @@ export default{
         })
         // parse to json
 
-        if(!response){
+        if(response){
             const trends = JSON.parse(response)
             this.topFeatures = trends
             this.$store.commit('updateTrends', trends)
@@ -232,8 +232,16 @@ export default{
 
 
         // dispatch an event to update the trends in the explore page
-        this.$store.commit('updateTrends', mixedFeatures)
+        //this.$store.commit('updateTrends', mixedFeatures)
 
+        let date1 = new Date().toDateString()
+        //remove spaces
+        date1 = date1.replace(/\s/g, '')
+        
+        const res = await this.$axios.$post('/api/keys', {
+            key : 'trends' + ':'+  date1,
+            value : JSON.stringify(mixedFeatures)
+        })
 
         
     },

@@ -89,10 +89,24 @@ export default {
       }
     },
     async mounted(){
-      
+      /*
       if(this.$store.state.tweets != null && this.$store.state.tweets.length > 0){
         this.tweets = this.$store.state.tweets;
         this.loading = false;
+        return
+      }
+      */
+
+      const queryStr = 'timeline:' + this.$store.state.user.id
+      const response =  await this.$axios.$get('/api/keys', {
+          params : {
+              key : queryStr
+          }
+      })
+
+      if(response){
+        const tweets = JSON.parse(response);
+        this.tweets = tweets;
         return
       }
 
@@ -152,9 +166,16 @@ export default {
 
 
       // dispatch the tweets to the store
-      this.$store.commit('setTweets', this.tweets);
+      //this.$store.commit('setTweets', this.tweets);
 
       this.loading = false;
+
+      const res = await this.$axios.$post('/api/keys', {
+          key : 'timeline' + ':'+  this.$store.state.user.id,
+          value : JSON.stringify(this.tweets)
+      })
+
+      
     },
     methods:{
       
