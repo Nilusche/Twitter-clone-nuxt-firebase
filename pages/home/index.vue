@@ -4,7 +4,9 @@
         <Navbar @tweetPopUp="triggerPopup=true"/>
          <div class="bg-white border-r border-l lg:block lg:col-span-1 col-span-8 tweets overflow-y-auto">
                 <Create @addTweet="handleTweetAdd"/>
-                
+                <div v-for="rec in recommendations" :key="rec.id" >
+                    <Post :tweet="rec" @loaded="handleLoaded" @deleted="handleDeleted" :id="rec.id" @update="handleUpdate" :recommended="true"/>
+                </div>
                 <!--Post-->
                 <div v-for="tweet in tweets" :key="tweet.id" >
                     <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id" @update="handleUpdate"/>
@@ -78,12 +80,13 @@
 <script>
 import {mapState} from 'vuex'
 import { projectFirestore } from '@/firebase/config';
-
+import {getRecommendations} from '@/Machine Learning/TweetRecommender'
 export default {
 
     data(){
       return {
         tweets : [],
+        recommendations : [],
         loading : true,
         triggerPopup : false,
       }
@@ -96,6 +99,16 @@ export default {
         return
       }
       */
+      
+
+      if(this.$store.state.user.id == null){
+        this.$router.push('/');
+      }
+
+
+      let boolRedisTweets = false;
+      let boolRedisRecommendations = false;
+
       let  date  = new Date().toDateString();
       // remove whitespace
       date = date.replace(/\s/g, '');
@@ -110,8 +123,8 @@ export default {
       if(response){
         const tweets = JSON.parse(response);
         this.tweets = tweets;
+        boolRedisTweets = true;
 
-        return
       }else{
         // delete preceding redis keys
         const response = await this.$axios.$get('/api/getAll', {
@@ -129,10 +142,103 @@ export default {
         }
       }
 
+      const queryStr2 = 'recommendations:' + this.$store.state.user.id + ":" + date;
+      const response2 =  await this.$axios.$get('/api/keys', {
+          params : {
+              key : queryStr2
+          }
+      })
 
-      if(this.$store.state.user.id == null){
-        this.$router.push('/');
+
+      if(response2){
+        const recommendations = JSON.parse(response2);
+        this.recommendations = recommendations;
+        boolRedisRecommendations = true;
+
+      }else{
+        // delete preceding redis keys
+        const response = await this.$axios.$get('/api/getAll', {
+            params : {
+                key : 'recommendations:*'
+            }
+        })
+        if(response && response.length > 0){
+            
+            response.forEach(async (item) => {
+                const res = await this.$axios.$post('/api/del', {
+                    key : item
+                })
+            })
+        }
       }
+
+    if(boolRedisRecommendations && boolRedisTweets){
+      console.log(this.recommendations)
+      this.loading = false;
+      return
+    }
+
+
+
+        // recommendations part
+        // fetch all the tweets from the database
+      const res1 = await projectFirestore.collection('tweets').get()
+      const tweets1 = res1.docs.map(doc => {
+        return { ...doc.data(), id: doc.id }
+      })
+
+      // fetch all the following from the database
+      const res2 = await projectFirestore.collection('following').get()
+      const following1 = res2.docs.map(doc => {
+        return { ...doc.data(), id: doc.id }
+      })
+
+      // fetch all the likes from the database
+      const res3 = await projectFirestore.collection('likes').get()
+      const likes1 = res3.docs.map(doc => {
+        return { ...doc.data(), id: doc.id }
+      })
+
+
+      // filter following where 'follower' is the current user
+      const followingFiltered = following1.filter(follow => follow.follower == this.$store.state.user.id)
+      
+
+      // filter tweets where 'uid' is in the followingFiltered array
+      const tweetsFiltered = tweets1.filter(tweet => followingFiltered.some(follow => follow.following != tweet.uid && tweet.uid != this.$store.state.user.id))
+      // replace <br> in tweets content with ' '
+      tweetsFiltered.forEach(tweet => {
+        tweet.content = tweet.content.replace(/<br>/g, ' ')
+      })
+
+
+      // get all the liked tweets by checkin the tweets array and see if the current user id is in the likes array
+      const likedTweets = tweets1.filter(tweet => likes1.some(like => like.uid == this.$store.state.user.id && like.tweetid == tweet.id))
+      if(!likedTweets.length){
+        likedTweets.push(tweets[0])
+      }
+
+      // sort the tweets by created at descending
+      likedTweets.sort((a, b) => b.createdAt - a.createdAt)
+      // get last liked tweet
+      const lastLikedTweet = likedTweets[0]
+
+      // get the recommended tweets
+      const recommendedTweets = await getRecommendations(lastLikedTweet.content, tweetsFiltered)
+
+      this.recommendations = recommendedTweets
+
+      const redis = await this.$axios.$post('/api/keys', {
+          key : 'recommendations' + ':'+  this.$store.state.user.id + ':' + date,
+          value : JSON.stringify(recommendedTweets)
+      })
+
+      // recommendations end
+
+
+
+
+
 
       //fetch user tweets from firebase
       

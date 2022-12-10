@@ -3,7 +3,9 @@
 <div class="grid lg:grid-cols-3 md:grid-cols-9 sm:grid-cols-9 grid-cols-8 grid-rows-1 border-r  gap-4">
         <Navbar/>
          <div class="bg-white border-r border-l lg:block lg:col-span-1 col-span-8 tweets overflow-y-auto">
-                
+              <div v-for="tweet in tweets" :key="tweet.id" >
+                  <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id" @update="handleUpdate"/>
+              </div>
                  
         </div>
         <!--Search Section-->
@@ -58,84 +60,88 @@ import {projectFirestore} from '@/firebase/config'
 export default {
   data(){
   return{
-
+    tweets: []
   }
   },
   async mounted(){
-    // fetch tweets from firebase but not as a snapshot
-    let tweetData = await projectFirestore.collection('tweets').get()
-
-    // create a new array called tweet to store all the tweets content in
-    let tweets = []
-
-    // loop through the tweetData and push the data into the tweets array
-    tweetData.forEach(doc => {
-      let content = doc.data().content.replace('<br>', ' ')
-      tweets.push({
-        id: doc.id,
-        content: content,
-      })
+   
+    // fetch all the tweets from the database
+    const res = await projectFirestore.collection('tweets').get()
+    const tweets = res.docs.map(doc => {
+      return { ...doc.data(), id: doc.id }
     })
 
-    // get the last tweet that the user has liked
-    // fetch the likes from firebase where uid is equal to the current user
-    let likesData = await projectFirestore.collection('likes').where('uid', '==', this.$store.state.user.id).get()
-    let likes = []
-    likesData.forEach(doc => {
-      likes.push(doc.data().tweetid)
+    // fetch all the following from the database
+    const res2 = await projectFirestore.collection('following').get()
+    const following = res2.docs.map(doc => {
+      return { ...doc.data(), id: doc.id }
     })
 
-    // get all the tweets that the user has liked
-    let likedTweets = []
-    for(let i = 0; i < likes.length; i++){
-      let tweet = await projectFirestore.collection('tweets').doc(likes[i]).get()
-      if(tweet){
-        // remove the <br> character from the tweet
-        likedTweets.push({
-          id: tweet.id,
-          content: tweet.data().content,
-          createdAt: tweet.data().createdAt
-        })
-      }
+    // fetch all the likes from the database
+    const res3 = await projectFirestore.collection('likes').get()
+    const likes = res3.docs.map(doc => {
+      return { ...doc.data(), id: doc.id }
+    })
+
+
+    // filter following where 'follower' is the current user
+    const followingFiltered = following.filter(follow => follow.follower == this.$store.state.user.id)
+    
+
+    // filter tweets where 'uid' is in the followingFiltered array
+    const tweetsFiltered = tweets.filter(tweet => followingFiltered.some(follow => follow.following != tweet.uid && tweet.uid != this.$store.state.user.id))
+    // replace <br> in tweets content with ' '
+    tweetsFiltered.forEach(tweet => {
+      tweet.content = tweet.content.replace(/<br>/g, ' ')
+    })
+
+
+    // get all the liked tweets by checkin the tweets array and see if the current user id is in the likes array
+    const likedTweets = tweets.filter(tweet => likes.some(like => like.uid == this.$store.state.user.id && like.tweetid == tweet.id))
+    if(!likedTweets.length){
+      likedTweets.push(tweets[0])
     }
 
-    // if the user has liked a tweet then get the recommendations
-    if(likedTweets.length > 0){
-      // remove the <br> character from the tweet
-      likedTweets.forEach(tweet => {
-        tweet.content = tweet.content.replace('<br>', ' ')
-      })
+    // sort the tweets by created at descending
+    likedTweets.sort((a, b) => b.createdAt - a.createdAt)
+    // get last liked tweet
+    const lastLikedTweet = likedTweets[0]
 
-      // sort the tweets by the date they were created
-      likedTweets.sort((a, b) => {
-        return b.createdAt - a.createdAt
-      })
+    // get the recommended tweets
+    const recommendedTweets = await getRecommendations(lastLikedTweet.content, tweetsFiltered)
+    console.log(recommendedTweets)
 
-      
+    this.tweets = recommendedTweets
 
 
-      // filter all the tweets that the user has liked (in the likedTweets array) and remove them from the tweets array
-      tweets = tweets.filter(tweet => {
-        let found = false
-        likedTweets.forEach(likedTweet => {
-          if(tweet.content == likedTweet.content){
-            found = true
-          }
+    
+       
+  },
+  methods:{
+    handleLoaded(){
+      this.loading = false;
+    },
+    async handleDeleted(tweet){
+        this.tweets = this.tweets.filter(t => t.id != tweet);
+        let  date  = new Date().toDateString();
+        // remove whitespace
+        date = date.replace(/\s/g, '');
+        const res = await this.$axios.$post('/api/keys', {
+          key : 'timeline' + ':'+  this.$store.state.user.id + ':' + date,
+          value : JSON.stringify(this.tweets)
         })
-        return !found
+
+    },
+    async handleUpdate(){
+      let  date  = new Date().toDateString();
+      // remove whitespace
+      date = date.replace(/\s/g, '');
+      const res = await this.$axios.$post('/api/keys', {
+        key : 'timeline' + ':'+  this.$store.state.user.id + ':' + date,
+        value : JSON.stringify(this.tweets)
       })
-
-
-      //get the last tweet that the user has liked
-      let lastTweet = likedTweets[0]
-
-      // get the recommendations
-      console.log(likedTweets)
-      let recommendations = getRecommendations(lastTweet.content, tweets)
-      console.log(recommendations)
     }
-
-      
   }
+
 }
 </script>
