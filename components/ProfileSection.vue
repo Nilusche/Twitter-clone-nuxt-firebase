@@ -455,6 +455,13 @@ export default {
                 })
             }
             this.followingUser = true;
+
+            let curDateStr = new Date().toDateString()
+            //remove spaces
+            curDateStr = curDateStr.replace(/\s/g, '')
+            const res1 = await this.$axios.$post('/api/del', {
+                key : 'timeline' + ':'+  this.$store.state.user.id + ':' + curDateStr,
+            })
         },
 
         async unfollow(id){
@@ -484,6 +491,13 @@ export default {
                 })
             }
             this.followingUser = false;
+
+            let curDateStr = new Date().toDateString()
+            //remove spaces
+            curDateStr = curDateStr.replace(/\s/g, '')
+            const res1 = await this.$axios.$post('/api/del', {
+                key : 'timeline' + ':'+  this.$store.state.user.id + ':' + curDateStr,
+            })
         }
     }
 }

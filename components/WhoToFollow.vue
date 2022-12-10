@@ -86,6 +86,12 @@ export default {
         //remove the user from the list of users
         this.list_of_users = this.list_of_users.filter(user => user.uid != id)
 
+        let curDateStr = new Date().toDateString()
+        //remove spaces
+        curDateStr = curDateStr.replace(/\s/g, '')
+        const res1 = await this.$axios.$post('/api/del', {
+            key : 'timeline' + ':'+  this.$store.state.user.id + ':' + curDateStr,
+        })
     },
     navigateToProfile(id){
         this.$router.push(id)
