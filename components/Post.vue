@@ -295,7 +295,7 @@ export default{
 
     },
 
-    mounted(){
+    async mounted(){
       // if tweetusername, tweetusertag, tweetusertime are not set, set them
       if(!this.tweetusername){
         this.tweetuser = projectFirestore.collection('users').doc(this.prop_tweet.uid).get().then(doc => {
@@ -307,6 +307,23 @@ export default{
         this.tweetusertime = this.timeSince(new Date(this.prop_tweet.createdAt.seconds * 1000))
       }
     
+      let uid_tweet_id = this.$store.state.user.id + '_' + this.prop_tweet.id
+
+      await projectFirestore.collection('likes').doc(uid_tweet_id).get().then(doc => {
+          if(doc.exists){
+              this.check = true
+          }else{
+              this.check = false
+          }
+      })
+
+      await projectFirestore.collection('retweets').doc(uid_tweet_id).get().then(doc => {
+          if(doc.exists){
+              this.prop_retweeted = true
+          }else{
+              this.prop_retweeted = false
+          }
+      })
     },
 
     methods: {
@@ -343,6 +360,8 @@ export default{
         async handleRetweet(){
           if(this.prop_retweeted){
               this.prop_retweeted = false
+          }else{
+              this.prop_retweeted = true
           }
             this.prop_retweeted = !this.prop_retweeted
             let uid_tweet_id = this.$store.state.user.id + '_' + this.prop_tweet.id
