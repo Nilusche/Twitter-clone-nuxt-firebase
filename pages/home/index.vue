@@ -175,19 +175,11 @@ export default {
       //iterate through tweets
       this.tweets.forEach(tweet => {
           if(tweet){
-            let content = tweet.content
-            let words = content.split(' ')
-            let newContent = ''
-            words.forEach(word => {
-              if(word.startsWith('@')){
-                newContent += `<a class="font-semibold text-twblue hover:underline">${word}</a> `
-              }else if(word.startsWith('#')){
-                newContent += `<a href="/explore/${word.slice(1)}"font-semibold class="text-twblue hover:underline">${word}</a> `
-              }else{
-                newContent += word + ' '
-              }
-            })
-            tweet.content = newContent
+            
+            // replace #hashtags with links
+            tweet.content = tweet.content.replace(/#(\w+)/g, '<a class="font-semibold text-twblue hover:underline" href="/explore/$1">#$1</a>');
+            // replace @mentions with links
+            tweet.content = tweet.content.replace(/@(\w+)/g, '<a class="font-semibold text-twblue hover:underline" href="/explore/$1">@$1</a>');
           }
         })
 
@@ -204,7 +196,6 @@ export default {
       
       async handleTweetAdd(tweet){
         this.tweets.unshift(tweet);
-        console.log(tweet)
         let  date  = new Date().toDateString();
         // remove whitespace
         date = date.replace(/\s/g, '');

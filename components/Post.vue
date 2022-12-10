@@ -295,6 +295,20 @@ export default{
 
     },
 
+    mounted(){
+      // if tweetusername, tweetusertag, tweetusertime are not set, set them
+      if(!this.tweetusername){
+        this.tweetuser = projectFirestore.collection('users').doc(this.prop_tweet.uid).get().then(doc => {
+          this.tweetusername = doc.data().name
+          this.tweetusertag = doc.data().tag
+        })
+      }
+      if(!this.tweetusertime){
+        this.tweetusertime = this.timeSince(new Date(this.prop_tweet.createdAt.seconds * 1000))
+      }
+    
+    },
+
     methods: {
         async handleLike(){
             document.getElementById(`checkbox-${this.prop_tweet.id}`).checked = !document.getElementById(`checkbox-${this.prop_tweet.id}`).checked
