@@ -48,6 +48,14 @@ app.post('/api/del', (req, res) => {
     res.json("key deleted");
 });
 
+app.get('/api/getAll', (req, res) => {
+    //get all keys from redis matching the pattern and return them
+    redis.keys(req.query.key).then((result) => {
+        res.json(result);
+    });
+});
+    
+
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);
 });

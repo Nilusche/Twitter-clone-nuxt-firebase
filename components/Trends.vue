@@ -66,6 +66,22 @@ export default{
             this.topFeatures = trends
             this.$store.commit('updateTrends', trends)
             return
+        }else{
+            // if the response is null then we need to fetch the trends from the database
+            // but before we do that we need to delete old redis keys that start with trends
+            const response = await this.$axios.$get('/api/getAll', {
+                params : {
+                    key : 'trends:*'
+                }
+            })
+            if(response && response.length > 0){
+                
+                response.forEach(async (item) => {
+                    const res = await this.$axios.$post('/api/del', {
+                        key : item
+                    })
+                })
+            }
         }
 
         

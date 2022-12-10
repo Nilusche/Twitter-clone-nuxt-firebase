@@ -112,6 +112,21 @@ export default {
         this.tweets = tweets;
 
         return
+      }else{
+        // delete preceding redis keys
+        const response = await this.$axios.$get('/api/getAll', {
+            params : {
+                key : 'timeline:*'
+            }
+        })
+        if(response && response.length > 0){
+            
+            response.forEach(async (item) => {
+                const res = await this.$axios.$post('/api/del', {
+                    key : item
+                })
+            })
+        }
       }
 
 
