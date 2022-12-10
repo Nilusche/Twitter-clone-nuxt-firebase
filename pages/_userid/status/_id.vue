@@ -558,6 +558,12 @@ export default {
                 this.replies.push(tweet)
 
 
+                //update the number of replies in the tweet document
+                this.tweet.comments++
+                await projectFirestore.collection('tweets').doc(this.tweet.id).update({
+                    comments: this.tweet.comments
+                })
+
                 let curDateStr = new Date().toDateString()
                 //remove spaces
                 curDateStr = curDateStr.replace(/\s/g, '')

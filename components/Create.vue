@@ -84,6 +84,7 @@ export default {
                     retweets:0,
                     replyTo: null,
                     profilePic: this.$store.state.user.profilePic,
+                    
                 }
                 this.$store.dispatch('createTweet',{tweet})   
                 this.$refs.content_div.innerText = ''

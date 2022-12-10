@@ -20,19 +20,13 @@ export default {
 
     methods:{
         async setKey(){
-            const response = await this.$axios.$get('/api/getAll', {
-                params : {
-                    key : 'trends:*'
-                }
-            })
-            if(response){
-                
-                response.forEach(async (item) => {
-                    const res = await this.$axios.$post('/api/del', {
-                        key : item
-                    })
+           // add the properties "replies" to all the tweets
+              const res = await projectFirestore.collection('tweets').get()
+            res.docs.forEach(doc => {
+                projectFirestore.collection('tweets').doc(doc.id).update({
+                    replies: 0
                 })
-            }
+            })
         }
     }
 }
