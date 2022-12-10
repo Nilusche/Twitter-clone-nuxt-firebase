@@ -41,7 +41,7 @@
 
                 <div class="grow">
                     <span class="font-bold">{{tweetusername}}</span>
-                    <span class="text-gray-400">{{tweetusertag}}</span>
+                    <span class="text-gray-400">@{{tweetusertag}}</span>
                     <span class="text-gray-400" v-if="tweetusertime">⋅{{tweetusertime}}</span>
                     <div v-html="tweet.content">
                         
