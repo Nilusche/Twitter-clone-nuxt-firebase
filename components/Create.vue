@@ -16,6 +16,7 @@
         <div class="flex border-b border-twgrey-200  p-4 mr-0">             
             <div class="flex">
                 <span class="flex">
+                    <input @change="handleFileChange" id="input_file" class="hidden w-full text-sm text-twgrey-400 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer mb-2  focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"  type="file">
                     <img v-if="!$store.state.user.id|| $store.state.user.id&&  !$store.state.user.profilePic" class=" object-cover rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out hover:cursor-pointer" @click="navigateToProfile"  src="@/assets/images/default_profile_400x400.png" alt="">
                     <img v-else class="object-cover  rounded-full w-12 h-12 mr-2 hover:contrast-50 transition ease-in-out hover:cursor-pointer" @click="navigateToProfile"  :src="$store.state.user.profilePic" alt="">
                     <div class="block">
@@ -24,15 +25,10 @@
                             <div class="justify-start">
                                 <button class="h-9 w-9">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-twblue rounded-full hover:bg-twgrey-200 p-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </button>
-                                <button class="h-9 w-9">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-twblue rounded-full hover:bg-twgrey-200 p-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                     </svg>
                                 </button>
-                                <button class="h-9 w-9">
+                                <button class="h-9 w-9" @click="openFile">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-twblue rounded-full hover:bg-twgrey-200 p-1" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
                                     </svg>
@@ -67,11 +63,48 @@
 
 <script>
 import {timestamp} from '@/firebase/config.js'
+import useStorage from '@/composables/useStorage.js'
+import { projectFirestore } from '../firebase/config'
+import {ref} from 'vue'
 export default {
-    methods:{
-        handleCreateTweet(){
-            const content = this.$refs.content_div.innerText
+    setup(){
+        const {filePath, url, uploadFile} = useStorage()
+        const file = ref('')
+        const fileerror = ref('')
+        const types = ['image/png', 'image/jpeg', 'image/jpg']
+        //const store = useStore()
+
+        const handleCreate = async () => { 
+            if(file.value){
+                await uploadFile(file.value, "tweets")
+            }
+
+            return url.value;
             
+        }
+
+        
+
+        const handleFileChange = (e)=>{
+  
+            const selected = e.target.files[0];
+            if (selected && types.includes(selected.type)) {
+                file.value = selected;
+                fileerror.value = ''
+            }else{
+                file.value = null; 
+                fileerror.value = 'Please select a valid image file'
+            }
+        }
+
+        return {
+            filePath, url, handleCreate, handleFileChange, file, fileerror, 
+        }
+    },
+    methods:{
+        async handleCreateTweet(){
+            const content = this.$refs.content_div.innerText
+            await this.handleCreate()
             if(content.length > 0){
                 //keep newlines in the content for firebase
                 const contentWithNewlines = content.replace(/\n/g, '<br>')
@@ -82,14 +115,15 @@ export default {
                     likes:0,
                     comments:0,
                     retweets:0,
+                    image: this.url,
                     replyTo: null,
                     profilePic: this.$store.state.user.profilePic,
                     
                 }
-                this.$store.dispatch('createTweet',{tweet})   
+                const res = await projectFirestore.collection('tweets').add(tweet);
                 this.$refs.content_div.innerText = ''
                 //create new property on the tweet object called id
-                tweet.id = this.$store.state.tempID;
+                tweet.id = res.id
                 
 
                 tweet.tweetusertime = this.timeSince(new Date())
@@ -130,6 +164,9 @@ export default {
             return interval + " min";
           }
           return Math.floor(seconds) + " sec";
+        },
+        openFile(){
+            document.getElementById('input_file').click()
         }
     }
 }

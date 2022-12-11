@@ -4,12 +4,9 @@
         <Navbar @tweetPopUp="triggerPopup=true"/>
          <div class="bg-white border-r border-l lg:block lg:col-span-1 col-span-8 tweets overflow-y-auto">
                 <Create @addTweet="handleTweetAdd"/>
-                <div v-for="rec in recommendations" :key="rec.id" >
-                    <Post :tweet="rec" @loaded="handleLoaded" @deleted="handleDeleted" :id="rec.id" @update="handleUpdate" :recommended="true"/>
-                </div>
                 <!--Post-->
                 <div v-for="tweet in tweets" :key="tweet.id" >
-                    <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id" @update="handleUpdate"/>
+                    <Post :tweet="tweet" @loaded="handleLoaded" @deleted="handleDeleted" :id="tweet.id" @update="handleUpdate" :recommended="tweet.recommended??false"/>
                 </div>
                 <div v-if="loading" class="flex justify-center">
                  <svg class="h-6" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -173,9 +170,33 @@ export default {
       }
 
     if(boolRedisRecommendations && boolRedisTweets){
-      console.log(this.recommendations)
+
+      // add the property 'recommended' to the recommendations
+      this.recommendations.forEach((item) => {
+        item.recommended = true;
+      })
+
+      // only get first 1 recommendations
+      this.recommendations = this.recommendations.slice(0, 1);
+
+      // add the recommendations on top of the tweets
+      this.tweets = this.recommendations.concat(this.tweets);
+
+
+      // remove duplicates
+      this.tweets = this.tweets.filter((thing, index, self) =>
+        index === self.findIndex((t) => (
+          t.id === thing.id
+        ))
+      )
+
+
+
       this.loading = false;
       return
+
+
+
     }
 
 
@@ -227,6 +248,11 @@ export default {
       const recommendedTweets = await getRecommendations(lastLikedTweet.content, tweetsFiltered)
 
       this.recommendations = recommendedTweets
+      // only get first 1 recommendations
+      this.recommendations = this.recommendations.slice(0, 1);
+      this.recommendations.forEach((item) => {
+        item.recommended = true;
+      })
 
       const redis = await this.$axios.$post('/api/keys', {
           key : 'recommendations' + ':'+  this.$store.state.user.id + ':' + date,
@@ -311,6 +337,14 @@ export default {
           value : JSON.stringify(this.tweets)
       })
 
+      // add recommendations on top of the tweets
+      this.tweets = this.recommendations.concat(this.tweets)
+      // remove duplicates
+      this.tweets = this.tweets.filter((thing, index, self) =>
+        index === self.findIndex((t) => (
+          t.id === thing.id
+        ))
+      )
       
     },
     methods:{

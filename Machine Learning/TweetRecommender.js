@@ -30,7 +30,7 @@ function getRecommendations(tweet, tweets){
 
 function getTopSimilarityIndices(similarityScores) {
     var topSimilarityIndices = [];
-    for (var i=0; i<3; i++) {
+    for (var i=0; i<5; i++) {
         var topSimilarityIndex = similarityScores.indexOf(Math.max(...similarityScores));
         topSimilarityIndices.push(topSimilarityIndex);
         similarityScores[topSimilarityIndex] = -1;

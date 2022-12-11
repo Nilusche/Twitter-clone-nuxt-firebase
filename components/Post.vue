@@ -25,8 +25,8 @@
 
 
             
-            You might like
-          
+            You might like - 
+            <span @click="rerouteRecommended" class="hover:underline text-twblue">Show more</span>
             </div>
             <div class="flex ">
                 <div class="flex flex-col ">
@@ -56,6 +56,11 @@
                     <div v-html="tweet.content">
                         
                     </div>
+
+                    <div v-if="tweet.image" class="rounded-full object-contain">
+                      <img :src="tweet.image" class="rounded-lg object-contain" alt="">
+                    </div>
+
                     <div class="mt-5 text-twgrey-400">
                         <span class="mr-2 lg:mr-4 cursor-pointer hover:text-twblue">
                             <span class="rounded-full p-2  mr-1  hover:bg-twgrey-200">
@@ -150,7 +155,7 @@
                 </div>
                 <div class="flex flex-col">
                   <div class="p-2  hover:bg-twgrey-200 hover:cursor-pointer h-9 rounded-full " >
-                    <span  @click.stop="showDelete=!showDelete">
+                    <span  @click.stop="showDelete=!showDelete" v-if="this.tweet.uid == this.$store.state.user.id">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                       </svg>
@@ -468,6 +473,9 @@ export default{
 
 
         },
+        rerouteRecommended(){
+          this.$router.push({path: '/explore/recommended'})
+        }
     },
         
 

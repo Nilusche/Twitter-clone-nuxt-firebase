@@ -81,6 +81,9 @@
                   <div class="mt-5 text-xl" v-html="this.tweet.content">
                     
                   </div>
+                  <div v-if="this.tweet.image" class="rounded-full object-contain w-full">
+                      <img :src="this.tweet.image" class="rounded-lg object-contain" alt="">
+                    </div>
                   <div v-if="this.tweet" class="text-twgrey-400 border-twgrey-200 border-b py-3">
                     {{timestampToDate(this.tweet.createdAt) }}Twitterclone Web App
                   </div>
@@ -486,6 +489,7 @@ export default {
         },
 
         async handleDelete(){
+            const replyTo = this.tweet.replyTo
             //delete tweet
             await projectFirestore.collection('tweets').doc(this.tweet.id).delete()
             //delete likes
@@ -519,6 +523,18 @@ export default {
                 })
             })
 
+            if(replyTo){
+                //if tweet is a reply, decrement the count of replies in the tweet it is replying to
+                await projectFirestore.collection('tweets').doc(replyTo).get().then(async doc => {
+                    const tweet = doc.data()
+                    tweet.comments--
+                    await projectFirestore.collection('tweets').doc(replyTo).update({
+                        comments: tweet.comments
+                    })
+                })
+            }
+
+
             let curDateStr = new Date().toDateString()
             //remove spaces
             curDateStr = curDateStr.replace(/\s/g, '')
@@ -547,9 +563,9 @@ export default {
                     replyTo: this.tweet.id,
                     profilePic: this.$store.state.user.profilePic,
                 }
-                const res = this.$store.dispatch('createTweet',{tweet})   
+                const res = await projectFirestore.collection('tweets').add(tweet);
                 this.$refs.content_div.innerText = ''
-                tweet.id = this.$store.state.tempID;
+                tweet.id = res.id;
 
                 tweet.tweetusertime = this.timeSince(new Date())
                 tweet.tweetusername =  this.$store.state.user.name,
