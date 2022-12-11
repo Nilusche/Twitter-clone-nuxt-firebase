@@ -20,7 +20,11 @@
                     <svg class="inline-block w-7 mb-1 mr-2 h-6 -ml-1 -mt-1 " xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
-                    <span class="lg:visible invisible">Notifications</span> 
+                    <span class="lg:visible invisible">Notifications
+                        <div class="absolute" v-if="notifications.length>0">
+                            <div class="relative bottom-12 left-4 px-1 rounded-full h-5 text-sm   text-white bg-twblue"> {{notifications.length}}</div>
+                        </div>
+                    </span> 
                 </NuxtLink>
                 <NuxtLink to="/messages" :class="{'font-bold': routename=='/messages'}" class="ml-4 btn lg:w-44 btn-small btn-hover transition ease-in-out">
                     <svg class="inline-block w-7 mb-1 mr-2 -ml-1 -mt-1 "  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -70,12 +74,28 @@
 </template>
 
 <script>
-
+import { projectFirestore } from '../firebase/config';
 export default {
   data(){
     return{
         routename: this.$route.path,
+        notifications: [],
     }
+  },
+
+  async mounted(){
+    // fetch all notifications that are not read from db
+    this.notifications = await projectFirestore.collection('notifications').where('notifier', '==', this.$store.state.user.id).where('read', '==', false).onSnapshot(snapshot => {
+        this.notifications = snapshot.docs.map(doc => 
+          ({
+            id: doc.id,
+            ...doc.data()
+          })
+        );
+      }
+    );
+
+
   },
   methods:{
     async logout(){
