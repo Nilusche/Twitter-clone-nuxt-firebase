@@ -9,9 +9,9 @@ const port = 3080;
 
 
 const redis = new Redis({
-    host: 'redis-15163.c16.us-east-1-2.ec2.cloud.redislabs.com',
-    port: 15163,
-    password: 'PDIeXjTwXPq4NsUP7whtP5xG6C4e5WZh'
+    host: '',
+    port: 6379,
+    password: ''
 });
 // build api to get all keys
 
