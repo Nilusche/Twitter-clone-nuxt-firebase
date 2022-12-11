@@ -59,7 +59,7 @@ export default {
 
   proxy: {
     '/api': { 
-      target: 'http://localhost:3080', 
+      target: 'https://redisservertwitter.onrender.com/', 
       pathRewrite: {'^/api': ''},
        changeOrigin: true }
   }

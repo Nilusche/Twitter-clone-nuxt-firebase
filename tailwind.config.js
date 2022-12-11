@@ -12,6 +12,7 @@ module.exports = {
       twblue:{
         100: "#1DA1F2",
         200: "#0d8bd9",
+        300: "#78c6f7",
       },
       twdarkblue:"#0c81ca",
       twgrey:{
@@ -29,7 +30,7 @@ module.exports = {
         100: "#282e34",
         200: "#14171A"
       },
-      
+      twcomment:"#e7f5fe",
     
       
     },

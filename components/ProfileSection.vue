@@ -341,6 +341,13 @@ export default {
             }
         })
 
+        // remove duplicates from the tweets array
+        this.tweets = this.tweets.filter((thing, index, self) =>
+            index === self.findIndex((t) => (
+                t.id === thing.id
+            ))
+        )
+
         this.loading = false;
 
     },

@@ -199,7 +199,7 @@ export default {
 
     }
 
-
+    
 
         // recommendations part
         // fetch all the tweets from the database
@@ -228,17 +228,21 @@ export default {
       // filter tweets where 'uid' is in the followingFiltered array
       const tweetsFiltered = tweets1.filter(tweet => followingFiltered.some(follow => follow.following != tweet.uid && tweet.uid != this.$store.state.user.id))
       // replace <br> in tweets content with ' '
+      if(tweetsFiltered.length == 0){
+        tweetsFiltered = tweets1;
+      }
       tweetsFiltered.forEach(tweet => {
         tweet.content = tweet.content.replace(/<br>/g, ' ')
       })
 
 
+
       // get all the liked tweets by checkin the tweets array and see if the current user id is in the likes array
       const likedTweets = tweets1.filter(tweet => likes1.some(like => like.uid == this.$store.state.user.id && like.tweetid == tweet.id))
       if(!likedTweets.length){
-        likedTweets.push(tweets[0])
+        likedTweets.push(tweets1[0])
       }
-
+      console.log(likedTweets)
       // sort the tweets by created at descending
       likedTweets.sort((a, b) => b.createdAt - a.createdAt)
       // get last liked tweet

@@ -184,6 +184,7 @@
 
 <script>
 import { Store } from 'vuex'
+import {timestamp} from '@/firebase/config.js'
 import { projectFirestore } from '../firebase/config'
 export default{
     props: ['tweet', "retweeted" , "id", "isReply", "recommended"],
@@ -306,6 +307,7 @@ export default{
           tweetusertag: this.tweetusertag,
           tweetusertime: this.tweetusertime,
           repliedTo: this.repliedTo,
+          
         }
         this.$store.commit('setSpecificTweets', information)
 
@@ -372,6 +374,23 @@ export default{
                 }
             })
             this.$emit('update')
+
+            // create new notification
+            if(this.prop_tweet.uid != this.$store.state.user.id){
+              const notification = {
+                uid: this.$store.state.user.id,
+                tweetid: this.prop_tweet.id,
+                type: 'like',
+                createdAt: timestamp(),
+                read: false,
+                notifier: this.$store.state.user.id,
+                username: this.$store.state.user.username,
+                profilePic: this.$store.state.user.profilePic,
+                content: this.tweet.content,
+              }
+              await projectFirestore.collection('notifications').add(notification)
+            }
+
             
         },
         async handleRetweet(){
@@ -404,6 +423,22 @@ export default{
                 }
             })
             this.$emit('update')
+
+            // create new notification
+            if(this.prop_tweet.uid != this.$store.state.user.id){
+              const notification = {
+                uid: this.$store.state.user.id,
+                tweetid: this.prop_tweet.id,
+                type: 'retweet',
+                createdAt: timestamp(),
+                read: false,
+                notifier: this.$store.state.user.id,
+                username: this.$store.state.user.username,
+                profilePic: this.$store.state.user.profilePic,
+                content: this.tweet.content,
+              }
+              await projectFirestore.collection('notifications').add(notification)
+            }
 
         },
         navigateToProfile(){

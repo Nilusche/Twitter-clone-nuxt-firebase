@@ -447,6 +447,26 @@ export default {
             const res1 = await this.$axios.$post('/api/del', {
                 key : 'timeline' + ':'+  this.$store.state.user.id + ':' + curDateStr,
             })
+
+            // create a notification
+            // create new notification
+            if(this.tweet.uid != this.$store.state.user.id){
+              const notification = {
+                uid: this.$store.state.user.id,
+                tweetid: this.tweet.id,
+                type: 'like',
+                createdAt: timestamp(),
+                read: false,
+                notifier: this.$store.state.user.id,
+                username: this.$store.state.user.username,
+                profilePic: this.$store.state.user.profilePic,
+                content: this.tweet.content,
+              }
+              await projectFirestore.collection('notifications').add(notification)
+            }
+
+
+            
         },
         async handleRetweet(){
           if(this.retweeted){
@@ -482,6 +502,26 @@ export default {
             const res1 = await this.$axios.$post('/api/del', {
                 key : 'timeline' + ':'+  this.$store.state.user.id + ':' + curDateStr,
             })
+
+            
+
+            // create new notification
+            if(this.tweet.uid != this.$store.state.user.id){
+              const notification = {
+                uid: this.$store.state.user.id,
+                tweetid: this.tweet.id,
+                type: 'retweet',
+                createdAt: timestamp(),
+                read: false,
+                notifier: this.$store.state.user.id,
+                username: this.$store.state.user.username,
+                profilePic: this.$store.state.user.profilePic,
+                content: this.tweet.content,
+
+              }
+              await projectFirestore.collection('notifications').add(notification)
+            }
+
         },
         filterDeleted(id){
             //filter out the tweet with the id from the replies array
@@ -586,6 +626,21 @@ export default {
                 const res1 = await this.$axios.$post('/api/del', {
                     key : 'timeline' + ':'+  this.$store.state.user.id + ':' + curDateStr,
                 })
+
+                if(this.tweet.uid != this.$store.state.user.id){
+                  const notification = {
+                    uid: this.$store.state.user.id,
+                    tweetid: tweet.id,
+                    type: 'reply',
+                    createdAt: timestamp(),
+                    read: false,
+                    notifier: this.$store.state.user.id,
+                    username: this.$store.state.user.username,
+                    profilePic: this.$store.state.user.profilePic,
+                    content: tweet.content,
+                  }
+                  await projectFirestore.collection('notifications').add(notification)
+                }
 
                 this.$router.push('/home')
             }
