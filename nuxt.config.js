@@ -66,5 +66,6 @@ export default {
   ,
   generate: {
     fallback: true
-  }
+  },
+  target: 'server'
 }
