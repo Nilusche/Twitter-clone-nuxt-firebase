@@ -226,7 +226,7 @@ export default {
       
 
       // filter tweets where 'uid' is in the followingFiltered array
-      const tweetsFiltered = tweets1.filter(tweet => followingFiltered.some(follow => follow.following != tweet.uid && tweet.uid != this.$store.state.user.id))
+      let tweetsFiltered = tweets1.filter(tweet => followingFiltered.some(follow => follow.following != tweet.uid && tweet.uid != this.$store.state.user.id))
       // replace <br> in tweets content with ' '
       if(tweetsFiltered.length == 0){
         tweetsFiltered = tweets1;
