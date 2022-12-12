@@ -1,6 +1,5 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
-  ssr: false,
   head: {
     title: 'Twitter',
     htmlAttrs: {
@@ -53,7 +52,7 @@ export default {
 
   axios: {
     proxy: true,
-    prefix: (process.env.API_URL)|| '/api',
+    prefix: 'https://redisservertwitter.onrender.com/',
   },
 
   proxy: {
