@@ -55,6 +55,7 @@ export default {
   axios: {
     proxy: true,
     prefix: '/api',
+    baseURL: 'https://twitter-nuxt.netlify.app/'
   },
 
   proxy: {
