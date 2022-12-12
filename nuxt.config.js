@@ -63,4 +63,8 @@ export default {
       pathRewrite: {'^/api': ''},
        changeOrigin: true }
   }
+  ,
+  generate: {
+    fallback: true
+  }
 }
