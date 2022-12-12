@@ -22,12 +22,14 @@
     "natural": "^5.2.3",
     "nuxt": "^2.15.8",
     "rake-js": "^0.1.1",
+    "redis": "^4.5.1",
     "stopword": "^2.0.5",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
     "vuex-persistedstate": "^4.1.0",
-    "webpack": "^4.46.0"
+    "webpack": "^4.46.0",
+    "ws": "^8.11.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.8",
