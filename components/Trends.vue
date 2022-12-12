@@ -54,7 +54,7 @@ export default{
         //remove spaces
         curDateStr = curDateStr.replace(/\s/g, '')
         const queryStr = 'trends:' + curDateStr
-        const response =  await this.$axios.$get('/api/keys', {
+        const response =  await this.$axios.$get('https://redisservertwitter.onrender.com/api/keys', {
             params : {
                 key : queryStr
             }
@@ -69,7 +69,7 @@ export default{
         }else{
             // if the response is null then we need to fetch the trends from the database
             // but before we do that we need to delete old redis keys that start with trends
-            const response = await this.$axios.$get('/api/getAll', {
+            const response = await this.$axios.$get('https://redisservertwitter.onrender.com/api/getAll', {
                 params : {
                     key : 'trends:*'
                 }
@@ -77,7 +77,7 @@ export default{
             if(response && response.length > 0){
                 
                 response.forEach(async (item) => {
-                    const res = await this.$axios.$post('/api/del', {
+                    const res = await this.$axios.$post('https://redisservertwitter.onrender.com/api/del', {
                         key : item
                     })
                 })
@@ -254,7 +254,7 @@ export default{
         //remove spaces
         date1 = date1.replace(/\s/g, '')
         
-        const res = await this.$axios.$post('/api/keys', {
+        const res = await this.$axios.$post('https://redisservertwitter.onrender.com/api/keys', {
             key : 'trends' + ':'+  date1,
             value : JSON.stringify(mixedFeatures)
         })
