@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   //ssr: false,
-  mode:'spa',
+  mode:'universal',
   head: {
     title: 'Twitter',
     htmlAttrs: {
