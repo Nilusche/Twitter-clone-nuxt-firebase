@@ -60,7 +60,10 @@ export default {
     '/api': { 
       target: 'https://redisservertwitter.onrender.com/', 
       pathRewrite: {'^/api': ''},
-       changeOrigin: true }
+       changeOrigin: true ,
+        secure: false,
+        logLevel: 'debug'
+      }
   }
   ,
   generate: {
