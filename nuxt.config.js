@@ -53,7 +53,7 @@ export default {
 
   axios: {
     proxy: true,
-    prefix: process.env.API_URL || '/api',
+    prefix: process.env.API_URL + '/api'|| '/api',
   },
 
   proxy: {
