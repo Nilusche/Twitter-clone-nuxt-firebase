@@ -21,7 +21,7 @@
                     
                 </div>
                 <!--Trend-->
-                <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer" v-for="trend in topFeatures" :key="trend.content" @click="$router.push("/explore/"+trend.term)">
+                <div class="hover:bg-twgrey-200 p-3 transition ease-in-out cursor-pointer" v-for="trend in topFeatures" :key="trend.content" @click="handleTermSearch(trend.term)">
                     <div class="relative">
                         <span class="text-twgrey-400 text-xs">Trending in Twitterclone</span>
                         <span class="font-bold block text-sm">{{trend.term}}</span>
@@ -102,6 +102,11 @@ export default {
             if(this.search){
                 this.$router.push("/explore/"+this.search)
             }
+        },
+        handleTermSearch(term){
+          if(!term) 
+            return;
+          this.$router.push("/explore/"+term)
         }
     },
     async mounted(){
