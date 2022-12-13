@@ -86,11 +86,16 @@
               </div>
               
             </div>
-            <div class="grow flex flex-col px-4 " v-if="this.currentTab!='' && this.active_chat!=null">
-              <div class=" border-b border-twgrey-200">
+            <div class="grow flex flex-col  " v-if="this.currentTab!='' && this.active_chat!=null">
+              <div class=" border-b border-twgrey-200 ">
                 <div class="flex p-1 border-b border-twgrey-200 border r justify-end">
-                    <span class="flex">
-                        <div class="w-full"></div>
+                    <span class="flex justify-start w-full">
+                        <button class="rounded-full justify-end btn-hover p-2" @click="handleBack">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                          </svg>
+                        </button>
+                        <div class=" w-6 grow"></div>
                         <button class="rounded-full justify-end btn-hover p-2">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
@@ -100,7 +105,7 @@
                     </span>
                     
                 </div>
-                <div class="flex flex-col items-center justify-center pb-24 hover:bg-twgrey-200 cursor-pointer" @click="navigateProfile">
+                <div class="flex flex-col items-center justify-center px-4 pb-24 hover:bg-twgrey-200 cursor-pointer" @click="navigateProfile">
                   <div class="mt-8" v-if="active_chat.user1.uid == $store.state.user.id">
                     <img :src="active_chat.user2.profilePic" class="object-cover rounded-full w-16 h-16" alt="">
                   </div>
@@ -120,7 +125,7 @@
                 </div>
 
               </div>
-              <div class="grow">
+              <div class="grow px-4">
                 <div class="list mb-16">
 
                     <div class="flex justify-end mt-3" v-for="message in messages" :key="message.id">
@@ -175,7 +180,40 @@
                 </div>
               </div>
             </div>
-
+            <div v-else class="w-full lg:invisible visible">
+              <div class="flex" @click="switchChat(chat.user1.uid, chat.user2.uid)" v-for="chat in active_chats" :key="chat.id">
+                <div class="flex p-4 hover:bg-twgrey-200 hover:cursor-pointer grow border-twgrey-200 border-b" >
+                    <div class="mr-2" v-if="chat.user1.uid == $store.state.user.id">
+                      <img :src="chat.user2.profilePic" class="object-cover rounded-full w-12 h-12" alt="">
+                    </div>
+                    <div class="mr-2" v-else>
+                      <img :src="chat.user1.profilePic" class="object-cover rounded-full w-12 h-12" alt="">
+                    </div>
+                    <div class="flex flex-col" v-if="chat.user1.uid == $store.state.user.id">
+                        <div class="" >
+                          <span class="font-bold">{{chat.user2.name}}</span>
+                          <span class="text-twgrey-400"> @{{chat.user2.tag}}</span>
+                          <span class="text-twgrey-400"></span>
+                          
+                        </div>
+                        <div v-if="chat.messages.length>0"> {{chat.messages[chat.messages.length-1].message}}</div>
+                    </div>
+                  <div v-else class="flex flex-col">
+                    <div class="" >
+                      <span class="font-bold">{{chat.user1.name}}</span>
+                      <span class="text-twgrey-400">  @{{chat.user1.tag}}</span>
+                      <span class="text-twgrey-400"></span>
+                      
+                    </div>
+                    <div  v-if="chat.messages.length>0">{{chat.messages[chat.messages.length-1].message}}</div>
+                  </div>
+                  
+                </div>
+                
+                <div v-if="currentTab != '' && chat.id == currentTab"  class="w-1 bg-twblue"></div>
+              </div>
+              
+            </div>
           </div>
         </div>
         
@@ -334,7 +372,10 @@ export default {
       var strTime =day+ "/" + month +" " +  hours + ':' + minutes + ' ' + ampm;
       return strTime;
     },
-    
+    handleBack(){
+      this.currentTab = ""
+      this.active_chat = null
+    }
 
   }
 }
