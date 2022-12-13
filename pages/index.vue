@@ -50,7 +50,7 @@
                             </button>
                         </div>
                         <div class="mt-16">
-                            <div class="font-bold mb-4 ml-2">Already have an account?</div>
+                            <div class="font-bold mb-4 ml-2">Already have an account? (Dummy Login: root@mail.com, passw: 123123123)</div>
                             <button class="py-2 w-72 ml-2 rounded-full font-semibold bg-black text-twblue border border-twblue" @click="showSignIn=true;scrollToTop()">
                                 <div class="flex justify-center">
                                     <span>Sign in</span> 
