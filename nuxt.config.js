@@ -52,7 +52,7 @@ export default {
 
   axios: {
     proxy: true,
-    prefix: '/api',
+    baseURL:'https://redisservertwitter.onrender.com/',
   },
 
   proxy: {
