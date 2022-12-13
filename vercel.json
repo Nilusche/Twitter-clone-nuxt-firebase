@@ -1,13 +1,12 @@
 {
-  "headers": [
+  "rewrites": [
     {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "access-control-allow-origin",
-          "value": "*"
-        }
-      ]
+      "source": "/api/:path*",
+      "destination": "https://redisservertwitter.onrender.com/api/:path*"
+    },
+    {
+      "source": "/api/:path*/",
+      "destination": "https://redisservertwitter.onrender.com/api/:path*/"
     }
   ]
 }
