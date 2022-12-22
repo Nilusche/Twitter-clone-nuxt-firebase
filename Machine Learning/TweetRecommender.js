@@ -15,10 +15,10 @@ function getRecommendations(tweet, tweets){
 
 
     var similarityScores = [];
-    tfidf.addDocument(tweet);
+ 
     var numDocuments = tfidf.documents.length;
 
-    for (var i=0; i<numDocuments-1; i++) {
+    for (var i=0; i<numDocuments; i++) {
         var similarityScore = tfidf.tfidf(tweet, i);
         similarityScores.push(similarityScore);
     }
