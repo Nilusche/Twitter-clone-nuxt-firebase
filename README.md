@@ -2,6 +2,7 @@
 <img width="1245" alt="image" src="https://user-images.githubusercontent.com/73897941/224555421-8e1c59b7-0985-428b-a1e1-f8f04c3d24f3.png">
 
 This is a full-stack Twitter clone built with Nuxt.js and Firebase. The project replicates key features including user accounts, timelines, notifications, and messaging. <br> It also utilizes natural language processing (NLP) for tweet recommendation and trend extraction with the RAKE algorithm, LDA, and TF-IDF. Redis caching techniques are applied to reduce database usage by 60% for efficient resource utilization.
+Refer to the [software requirements specification](https://github.com/Nilusche/Twitter-clone-nuxt-firebase/blob/master/Twitter_clone_Software_Requirements_Specification_%20(1).pdf) for more details.
 
 ## Features
 
@@ -29,7 +30,7 @@ Finally, Redis caching techniques are applied to reduce database usage by 60% to
 
 ## Getting Started
 
-To get started with the project, you'll need to clone the repository and install the dependencies. You'll also need to set up a Firebase project and configure the app with your Firebase credentials. Refer to the [software requirements specification](https://github.com/Nilusche/Twitter-clone-nuxt-firebase/blob/master/Twitter_clone_Software_Requirements_Specification_%20(1).pdf) for more details.
+To get started with the project, you'll need to clone the repository and install the dependencies. You'll also need to set up a Firebase project and configure the app with your Firebase credentials. 
 
 ### Prerequisites
 
