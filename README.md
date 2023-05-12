@@ -70,7 +70,7 @@ The app can be deployed to various hosting services such as Vercel, Netlify, or 
 
 ## Acknowledgments
 
-- The RAKE algorithm, LDA, and TF-IDF are implemented using the [Natural library](https://github.com/NaturalNode/natural) for Node.js.
+- The RAKE algorithm, LDA, and TF-IDF are implemented using the [Natural library](https://github.com/NaturalNode/natural) for Node.js ([blog post](https://www.linkedin.com/pulse/extracting-trends-recommendations-natural-language-liyanaarachchi/)).
 - Redis caching techniques which i explained here [blog post](https://www.linkedin.com/pulse/building-clone-twitter-caching-timelines-tweets-redis-liyanaarachchi%3FtrackingId=AtdxJEJoZ0IiKfFDoG%252BN%252FQ%253D%253D/?trackingId=AtdxJEJoZ0IiKfFDoG%2BN%2FQ%3D%3D).
 - I have written some blogpost about this project [tutorial series](https://www.linkedin.com/pulse/building-clone-twitter-vuenuxt-js-firebase-part-1-liyanaarachchi-1e%3FtrackingId=U8X7qve5Pq2gTc0XrSJxQg%253D%253D/?trackingId=U8X7qve5Pq2gTc0XrSJxQg%3D%3D).
 
